@@ -13,7 +13,11 @@ main { max-width: 780px; padding: 40px 28px 64px; margin: auto; }
 .intro p { margin: 6px 0; }
 .premise { max-width: 38rem; font-size: 1.1rem; }
 .selection { margin-bottom: 32px; }
-.selection h2, .beat-title { font: 600 1.1rem/1.4 system-ui, sans-serif; }
+.selection-title, .beat-title { font: 600 1.1rem/1.4 system-ui, sans-serif; }
+.selection-title { margin: 4px 0 16px; }
+/* Heading levels differ between Today and Explore, so spacing is set by role, matching the former browser defaults. */
+.beat > .beat-title { margin-block: 1em; }
+.beat .beat > .beat-title { margin-block: 1.33em; }
 .selection p { font-size: .85rem; color: var(--muted); margin-bottom: 10px; }
 .categories { display: flex; flex-wrap: wrap; gap: 8px; }
 button { min-height: 44px; padding: 9px 15px; border: 1px solid var(--line); border-radius: 6px; background: transparent; color: var(--ink); font: inherit; font-size: .875rem; cursor: pointer; }
@@ -48,7 +52,7 @@ details[open] > summary .when-open { display: inline-block; }
 .reversed { transform: scaleX(-1); }
 figcaption { margin-top: 12px; font-size: .8rem; color: var(--muted); }
 h2 { font: 400 1.65rem/1.25 Georgia, serif; margin: 4px 0 16px; }
-.sources-title { font-size: .85rem; margin-top: 25px; }
+.sources-title { font-size: .85rem; font-weight: bold; margin-top: 25px; margin-bottom: 1.67em; }
 .beat > p { margin: 0 0 18px; }
 .beat > details { margin-top: 24px; }
 .sources { padding-left: 20px; font-size: .9rem; }
