@@ -1,0 +1,427 @@
+// Dependency-free content and application-wiring checks; not browser emulation.
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const { readFileSync } = require('node:fs');
+const { join } = require('node:path');
+const { createHash } = require('node:crypto');
+const vm = require('node:vm');
+const read = path => readFileSync(join(__dirname, '..', path), 'utf8');
+const categories = ['Science & Nature', 'Engineering & Technology', 'Arts & Culture', 'History & Society'];
+class NodeStub {
+  constructor(tag) { this.tag = tag; this.children = []; this.attributes = {}; this.events = {}; this.open = false; }
+  append(...nodes) { this.children.push(...nodes); }
+  replaceChildren() { this.children = []; }
+  setAttribute(key, value) { this.attributes[key] = value; }
+  addEventListener(type, callback) { this.events[type] = callback; }
+  focus() { this.focused = true; }
+}
+function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }) {
+  const controls = new NodeStub('div'), article = new NodeStub('article'), today = new NodeStub('article');
+  let random = initialRandom;
+  const math = Object.create(Math);
+  math.random = () => random;
+  const context = vm.createContext({ Math: math, document: {
+    querySelector: selector => {
+      if (selector === '#categories') return controls;
+      if (selector === '#curiosity') return article;
+      if (selector === '#today-curiosity') return today;
+      throw Error('Unexpected selector ' + selector);
+    },
+    createElement: tag => new NodeStub(tag)
+  }});
+  vm.runInContext(read('SRC/content.js'), context);
+  const entries = vm.runInContext('DAILY_CURIOSITIES', context);
+  vm.runInContext(read('SRC/daily.js'), context);
+  context.readLocalCalendarDate = () => date; // Inject calendar fields, not a mocked clock.
+  vm.runInContext(read('SRC/app.js'), context);
+  return { controls, article, today, context, entries, setRandom: value => { random = value; } };
+}
+function descendants(node, tag) {
+  return node.children.flatMap(child => [...(child.tag === tag ? [child] : []), ...descendants(child, tag)]);
+}
+const title = f => descendants(f.article, 'h2')[0].textContent;
+const words = text => text.trim().split(/\s+/u).length;
+function selectEntry(f, index) {
+  if (title(f) === f.entries[index].title) f.controls.children[0].events.click();
+  const candidates = Array.from(f.entries).filter(e => e.title !== title(f));
+  const slot = candidates.findIndex(e => e.id === f.entries[index].id);
+  f.setRandom((slot + 0.5) / candidates.length);
+  f.controls.children[0].events.click();
+}
+function assertClosed(article) {
+  const layers = descendants(article, 'details');
+  assert.equal(layers.length, 3);
+  assert.ok(layers.every(node => !node.open));
+  assert.ok(descendants(layers[0], 'details').includes(layers[1]));
+}
+
+test('exactly twenty sourced cards, five per approved category, with all three beats', () => {
+  const { entries } = fixture();
+  assert.equal(entries.length, 20);
+  assert.equal(new Set(entries.map(e => e.id)).size, 20);
+  assert.equal(new Set(entries.map(e => e.title)).size, 20);
+  for (const category of categories) assert.equal(entries.filter(e => e.category === category).length, 5);
+  entries.forEach(entry => {
+    assert.ok(categories.includes(entry.category));
+    const counts = [words(entry.hook), words(entry.core.join(' ')), words(entry.deep.join(' '))];
+    assert.ok(counts[0] >= 20 && counts[0] <= 35, entry.id + ' hook');
+    assert.ok(counts[1] >= 85 && counts[1] <= 115, entry.id + ' core');
+    assert.ok(counts[2] >= 130 && counts[2] <= 175, entry.id + ' deep');
+    assert.ok(entry.sources.length > 0);
+    for (const source of entry.sources) {
+      assert.ok(source.label.length > 12);
+      assert.equal(new URL(source.url).protocol, 'https:');
+    }
+  });
+});
+
+test('five native choice buttons expose one selected state and initial hook without a gate', () => {
+  const f = fixture();
+  assert.deepEqual(f.controls.children.map(n => n.textContent), ['Surprise Me', ...categories]);
+  assert.ok(f.controls.children.every(n => n.tag === 'button' && n.type === 'button'));
+  assert.equal(f.controls.children[0].attributes['aria-pressed'], 'true');
+  assert.equal(f.controls.children.filter(n => n.attributes['aria-pressed'] === 'true').length, 1);
+  assert.equal(title(f), f.entries[0].title);
+  assert.ok(f.article.children.some(n => n.textContent === f.entries[0].hook));
+  assertClosed(f.article);
+  assert.equal(f.article.focused, undefined, 'No automatic focus steal on load');
+});
+
+test('each category cycles all five cards twice without an immediate repeat', () => {
+  categories.forEach((category, i) => {
+    const f = fixture();
+    const expected = Array.from(f.entries.filter(e => e.category === category), e => e.id);
+    const seen = [];
+    for (let repeat = 0; repeat < 10; repeat++) {
+      const previous = title(f);
+      f.controls.children[i + 1].events.click();
+      const entry = f.entries.find(e => e.title === title(f));
+      assert.equal(entry.category, category);
+      assert.notEqual(title(f), previous);
+      seen.push(entry.id);
+      assert.equal(f.controls.children[i + 1].attributes['aria-pressed'], 'true');
+      assert.equal(f.controls.children.filter(n => n.attributes['aria-pressed'] === 'true').length, 1);
+      assert.equal(f.article.focused, true);
+    }
+    assert.equal(new Set(seen.slice(0, 5)).size, 5);
+    assert.deepEqual(seen.slice(0, 5), seen.slice(5));
+    assert.deepEqual([...new Set(seen)].sort(), expected.sort());
+  });
+});
+
+test('initial Surprise Me covers all 20 bins, including their boundaries', () => {
+  for (let i = 0; i < 20; i++) {
+    for (const random of [i / 20, (i + 1) / 20 - Number.EPSILON]) {
+      const f = fixture(random);
+      assert.equal(title(f), f.entries[i].title);
+      assert.equal(f.controls.children[0].attributes['aria-pressed'], 'true');
+    }
+  }
+});
+
+test('Surprise Me reaches every other card from every current card; no immediate repeats', () => {
+  for (let current = 0; current < 20; current++) {
+    const eligible = Array.from({ length: 20 }, (_, i) => i).filter(i => i !== current);
+    eligible.forEach((expected, slot) => {
+      for (const random of [slot / 19, (slot + 1) / 19 - Number.EPSILON]) {
+        const f = fixture((current + 0.5) / 20);
+        f.setRandom(random);
+        f.controls.children[0].events.click();
+        assert.equal(title(f), f.entries[expected].title);
+        assert.notEqual(title(f), f.entries[current].title);
+        assertClosed(f.article);
+      }
+    });
+  }
+});
+
+test('switching categories uses the current card, not a saved preference or history', () => {
+  const f = fixture(0.99);
+  categories.forEach((category, i) => {
+    f.controls.children[(i + 1) % 4 + 1].events.click();
+    f.controls.children[i + 1].events.click();
+    const matches = f.entries.filter(e => e.category === category);
+    assert.equal(title(f), matches[0].title);
+    f.setRandom(0.999);
+    f.controls.children[0].events.click();
+    assert.equal(f.controls.children[0].attributes['aria-pressed'], 'true');
+  });
+  const within = fixture(2.5 / 20);
+  within.controls.children[1].events.click();
+  assert.equal(title(within), within.entries[3].title, 'Category continues from a card drawn by Surprise Me');
+});
+
+test('all twenty real selection paths render complete content/sources and reset disclosures', () => {
+  const f = fixture();
+  f.entries.forEach((entry, i) => {
+    descendants(f.article, 'details').forEach(n => { n.open = true; });
+    selectEntry(f, i);
+    assert.equal(title(f), entry.title);
+    assertClosed(f.article);
+    const paragraphs = descendants(f.article, 'p').map(n => n.textContent);
+    for (const text of [entry.hook, ...entry.core, ...entry.deep]) assert.ok(paragraphs.includes(text));
+    const links = descendants(f.article, 'a');
+    assert.equal(links.length, entry.sources.length);
+    links.forEach((link, j) => {
+      assert.equal(link.href, entry.sources[j].url);
+      assert.equal(link.textContent, entry.sources[j].label);
+    });
+  });
+});
+
+test('closing the core resets the deep dive, while reopening it does not reveal the deep dive', () => {
+  const { article } = fixture();
+  const [core, deep] = descendants(article, 'details');
+  core.open = true; core.events.toggle(); assert.equal(deep.open, false);
+  deep.open = true; core.open = false; core.events.toggle(); assert.equal(deep.open, false);
+  core.open = true; core.events.toggle(); assert.equal(deep.open, false);
+});
+
+test('a new page instance forgets category state and starts with Surprise Me', () => {
+  const first = fixture();
+  first.controls.children[3].events.click();
+  const reloaded = fixture(0.99);
+  assert.equal(reloaded.controls.children[0].attributes['aria-pressed'], 'true');
+  assert.equal(title(reloaded), reloaded.entries[19].title);
+  assertClosed(reloaded.article);
+});
+
+test('only two purposeful visuals render; optional absence is safe and text alternatives exist', () => {
+  const f = fixture();
+  assert.equal(f.entries.filter(e => e.visual).length, 2);
+  f.entries.forEach((entry, i) => {
+    selectEntry(f, i);
+    const figures = descendants(f.article, 'figure');
+    assert.equal(figures.length, entry.visual ? 1 : 0);
+    if (!entry.visual) return;
+    assert.ok(descendants(descendants(f.article, 'details')[1], 'figure').includes(figures[0]));
+    const [diagram, caption] = figures[0].children;
+    assert.equal(diagram.attributes.role, 'img');
+    assert.equal(diagram.attributes['aria-label'], entry.visual.alt);
+    assert.ok(entry.visual.alt.length > 50);
+    assert.equal(caption.textContent, entry.visual.caption);
+    assert.ok(diagram.children.every(n => n.attributes['aria-hidden'] === 'true'));
+    if (entry.visual.type === 'bars') {
+      diagram.children.forEach((row, j) => assert.equal(row.children[2].attributes.style, `width: ${100 * entry.visual.items[j].value / 243}%`));
+    } else {
+      assert.equal(diagram.children[0].children[2].className, 'print-letter reversed');
+      assert.equal(diagram.children[1].children[2].className, 'print-letter');
+    }
+  });
+});
+
+test('premise, category prompt, and native disclosure action labels remain present', () => {
+  const html = read('index.html');
+  assert.match(html, /One curious idea a day\. Explore only as deeply as you want\./);
+  assert.match(html, /What are you curious about today\?/);
+  assert.ok(html.indexOf('class="premise"') < html.indexOf('id="categories"'));
+  assert.match(html, /role="group" aria-labelledby="selection-title"/);
+  const { article } = fixture();
+  for (const summary of descendants(article, 'summary')) {
+    assert.equal(summary.children[1].textContent, 'Open');
+    assert.equal(summary.children[2].textContent, 'Close');
+    assert.equal(descendants(summary, 'button').length, 0);
+  }
+});
+
+test('runtime scope remains static: no external assets, data collection, persistence, or extra flows', () => {
+  const html = read('index.html'), app = read('SRC/app.js'), css = read('SRC/styles.css');
+  for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
+    const url = match[1];
+    if (!url.startsWith('#') && !url.startsWith('data:')) assert.ok(read(url).length > 0);
+  }
+  assert.doesNotMatch(app, /\b(fetch|XMLHttpRequest|WebSocket|localStorage|sessionStorage|indexedDB|sendBeacon|Notification|geolocation|setInterval)\b|document\.cookie|https?:\/\//);
+  assert.doesNotMatch(html, /<(form|input|textarea|audio|video|iframe)\b/);
+  assert.doesNotMatch(css, /@import|https?:/);
+  const f = fixture();
+  assert.equal(descendants(f.article, 'button').length, 0, 'No extra card actions');
+});
+
+test('preserved v2 files still match their pre-v3 SHA-256 manifest', () => {
+  const base = 'snapshots/concept-a-v2-2026-10-07/';
+  const manifest = JSON.parse(read(base + 'SHA256.json').replace(/^\uFEFF/, ''));
+  assert.ok(manifest.some(e => e.path === 'index.html'));
+  assert.ok(manifest.some(e => e.path === 'SRC/content.js'));
+  for (const entry of manifest) {
+    const bytes = readFileSync(join(__dirname, '..', base, entry.path));
+    assert.equal(createHash('sha256').update(bytes).digest('hex').toUpperCase(), entry.sha256);
+  }
+});
+
+ test('v3 snapshot remains complete, standalone, and byte-identical to its pre-edit manifest', () => {
+  const base = 'snapshots/concept-a-v3-2026-10-20/';
+  const manifest = JSON.parse(read(base + 'SHA256.json').replace(/^\uFEFF/, ''));
+  assert.equal(manifest.length, 18);
+  for (const required of ['index.html', 'SRC/app.js', 'SRC/content.js', 'SRC/styles.css', 'tests/prototype.test.cjs', 'docs/CONTENT.md', 'snapshots/concept-a-v2-2026-10-07/SHA256.json']) {
+    assert.ok(manifest.some(e => e.path.replaceAll('\\', '/') === required), required);
+  }
+  for (const entry of manifest) {
+    const bytes = readFileSync(join(__dirname, '..', base, entry.path));
+    assert.equal(createHash('sha256').update(bytes).digest('hex').toUpperCase(), entry.sha256, entry.path);
+  }
+});
+
+test('fixed daily permutation contains all IDs once, mixes categories across wrap, and ignores authoring order', () => {
+  const f = fixture();
+  const ids = Array.from(vm.runInContext('DAILY_CARD_IDS', f.context));
+  assert.equal(ids.length, 20);
+  assert.equal(new Set(ids).size, 20);
+  assert.deepEqual([...ids].sort(), Array.from(f.entries, e => e.id).sort());
+  ids.forEach((id, i) => assert.notEqual(f.entries.find(e => e.id === id).category, f.entries.find(e => e.id === ids[(i + 1) % 20]).category));
+  vm.runInContext('DAILY_CURIOSITIES.reverse()', f.context);
+  for (let i = 0; i < 20; i++) {
+    const d = new Date(Date.UTC(2026, 9, 22 + i));
+    const index = f.context.cardIndexForDate(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate());
+    assert.equal(f.entries[index].id, ids[i]);
+  }
+});
+
+test('same dates are stable; every rolling 20-day window covers all cards including negative offsets', () => {
+  const f = fixture(), map = f.context.cardIndexForDate;
+  const values = [];
+  for (let i = -45; i <= 45; i++) {
+    const d = new Date(Date.UTC(2026, 9, 22 + i));
+    const args = [d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate()];
+    values.push(map(...args));
+    assert.equal(map(...args), map(...args));
+  }
+  for (let i = 0; i + 20 < values.length; i++) {
+    assert.equal(new Set(values.slice(i, i + 20)).size, 20);
+    assert.notEqual(values[i], values[i + 1]);
+    assert.equal(values[i], values[i + 20]);
+  }
+  assert.equal(title({ article: fixture(0, {year:2026,month:10,day:22}).today }), title({ article: fixture(.99, {year:2026,month:10,day:22}).today }));
+});
+
+test('leap days, century rules, year boundaries, and representative DST dates advance one slot', () => {
+  const f = fixture(), map = f.context.cardIndexForDate;
+  const ids = Array.from(vm.runInContext('DAILY_CARD_IDS', f.context));
+  const sequences = [
+    [[2024,2,28],[2024,2,29],[2024,3,1]],
+    [[2025,2,28],[2025,3,1]], [[2000,2,28],[2000,2,29],[2000,3,1]],
+    [[2100,2,28],[2100,3,1]], [[2026,12,31],[2027,1,1]],
+    [[2026,3,7],[2026,3,8],[2026,3,9]],
+    [[2026,10,31],[2026,11,1],[2026,11,2]],
+    [[2026,3,28],[2026,3,29],[2026,3,30]],
+    [[2026,10,24],[2026,10,25],[2026,10,26]]
+  ];
+  for (const seq of sequences) {
+    const slots = seq.map(args => ids.indexOf(f.entries[map(...args)].id));
+    slots.slice(1).forEach((slot, i) => assert.equal(slot, (slots[i] + 1) % 20));
+  }
+  for (const args of [[2025,2,29],[2100,2,29],[2026,4,31],[2026,0,1],[2026,1,0]]) assert.throws(() => map(...args), /Invalid|Expected/);
+  const daily = read('SRC/daily.js');
+  assert.doesNotMatch(daily.slice(daily.indexOf('function cardIndexForDate'), daily.indexOf('function readLocalCalendarDate')), /new Date|Math.random|readLocalCalendarDate/);
+  assert.match(daily, /getFullYear\(\)/); assert.match(daily, /getMonth\(\)/); assert.match(daily, /getDate\(\)/);
+});
+
+test('Today nodes and open disclosures survive every Explore category and Surprise action', () => {
+  const f = fixture();
+  const nodes = [...f.today.children];
+  const [core, deep] = descendants(f.today, 'details');
+  core.open = true; deep.open = true;
+  f.controls.children.forEach(button => {
+    for (let i = 0; i < 6; i++) {
+      button.events.click();
+      assert.deepEqual(f.today.children, nodes);
+      assert.equal(core.open, true); assert.equal(deep.open, true);
+    }
+  });
+  const [exploreCore, exploreDeep] = descendants(f.article, 'details');
+  exploreCore.open = true; exploreDeep.open = true;
+  core.open = false; core.events.toggle();
+  assert.equal(deep.open, false);
+  assert.equal(exploreCore.open, true); assert.equal(exploreDeep.open, true);
+  core.open = true; deep.open = true;
+  exploreCore.open = false; exploreCore.events.toggle();
+  assert.equal(exploreDeep.open, false); assert.equal(deep.open, true);
+  assert.equal(f.today.focused, undefined);
+});
+
+test('both surfaces render all cards with independent titles, sources and diagrams; Explore may match Today', () => {
+  for (let offset = 0; offset < 20; offset++) {
+    const date = new Date(Date.UTC(2026, 9, 22 + offset));
+    const fields = {year: date.getUTCFullYear(), month: date.getUTCMonth()+1, day: date.getUTCDate()};
+    const f = fixture(0, fields);
+    const dailyIndex = f.context.cardIndexForDate(fields.year,fields.month,fields.day);
+    const matched = fixture((dailyIndex + .5) / 20, fields);
+    assert.equal(title(matched), title({article:matched.today}));
+    assert.equal(matched.article.children[1].id, 'entry-title');
+    assert.equal(matched.today.children[1].id, 'today-entry-title');
+    for (const article of [matched.today, matched.article]) {
+      assertClosed(article);
+      const entry = matched.entries[dailyIndex];
+      const paragraphs = descendants(article,'p').map(p=>p.textContent);
+      for (const p of [entry.hook,...entry.core,...entry.deep]) assert.ok(paragraphs.includes(p));
+      assert.deepEqual(descendants(article,'a').map(a=>a.href),Array.from(entry.sources,s=>s.url));
+      assert.equal(descendants(article,'figure').length,entry.visual ? 1 : 0);
+    }
+  }
+});
+
+test('v4 snapshot integrity and exact content preservation; no persistence in any v5 runtime script', () => {
+  const base='snapshots/concept-a-v4-2026-10-22/';
+  const manifest=JSON.parse(read(base+'SHA256.json'));
+  assert.equal(manifest.length,37);
+  for (const item of manifest) assert.equal(createHash('sha256').update(readFileSync(join(__dirname,'..',base,item.path))).digest('hex').toUpperCase(),item.sha256,item.path);
+  const previous = vm.createContext({}); vm.runInContext(read(base+'SRC/content.js'),previous);
+  const stripped = Array.from(fixture().entries, ({recall,...entry}) => entry);
+  assert.equal(JSON.stringify(stripped), JSON.stringify(vm.runInContext('DAILY_CURIOSITIES',previous)));
+  for (const path of ['SRC/app.js','SRC/daily.js','SRC/content.js']) assert.doesNotMatch(read(path), /\b(localStorage|sessionStorage|indexedDB|fetch|XMLHttpRequest|sendBeacon|WebSocket|Notification)\b|document\.cookie/);
+  assert.match(read('index.html'), /Today’s Curiosity/); assert.match(read('index.html'), /Explore More/);
+});
+
+test('all 20 recall prompts are optional, nested inside Deep Dive, and responses begin closed', () => {
+  const f=fixture();
+  f.entries.forEach((entry,i)=>{
+    assert.deepEqual(Object.keys(entry.recall).sort(),['prompt','reveal']);
+    assert.ok(entry.recall.prompt.length>20 && entry.recall.reveal.length>20);
+    assert.ok(words(entry.recall.reveal)<=45);
+    selectEntry(f,i);
+    const [core,deep,response]=descendants(f.article,'details');
+    assert.ok(descendants(deep,'details').includes(response));
+    const sections=descendants(deep,'section').filter(n=>n.className==='recall');
+    assert.equal(sections.length,1);
+    assert.equal(descendants(sections[0],'p')[0].textContent,entry.recall.prompt);
+    assert.equal(descendants(response,'p')[0].textContent,entry.recall.reveal);
+    assert.match(descendants(sections[0],'h5')[0].textContent,/Optional/);
+    assert.equal(response.children[0].tag,'summary');
+    assert.equal(response.open,false);
+    core.open=true; deep.open=true; response.open=true;
+    deep.open=false; deep.events.toggle(); assert.equal(response.open,false);
+    deep.open=true; assert.equal(response.open,false);
+    response.open=true; core.open=false; core.events.toggle(); assert.equal(response.open,false);
+  });
+});
+
+test('same-card Today and Explore recall is independent and Explore changes reset only Explore', () => {
+  const f=fixture();
+  assert.equal(title(f),title({article:f.today}));
+  const today=descendants(f.today,'details'), explore=descendants(f.article,'details');
+  today.forEach(n=>n.open=true);
+  assert.equal(explore[2].open,false);
+  explore.forEach(n=>n.open=true);
+  today[2].open=false; assert.equal(explore[2].open,true);
+  today[2].open=true;
+  f.controls.children[1].events.click();
+  assert.equal(descendants(f.article,'details')[2].open,false);
+  assert.equal(today[2].open,true);
+  assert.equal(f.today.focused,undefined);
+});
+
+test('v6 introduces no evaluative controls, persistence, announcements, or timers', () => {
+  const f=fixture();
+  for(const article of [f.today,f.article]) {
+    for(const tag of ['input','textarea','form','button','progress']) assert.equal(descendants(article,tag).length,0);
+    const text=JSON.stringify(article);
+    assert.doesNotMatch(text,/correct|incorrect|points|score|grade|streak|aria-live|role":"status/i);
+  }
+  assert.doesNotMatch(read('SRC/app.js'),/setTimeout|setInterval|localStorage|sessionStorage|indexedDB|document\.cookie|aria-live/);
+});
+
+test('v5 snapshot remains byte-identical and daily mapping is unchanged', () => {
+  const base='snapshots/concept-a-v5-2026-11-01/';
+  const manifest=JSON.parse(read(base+'SHA256.json'));assert.equal(manifest.length,76);
+  for(const e of manifest)assert.equal(createHash('sha256').update(readFileSync(join(__dirname,'..',base,e.path))).digest('hex').toUpperCase(),e.sha256,e.path);
+  assert.equal(read('SRC/daily.js'),read(base+'SRC/daily.js'));
+});

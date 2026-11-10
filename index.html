@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Daily Curiosity</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="SRC/styles.css">
+  <script src="SRC/content.js" defer></script>
+  <script src="SRC/daily.js" defer></script>
+  <script src="SRC/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#today-curiosity">Skip to today’s curiosity</a>
+  <header class="masthead"><span class="brand">Daily Curiosity<span aria-hidden="true"> ✳</span></span><span class="prototype">Optional recall · v6</span></header>
+  <main>
+    <div class="intro"><p class="premise">One curious idea a day. Explore only as deeply as you want.</p></div>
+    <section class="today-surface" aria-labelledby="today-title">
+      <h1 id="today-title" class="surface-title">Today’s Curiosity</h1>
+      <p class="surface-help">One idea for your local calendar day. Come back tomorrow for another.</p>
+      <article id="today-curiosity" tabindex="-1" aria-labelledby="today-entry-title"></article>
+    </section>
+    <section class="explore-surface" aria-labelledby="explore-title">
+      <h2 id="explore-title" class="surface-title">Explore More</h2>
+      <p class="surface-help">Optional discoveries. Today’s idea stays above while you explore.</p>
+    <section class="selection" aria-labelledby="selection-title">
+      <h2 id="selection-title">What are you curious about today?</h2>
+      <p id="selection-help">Choose a category again to explore its five ideas. Surprise Me draws from all twenty, without repeating the current Explore idea.</p>
+      <div id="categories" class="categories" role="group" aria-labelledby="selection-title" aria-describedby="selection-help"></div>
+    </section>
+    <article id="curiosity" tabindex="-1" aria-labelledby="entry-title"></article>
+    </section>
+    <noscript><p class="notice">Please enable JavaScript to explore the twenty local curiosity cards. No network connection is needed.</p></noscript>
+  </main>
+  <footer>Daily Curiosity · Concept A v6<span>Twenty ideas. Explore at your own pace.</span></footer>
+</body>
+</html>
