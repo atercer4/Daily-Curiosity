@@ -4,7 +4,7 @@
 Version 1.0 · 9 November 2026 · Owner-approved direction
 Drafted by ChatGPT (PM role), reviewed by Claude, approved by the owner. This document is the standing authority for autonomous work on Daily Curiosity. Agents act within it without owner approval; anything outside it escalates.
 ## Owner decisions (9 November 2026)
-Autonomy: ordinary Daily Curiosity work no longer requires owner approval. The owner's involvement is a weekly digest and genuine escalations only. (Arbor keeps founder merge approval.)
+Autonomy: ordinary Daily Curiosity work no longer requires owner review or decisions. The owner's involvement is a weekly digest, genuine escalations, and a one-tap merge of pull requests that agents have already brought to "ready" (see the amendment in section 8). (Arbor keeps founder merge approval.)
 Repository: GitHub becomes the implementation source of truth, as a public repository, so GitHub branch protection can enforce the merge gates. Google Drive remains the governance and documentation source.
 Stack: plain static web app (HTML/CSS/JavaScript). No framework, backend, accounts, database or paid APIs. Current working copy lives in Dropbox (Projects\Daily Curiosity) and will move to GitHub.
 Hosting: Netlify, connected to GitHub: deploy previews for every pull request, production deploy on merge, Netlify deploy history as the rollback safety net.
@@ -63,14 +63,16 @@ reversible; within this roadmap; free or covered by existing infrastructure; not
 Examples: bug fixes, accessibility, responsive layout, high-quality sourced content, documentation, refactoring without behavior change, tests, performance, minor editorial improvements, metadata, deploy reliability.
 Must escalate to the owner before:
 changing the core purpose; accounts or logins; collecting personal information; analytics or visitor tracking; advertising technology; payments or subscriptions; spending money; registering a domain; paid APIs or services; a backend or database; substantial redesign; social or community features; algorithmic personalization; changing monetization strategy; deleting major functionality; irreversible infrastructure decisions.
-## 8. Autonomous merge policy
-A pull request may merge automatically only when:
-automated checks pass;
-regression tests pass;
-the builder is not the reviewer (builder ≠ reviewer: if Codex builds, Claude reviews; if Claude builds, Codex reviews);
-the independent reviewer reports no Critical or Major issues;
-the change is within this roadmap and the autonomy boundaries.
-The builder never approves its own work. A Major or Critical finding blocks merge. Minor issues may merge only if they don't materially affect accessibility, factual accuracy, security, privacy or core functionality. On the public repository, GitHub branch protection enforces that required checks pass before any merge.
+## 8. Merge policy
+Amended 10 November 2026: the agent environment blocks agents from merging pull requests ("merge without review"). That is intentional, so agents never merge. A PR becomes "ready" for the owner's one-tap merge only when:
+- automated checks pass;
+- regression tests pass;
+- the builder is not the reviewer (builder ≠ reviewer: if Codex builds, Claude reviews; if Claude builds, Codex reviews);
+- the independent reviewer reports no Critical or Major issues;
+- the change is within this roadmap and the autonomy boundaries;
+- for content PRs (any new or edited card), ChatGPT's fact-check reports PASS.
+
+The builder never approves its own work. A Major or Critical finding, or a fact-check FAIL, blocks merge. Minor issues may merge only if they don't materially affect accessibility, factual accuracy, security, privacy or core functionality. On the public repository, GitHub branch protection enforces that required checks pass before any merge. The owner's tap is a lightweight confirmation, not a review; the review is done by the agents above.
 ## 9. Deployment policy
 Every pull request gets a Netlify deploy preview where practical. Production deploys only after the merge gates pass. If a production regression is detected: revert or roll back immediately; document the failure; create a corrective task; do not build on the broken state.
 ## 10. Agent roles
@@ -79,7 +81,7 @@ Builder: implements one bounded task at a time and never broadens scope.
 Independent reviewer: checks requirements, regression risk, accessibility, factual and editorial integrity, test coverage and scope; doesn't rewrite the product to suit its own preferences.
 Research / editorial agent: topics, fact verification, source quality, competitive, distribution and monetization research, when needed. Gemini runs scheduled topic scouting into the Drive Research Inbox; ChatGPT is the independent fact-checker for content because it can open cited sources.
 ## 11. Weekly owner digest
-Instead of approvals, the owner receives one weekly summary: Shipped (what went live), Quality (tests, QA, incidents, rollbacks), Content (new cards, significant editorial changes), Current work, Next, and Escalations (only decisions crossing the boundaries). The owner may redirect priorities at any time.
+Instead of reviews, the owner receives one weekly summary (merging stays a one-tap action on ready PRs): Shipped (what went live), Quality (tests, QA, incidents, rollbacks), Content (new cards, significant editorial changes), Current work, Next, and Escalations (only decisions crossing the boundaries). The owner may redirect priorities at any time.
 ## 12. Definition of "better"
 Does it make the experience more interesting?
 Does it make something easier to understand?
@@ -93,7 +95,7 @@ If a change does none of these, it probably shouldn't be built.
 Daily Curiosity should gradually evolve from a small curated prototype into a trusted library and daily discovery product. The goal isn't to maximize features; it's to build a system that repeatedly produces small moments of genuine curiosity that are worth coming back for, while remaining recognizably Daily Curiosity as its library, audience and business grow.
 ## 14. Operating additions (Claude review, owner-approved)
 Who selects tasks in the automated loop. The scheduled build agent acts as product manager for day-to-day work: it reads this document, opens its own next issue from the current phase (labeled auto), builds it and requests independent review. ChatGPT keeps the roadmap current and writes the weekly digest.
-Stricter checks for new content, since it publishes without the owner. Every new or edited card requires: a writer and a different fact-checking agent; the reviewer opens every cited source and confirms it supports the specific claim; any dead, paywalled-without-summary or weak source blocks the card; reading level and category identity are checked against section 4.
+Stricter checks for new content, since the owner doesn't review it before tapping merge. Every new or edited card requires: a writer and a different fact-checking agent; the reviewer opens every cited source and confirms it supports the specific claim; any dead, paywalled-without-summary or weak source blocks the card; reading level and category identity are checked against section 4.
 Escalations are visible. Anything crossing section 7's escalation list becomes a GitHub issue labeled owner-decision plus a push notification, and work on it stops until the owner answers.
 Builder availability. Codex cannot currently start tasks from GitHub mentions (reported bug), so Claude builds and Codex reviews until that is fixed; then builder ≠ reviewer applies in either direction.
 Gemini research desk (owner-approved 10 November 2026). Gemini's scheduled research saves candidate topics to Drive (Daily Curiosity / 02_Research_Inbox): the surprising thing, the mechanism behind it, its category and 2–3 strong sources. The build agent picks the best candidate that fits this document and writes the card; ChatGPT, which can open the cited sources on the web, independently fact-checks every card; Codex reviews code. So each card is researched, written and verified by different AIs before it can merge. If the inbox is empty, the build agent may research topics itself, but the fact-checker must still be a different agent.
