@@ -18,7 +18,7 @@ Each rendering creates fresh recall DOM nodes within that article. Today and Exp
 
 Today remains date-determined; Explore retains five-card category cycling and Surprise Me. SRC/daily.js is byte-identical to v5: local fields acquired once on load; pure cardIndexForDate uses UTC calendar arithmetic and positive modulo around the 2026-10-22 epoch. The fixed permutation remains unchanged, recorded in git history. Explore may match Today and excludes only its current card on subsequent random draws.
 
-All original card fields, category assignments, Hook/Core/Deep text, 36 source links, and two explanatory visuals are preserved. Only recall data was added. [CONTENT.md](docs/CONTENT.md) remains the historical v4 content/source register. Heading cleanup was not included: Explore’s card title remains h2, the allowed minor v5 issue.
+All original card fields, category assignments, Hook/Core/Deep text, 36 source links, and two explanatory visuals are preserved. Only recall data was added. [CONTENT.md](docs/CONTENT.md) remains the historical v4 content/source register. Heading outline (fixed in issue #3): Today’s card title is h2 under the h1 “Today’s Curiosity”; Explore’s category prompt and card title are h3 under the h2 “Explore More”, and each card’s Core, Deep Dive and Sources/Recall headings follow one level below. Styles are keyed to classes, so the two surfaces look identical.
 
 ## Files changed
 
@@ -38,6 +38,6 @@ Tests use a DOM stub, so native visibility, keyboard operation, layout, accessib
 
 ## Known limitations and scope
 
-Recall is ephemeral and unevaluated; the app does not record whether readers think or reveal. Existing date limitations remain: timezone/system-clock changes may repeat or skip a daily card; an open tab needs reload after midnight; the library repeats every 20 days. Existing source-link issues remain documented in CONTENT.md. The Explore heading-level issue remains deferred.
+Recall is ephemeral and unevaluated; the app does not record whether readers think or reveal. Existing date limitations remain: timezone/system-clock changes may repeat or skip a daily card; an open tab needs reload after midnight; the library repeats every 20 days. Existing source-link issues remain documented in CONTENT.md.
 
 No scoring, grades, right/wrong states, streaks, XP, progress bars, saved completion, accounts/profiles, analytics, notifications, social features, spaced repetition, adaptive difficulty, user notes/journaling, monetization, backend/API dependency, or theme customization was added.

@@ -39,7 +39,11 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }) {
 function descendants(node, tag) {
   return node.children.flatMap(child => [...(child.tag === tag ? [child] : []), ...descendants(child, tag)]);
 }
-const title = f => descendants(f.article, 'h2')[0].textContent;
+function find(node, predicate) {
+  return node.children.flatMap(child => [...(predicate(child) ? [child] : []), ...find(child, predicate)]);
+}
+const title = f => find(f.article, n => n.className === 'card-title')[0].textContent;
+const headingLevels = article => find(article, n => /^h[1-6]$/.test(n.tag)).map(n => [Number(n.tag[1]), n.textContent]);
 const words = text => text.trim().split(/\s+/u).length;
 function selectEntry(f, index) {
   if (title(f) === f.entries[index].title) f.controls.children[0].events.click();
@@ -365,7 +369,7 @@ test('all 20 recall prompts are optional, nested inside Deep Dive, and responses
     assert.equal(sections.length,1);
     assert.equal(descendants(sections[0],'p')[0].textContent,entry.recall.prompt);
     assert.equal(descendants(response,'p')[0].textContent,entry.recall.reveal);
-    assert.match(descendants(sections[0],'h5')[0].textContent,/Optional/);
+    assert.match(descendants(sections[0],'h6')[0].textContent,/Optional/);
     assert.equal(response.children[0].tag,'summary');
     assert.equal(response.open,false);
     core.open=true; deep.open=true; response.open=true;
@@ -403,4 +407,29 @@ test('v6 introduces no evaluative controls, persistence, announcements, or timer
 test('daily mapping is unchanged: SRC/daily.js matches its pinned v5 baseline hash', () => {
   const bytes = readFileSync(join(__dirname, '..', 'SRC/daily.js'));
   assert.equal(createHash('sha256').update(bytes).digest('hex'), 'a425b83de5b01c7f102e1313952e966ef19b974649e405b34ca53f6c4e2ffc9f');
+});
+
+test('heading outline nests each card below its surface heading on Today and Explore', () => {
+  const html = read('index.html');
+  assert.match(html, /<h1 id="today-title"[^>]*>Today’s Curiosity<\/h1>/);
+  assert.match(html, /<h2 id="explore-title"[^>]*>Explore More<\/h2>/);
+  assert.match(html, /<h3 id="selection-title"[^>]*>What are you curious about today\?<\/h3>/);
+  assert.doesNotMatch(html, /<h[4-6]/);
+  const outline = base => [[base, null], [base + 1, 'Core insight'], [base + 2, 'Deep dive'], [base + 3, 'Sources'], [base + 3, 'Optional · Pause and recall']];
+  const f = fixture();
+  f.entries.forEach((entry, i) => {
+    selectEntry(f, i);
+    const expected = outline(3).map(([level, text]) => [level, text ?? entry.title]);
+    assert.deepEqual(headingLevels(f.article), expected, entry.id + ' explore');
+    assert.equal(find(f.article, n => n.className === 'card-title')[0].id, 'entry-title');
+  });
+  const seen = new Set();
+  for (let day = 1; day <= 20; day++) { // 20 consecutive days cover every card in the rotation.
+    const today = fixture(0, { year: 2026, month: 11, day }).today;
+    const entryTitle = find(today, n => n.className === 'card-title')[0];
+    assert.equal(entryTitle.id, 'today-entry-title');
+    assert.deepEqual(headingLevels(today), outline(2).map(([level, text]) => [level, text ?? entryTitle.textContent]));
+    seen.add(entryTitle.textContent);
+  }
+  assert.equal(seen.size, 20);
 });

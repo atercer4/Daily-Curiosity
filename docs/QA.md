@@ -36,7 +36,7 @@ Q: all real-browser items remain pending:
 - [ ] All 20 responses in both surfaces; screen-reader state and reset behavior, including rapid open/close interactions.
 - [ ] Existing source-link checks in CONTENT.md and existing Today/Explore device checks remain pending.
 
-R: optional Explore h2-to-h3 cleanup was not included; retain as a known minor issue.
+R: fixed in issue #3 (November 10, 2026). Explore’s card title and category prompt are now h3 under “Explore More” (h2), with Core h4, Deep Dive h5 and Sources/Recall h6; Today keeps h1 → h2 → h3 → h4 → h5. A headless-Chromium layout comparison at 375 and 1280 px found no position, size or font differences against the previous version. A real screen-reader heading-navigation check remains pending.
 
 ## Human validation
 

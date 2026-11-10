@@ -50,18 +50,20 @@ function explanatoryVisual(visual) {
   return figure;
 }
 
-function renderCard(article, index, titleId, moveFocus = false) {
+// level is the card title's heading level; deeper beats follow it so each surface keeps a nested outline.
+function renderCard(article, index, titleId, level, moveFocus = false) {
   const entry = DAILY_CURIOSITIES[index];
+  const heading = offset => 'h' + (level + offset);
   article.replaceChildren();
   article.append(element('p', entry.category, 'eyebrow'));
-  const title = element('h2', entry.title);
+  const title = element(heading(0), entry.title);
   title.id = titleId;
   title.className = 'card-title';
   article.append(title, element('p', '01 / Hook', 'beat-label'), element('p', entry.hook, 'hook'));
-  const core = disclosure('02 / Core Insight', 'Core insight', entry.core, 'h3');
-  const deep = disclosure('03 / Deep Dive & Sources', 'Deep dive', entry.deep, 'h4');
+  const core = disclosure('02 / Core Insight', 'Core insight', entry.core, heading(1));
+  const deep = disclosure('03 / Deep Dive & Sources', 'Deep dive', entry.deep, heading(2));
   if (entry.visual) deep.body.append(explanatoryVisual(entry.visual));
-  deep.body.append(element('h5', 'Sources', 'sources-title'));
+  deep.body.append(element(heading(3), 'Sources', 'sources-title'));
   const sources = element('ul', null, 'sources');
   entry.sources.forEach(source => {
     const item = element('li');
@@ -72,7 +74,7 @@ function renderCard(article, index, titleId, moveFocus = false) {
   });
   deep.body.append(sources);
   const recall = element('section', null, 'recall');
-  recall.append(element('h5', 'Optional · Pause and recall', 'sources-title'), element('p', entry.recall.prompt));
+  recall.append(element(heading(3), 'Optional · Pause and recall', 'sources-title'), element('p', entry.recall.prompt));
   const response = element('details', null, 'recall-response');
   const revealControl = element('summary');
   revealControl.append(element('span', 'Reveal response'), element('span', 'Open', 'when-closed'), element('span', 'Close', 'when-open'));
@@ -93,7 +95,7 @@ function renderCard(article, index, titleId, moveFocus = false) {
 
 function showCard(index, moveFocus = false) {
   currentIndex = index;
-  renderCard(article, index, 'entry-title', moveFocus);
+  renderCard(article, index, 'entry-title', 3, moveFocus);
   [...categoryNavigation.children].forEach((button, i) => {
     button.setAttribute('aria-pressed', String(choices[i] === selectedCategory));
   });
@@ -121,5 +123,5 @@ choices.forEach(category => {
   categoryNavigation.append(button);
 });
 const localDate = readLocalCalendarDate();
-renderCard(todayArticle, cardIndexForDate(localDate.year, localDate.month, localDate.day), 'today-entry-title');
+renderCard(todayArticle, cardIndexForDate(localDate.year, localDate.month, localDate.day), 'today-entry-title', 2);
 selectCategory('Surprise Me', false);
