@@ -1,0 +1,22 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Syntax check
+        run: for f in SRC/*.js; do node --check "$f"; done
+      - name: Test suite
+        run: node --test tests/prototype.test.cjs
+      - name: Secret and binary guard
+        run: |
+          if git ls-files | grep -Ei '\.(env|jks|keystore|pem|key|apk|aab)$|(^|/)snapshots/'; then
+            echo "Forbidden file committed"; exit 1; fi

@@ -4,7 +4,7 @@ Optional Recall / Reflection implementation, November 1, 2026. Requirements sour
 
 ## Preservation
 
-Before edits, v5 passed 20 tests. The complete build was copied to `snapshots/concept-a-v5-2026-11-01/`, including earlier snapshots required by its tests. All 76 copied files were SHA-256 compared with originals before edits. SHA256.json records those hashes; active tests verify them again. To recover, copy the entire snapshot folder to a separate location and open its index.html; retain nested directories for tests. No previous snapshots were changed.
+Since November 2026 this project lives in git (github.com/atercer4/daily-curiosity) and deploys to Netlify from `main`. The old `snapshots/` folders were retired; git history preserves every version. `tests/baseline/card-content-sha256.json` pins the original fields of all 20 cards and the daily-mapping test pins `SRC/daily.js`, replacing the snapshot hash checks. Run tests with `node tests/prototype.test.cjs`. Change rules: [docs/REVIEW_PROTOCOL.md](docs/REVIEW_PROTOCOL.md).
 
 ## Recall interaction
 
@@ -16,7 +16,7 @@ Each rendering creates fresh recall DOM nodes within that article. Today and Exp
 
 ## Preserved behavior
 
-Today remains date-determined; Explore retains five-card category cycling and Surprise Me. SRC/daily.js is byte-identical to v5: local fields acquired once on load; pure cardIndexForDate uses UTC calendar arithmetic and positive modulo around the 2026-10-22 epoch. The fixed permutation remains unchanged, documented in the [preserved v5 README](snapshots/concept-a-v5-2026-11-01/README.md). Explore may match Today and excludes only its current card on subsequent random draws.
+Today remains date-determined; Explore retains five-card category cycling and Surprise Me. SRC/daily.js is byte-identical to v5: local fields acquired once on load; pure cardIndexForDate uses UTC calendar arithmetic and positive modulo around the 2026-10-22 epoch. The fixed permutation remains unchanged, recorded in git history. Explore may match Today and excludes only its current card on subsequent random draws.
 
 All original card fields, category assignments, Hook/Core/Deep text, 36 source links, and two explanatory visuals are preserved. Only recall data was added. [CONTENT.md](docs/CONTENT.md) remains the historical v4 content/source register. Heading cleanup was not included: Explore’s card title remains h2, the allowed minor v5 issue.
 

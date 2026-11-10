@@ -237,29 +237,8 @@ test('runtime scope remains static: no external assets, data collection, persist
   assert.equal(descendants(f.article, 'button').length, 0, 'No extra card actions');
 });
 
-test('preserved v2 files still match their pre-v3 SHA-256 manifest', () => {
-  const base = 'snapshots/concept-a-v2-2026-10-07/';
-  const manifest = JSON.parse(read(base + 'SHA256.json').replace(/^\uFEFF/, ''));
-  assert.ok(manifest.some(e => e.path === 'index.html'));
-  assert.ok(manifest.some(e => e.path === 'SRC/content.js'));
-  for (const entry of manifest) {
-    const bytes = readFileSync(join(__dirname, '..', base, entry.path));
-    assert.equal(createHash('sha256').update(bytes).digest('hex').toUpperCase(), entry.sha256);
-  }
-});
-
- test('v3 snapshot remains complete, standalone, and byte-identical to its pre-edit manifest', () => {
-  const base = 'snapshots/concept-a-v3-2026-10-20/';
-  const manifest = JSON.parse(read(base + 'SHA256.json').replace(/^\uFEFF/, ''));
-  assert.equal(manifest.length, 18);
-  for (const required of ['index.html', 'SRC/app.js', 'SRC/content.js', 'SRC/styles.css', 'tests/prototype.test.cjs', 'docs/CONTENT.md', 'snapshots/concept-a-v2-2026-10-07/SHA256.json']) {
-    assert.ok(manifest.some(e => e.path.replaceAll('\\', '/') === required), required);
-  }
-  for (const entry of manifest) {
-    const bytes = readFileSync(join(__dirname, '..', base, entry.path));
-    assert.equal(createHash('sha256').update(bytes).digest('hex').toUpperCase(), entry.sha256, entry.path);
-  }
-});
+// Snapshot folders were retired when the project moved to git (2026-11). Git history now
+// preserves every earlier version; the baseline checks below pin what those snapshots protected.
 
 test('fixed daily permutation contains all IDs once, mixes categories across wrap, and ignores authoring order', () => {
   const f = fixture();
@@ -359,14 +338,16 @@ test('both surfaces render all cards with independent titles, sources and diagra
   }
 });
 
-test('v4 snapshot integrity and exact content preservation; no persistence in any v5 runtime script', () => {
-  const base='snapshots/concept-a-v4-2026-10-22/';
-  const manifest=JSON.parse(read(base+'SHA256.json'));
-  assert.equal(manifest.length,37);
-  for (const item of manifest) assert.equal(createHash('sha256').update(readFileSync(join(__dirname,'..',base,item.path))).digest('hex').toUpperCase(),item.sha256,item.path);
-  const previous = vm.createContext({}); vm.runInContext(read(base+'SRC/content.js'),previous);
-  const stripped = Array.from(fixture().entries, ({recall,...entry}) => entry);
-  assert.equal(JSON.stringify(stripped), JSON.stringify(vm.runInContext('DAILY_CURIOSITIES',previous)));
+test('original card fields stay byte-stable against the git-era baseline; no persistence in runtime scripts', () => {
+  const baseline = JSON.parse(read('tests/baseline/card-content-sha256.json'));
+  assert.equal(Object.keys(baseline).length, 20);
+  const entries = fixture().entries;
+  for (const [id, sha] of Object.entries(baseline)) {
+    const entry = entries.find(e => e.id === id);
+    assert.ok(entry, 'baseline card still present: ' + id);
+    const { recall, ...fields } = entry;
+    assert.equal(createHash('sha256').update(JSON.stringify(fields)).digest('hex'), sha, 'original fields changed: ' + id);
+  }
   for (const path of ['SRC/app.js','SRC/daily.js','SRC/content.js']) assert.doesNotMatch(read(path), /\b(localStorage|sessionStorage|indexedDB|fetch|XMLHttpRequest|sendBeacon|WebSocket|Notification)\b|document\.cookie/);
   assert.match(read('index.html'), /Today’s Curiosity/); assert.match(read('index.html'), /Explore More/);
 });
@@ -419,9 +400,7 @@ test('v6 introduces no evaluative controls, persistence, announcements, or timer
   assert.doesNotMatch(read('SRC/app.js'),/setTimeout|setInterval|localStorage|sessionStorage|indexedDB|document\.cookie|aria-live/);
 });
 
-test('v5 snapshot remains byte-identical and daily mapping is unchanged', () => {
-  const base='snapshots/concept-a-v5-2026-11-01/';
-  const manifest=JSON.parse(read(base+'SHA256.json'));assert.equal(manifest.length,76);
-  for(const e of manifest)assert.equal(createHash('sha256').update(readFileSync(join(__dirname,'..',base,e.path))).digest('hex').toUpperCase(),e.sha256,e.path);
-  assert.equal(read('SRC/daily.js'),read(base+'SRC/daily.js'));
+test('daily mapping is unchanged: SRC/daily.js matches its pinned v5 baseline hash', () => {
+  const bytes = readFileSync(join(__dirname, '..', 'SRC/daily.js'));
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), 'a425b83de5b01c7f102e1313952e966ef19b974649e405b34ca53f6c4e2ffc9f');
 });
