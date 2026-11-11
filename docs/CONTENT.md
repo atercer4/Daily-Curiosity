@@ -34,6 +34,8 @@ Hooks include mysteries, sensory observations, familiar experiences, historical 
 | 18 | History & Society | The library gift with an ongoing cost | Public institutions | Conditional gift; construction versus ongoing service |
 | 19 | History & Society | When receiving a letter came with a bill | Communication / postal reform | Counterintuitive former practice; follow payment |
 | 20 | History & Society | A shipping container made of clay | Trade / archaeology | Ordinary object as evidence; compare marks and context |
+| 21 | Engineering & Technology | Clocks set slow on purpose | Satellite navigation / relativity | Deliberate error; competing effects and a built-in fix |
+| 22 | Arts & Culture | Painting before the wall dries | Painting technique / materials | Deadline set by the material; chemistry and visible traces |
 
 ## Source register and per-card visual decisions
 
@@ -195,9 +197,32 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - [French Ministry of Culture — Amphorae for the wine trade](https://archeologie.culture.gouv.fr/villa/en/amphorae-wine-trade)
 - [British Museum — Roman wine transport amphora](https://www.britishmuseum.org/collection/object/G_1816-0610-344)
 
+### Phase 2 additions (issue #17, November 2026)
+
+Researched and written by the build agent (Claude); the Drive research inbox had no usable candidates. Each card awaits ChatGPT's independent fact-check before merge (STANDING_DIRECTION sections 8 and 14). IDs are appended to `DAILY_CARD_IDS`, Engineering then Arts, so no two consecutive cards share a category (including the wrap to `venus-clocks`). Category counts are now 5 / 6 / 6 / 5.
+
+### 21. Clocks set slow on purpose
+
+- ID: `gps-relativity`; category: Engineering & Technology.
+- Subject: Satellite navigation / relativity. Mechanism and tradeoff: two relativistic effects pull in opposite directions, and the net is corrected in the clock design before launch.
+- Visual: Omitted: a diagram of two opposing rates would add little to three numbers stated in the text.
+- [Ohio State University (Richard Pogge) — Real-World Relativity: The GPS Navigation System](https://www.astronomy.ohio-state.edu/pogge.1/Ast162/Unit5/gps.html): altitude about 20,000 km, speed about 14,000 km/h, −7 µs/day (speed), +45 µs/day (gravity), net +38 µs/day, clocks designed to tick slower, about 10 km/day error if uncorrected.
+- [Physics Today (Neil Ashby, 2002) — Relativity and the Global Positioning System](https://physicstoday.aip.org/features/relativity-and-the-global-positioning-system): "factory offset" before launch; more than 11 km of navigational error building up in one day, quickly making the system useless.
+- Read on 11 November 2026. Also consulted, not linked: Ashby, "Relativistic Effects in the Global Positioning System" (AAPT-hosted PDF), which gives the same fractional rates.
+
+### 22. Painting before the wall dries
+
+- ID: `true-fresco`; category: Arts & Culture.
+- Subject: Painting technique / materials. Practice behind the finished thing: the material's setting time shapes how the work is divided and how long it lasts.
+- Visual: Omitted: a photograph of giornata seams would need an external image; the text describes them.
+- [The National Gallery, London — Glossary: fresco](https://www.nationalgallery.org.uk/paintings/glossary/fresco): intonaco; paint applied to wet intonaco; only a day's plaster spread at once; giornata; a secco on dry plaster.
+- [Encyclopaedia Britannica — Fresco painting](https://www.britannica.com/art/fresco-painting): pigments ground in water; colours set with the plaster and become a permanent part of the wall; buon fresco the most durable technique.
+- [Wikipedia — Fresco](https://en.wikipedia.org/wiki/Fresco): carbonation of lime (Ca(OH)₂ + CO₂ → CaCO₃ + H₂O) fixes the pigment; giornata seams usually visible, often from the ground; ten to twenty or more giornate in a wall-sized fresco; secco needs a binder (egg, glue, oil), is less durable, and some secco has fallen off.
+- Source note: Britannica's direct read returned only the opening of the article, so the chemistry, seams and secco claims rest on the Wikipedia article. The fact-checker should confirm those claims or suggest a stronger museum or conservation source.
+
 ## Visual scope
 
-Two retained local HTML/CSS explanatory visuals, both inside the optional Deep Dive: Venus duration bars (117, 225, 243 Earth days on one zero-based scale) and woodcut reversal (reversed block R, normal paper R). Both retain relationship-based text alternatives and captions. No new visual assets, stock images, AI images, decorative diagrams, or external image requests. The other 18 cards intentionally omit visuals for the reasons above.
+Two retained local HTML/CSS explanatory visuals, both inside the optional Deep Dive: Venus duration bars (117, 225, 243 Earth days on one zero-based scale) and woodcut reversal (reversed block R, normal paper R). Both retain relationship-based text alternatives and captions. No new visual assets, stock images, AI images, decorative diagrams, or external image requests. The other 20 cards intentionally omit visuals for the reasons above.
 
 ## Source-read limitations and independent checks
 

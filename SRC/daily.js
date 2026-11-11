@@ -22,7 +22,9 @@ const DAILY_CARD_IDS = Object.freeze([
   "tree-ring-calendar",
   "bicycle-gears",
   "ultramarine",
-  "roman-amphorae"
+  "roman-amphorae",
+  "gps-relativity",
+  "true-fresco"
 ]);
 const DAILY_EPOCH = Date.UTC(2026, 9, 22);
 
