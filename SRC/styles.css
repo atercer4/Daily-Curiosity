@@ -81,3 +81,9 @@ article:focus { outline: 3px solid #936000; outline-offset: 5px; }
 
 .recall { margin-top: 28px; border-top: 1px solid var(--line); }
 .recall-response > p { margin: 18px 0 0; }
+
+/* Forced colors (e.g. Windows High Contrast) drop author backgrounds. Bars and the selected category use system colors so they stay visible. */
+@media (forced-colors: active) {
+  .bar-fill { background: CanvasText; forced-color-adjust: none; }
+  button[aria-pressed="true"] { background: Highlight; color: HighlightText; border-color: Highlight; forced-color-adjust: none; }
+}

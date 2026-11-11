@@ -31,12 +31,14 @@ Q: all real-browser items remain pending:
 
 - [ ] Keyboard and screen reader: logical tab order; native summaries; meaningful labels; no hidden prompt/answer tab stops; no new focus movement, live regions or announcement noise.
 - [ ] 320/375/768/1440 CSS pixels, 200%/400% zoom: both surfaces expanded, long prompts/responses, controls, citations and diagrams; no clipping or horizontal overflow.
-- [ ] Forced colors, reduced motion, visible focus and selected state. No animation introduced.
+- [ ] Forced colors, reduced motion, visible focus and selected state. No animation introduced. Forced colors partly done in issue #9 (below); real Windows High Contrast check pending.
 - [ ] Console, network, storage and offline flow. No missing local resources, app-driven requests or persistent writes; citations require internet.
 - [ ] All 20 responses in both surfaces; screen-reader state and reset behavior, including rapid open/close interactions.
 - [ ] Existing source-link checks in CONTENT.md and existing Today/Explore device checks remain pending.
 
 R: fixed in issue #3 (November 10, 2026). Explore’s card title and category prompt are now h3 under “Explore More” (h2), with Core h4, Deep Dive h5 and Sources/Recall h6; Today keeps h1 → h2 → h3 → h4 → h5. A headless-Chromium layout comparison at 375 and 1280 px found no position, size or font differences against the previous version. A real screen-reader heading-navigation check remains pending.
+
+S: forced colors fixed in issue #9 (November 11, 2026). With `forced-colors: active` emulated in headless Chromium, the Venus bar chart's bars disappeared (they were painted with a background only) and the selected category kept only its underline. A `@media (forced-colors: active)` block now draws the bars in `CanvasText` and the selected category in `Highlight`/`HighlightText`. Normal rendering at 375 and 1280 px is pixel-identical to the previous version. The same audit found no horizontal overflow at 320, 375, 768 or 1440 px with every disclosure open on all 20 cards, and all checked text/background pairs at 5.4:1 contrast or better. A check in real Windows High Contrast themes remains pending.
 
 ## Human validation
 
