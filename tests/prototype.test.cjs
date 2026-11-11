@@ -433,3 +433,25 @@ test('heading outline nests each card below its surface heading on Today and Exp
   }
   assert.equal(seen.size, 20);
 });
+
+test('docs/RECALL.md register matches every recall prompt and response in SRC/content.js exactly', () => {
+  const f = fixture();
+  const register = new Map();
+  for (const block of read('docs/RECALL.md').split(/\n(?=- ID: )/).slice(1)) {
+    const id = block.match(/^- ID: `([^`]+)`/)[1];
+    const prompt = block.match(/^- Prompt: (.+)$/m)[1];
+    const reveal = block.match(/^- Response: (.+)$/m)[1];
+    assert.ok(!register.has(id), 'duplicate RECALL.md entry: ' + id);
+    register.set(id, { prompt, reveal });
+  }
+  assert.equal(register.size, f.entries.length);
+  for (const entry of f.entries) {
+    assert.deepEqual(register.get(entry.id), { prompt: entry.recall.prompt, reveal: entry.recall.reveal }, 'RECALL.md out of sync: ' + entry.id);
+  }
+});
+
+test('approved v7 recall wording fix: autumn-pigments prompt names every color its response covers', () => {
+  const entry = fixture().entries.find(e => e.id === 'autumn-pigments');
+  assert.equal(entry.recall.prompt, 'How do autumn yellows, oranges, reds, and purples differ in the way they appear?');
+  assert.equal(entry.recall.reveal, 'Fading chlorophyll reveals yellow and orange pigments already present. Many leaves also make new red or purple pigments during autumn.');
+});
