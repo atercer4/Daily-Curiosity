@@ -447,8 +447,9 @@ test('heading outline nests each card below its surface heading on Today and Exp
     assert.equal(find(f.article, n => n.className === 'card-title')[0].id, 'entry-title');
   });
   const seen = new Set();
-  for (let day = 1; day <= f.entries.length; day++) { // library-length consecutive days cover every card.
-    const today = fixture(0, { year: 2026, month: 11, day }).today;
+  for (let i = 0; i < f.entries.length; i++) { // library-length consecutive days cover every card.
+    const d = new Date(Date.UTC(2026, 10, 1 + i)); // UTC calendar arithmetic, so N >= 31 rolls into December.
+    const today = fixture(0, { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1, day: d.getUTCDate() }).today;
     const entryTitle = find(today, n => n.className === 'card-title')[0];
     assert.equal(entryTitle.id, 'today-entry-title');
     assert.deepEqual(headingLevels(today), outline(2).map(([level, text]) => [level, text ?? entryTitle.textContent]));
@@ -517,22 +518,32 @@ test('docs/RELEASE_NOTES.md records the Phase 1 baseline, git-era changes, limit
   assert.match(doc, new RegExp(sourceCount + ' source links'));
 });
 
-test('the app and daily rotation generalize to N cards: a synthetic 22-card library (test-only) is fully reachable', () => {
-  const base = fixture().entries;
-  const clone = (from, id, category) => ({ ...JSON.parse(JSON.stringify(base.find(e => e.id === from))), id, title: 'Synthetic ' + id, category });
-  // Appended after roman-amphorae (History): Arts, then History, then wrap to venus-clocks (Science).
-  const extra = [clone('ultramarine', 'synthetic-arts', 'Arts & Culture'), clone('penny-black', 'synthetic-history', 'History & Society')];
+test('the app and daily rotation generalize to N cards: two synthetic cards appended (test-only) are fully reachable', () => {
+  const baseFixture = fixture(), base = Array.from(baseFixture.entries);
+  const baseIds = Array.from(vm.runInContext('DAILY_CARD_IDS', baseFixture.context));
+  const categoryOf = id => base.find(e => e.id === id).category;
+  const baseCount = category => base.filter(e => e.category === category).length;
+  // Derive the synthetic categories from the current library: the first differs from the last real card, the second
+  // differs from the first and from the card the rotation wraps to; prefer the smallest categories to keep balance.
+  const bySize = categories.slice().sort((a, b) => baseCount(a) - baseCount(b));
+  const first = bySize.find(c => c !== categoryOf(baseIds[baseIds.length - 1]));
+  const second = bySize.find(c => c !== first && c !== categoryOf(baseIds[0]));
+  const clone = (id, category) => ({ ...JSON.parse(JSON.stringify(base.find(e => e.category === category))), id, title: 'Synthetic ' + id, category });
+  const extra = [clone('synthetic-a', first), clone('synthetic-b', second)];
   const f = fixture(0, undefined, extra), n = f.entries.length, map = f.context.cardIndexForDate;
   assert.equal(n, base.length + 2);
   const ids = Array.from(vm.runInContext('DAILY_CARD_IDS', f.context));
-  assert.deepEqual(ids, [...Array.from(vm.runInContext('DAILY_CARD_IDS', fixture().context)), 'synthetic-arts', 'synthetic-history']);
+  assert.deepEqual(ids, [...baseIds, 'synthetic-a', 'synthetic-b']);
+  const counts = categories.map(c => f.entries.filter(e => e.category === c).length);
+  assert.ok(Math.max(...counts) - Math.min(...counts) <= 2, 'synthetic cards keep categories balanced: ' + counts);
   ids.forEach((id, i) => assert.notEqual(f.entries.find(e => e.id === id).category, f.entries.find(e => e.id === ids[(i + 1) % n]).category));
   // Today: n consecutive days show every card once, then repeat; the original cards keep their relative order.
   const days = Array.from({ length: 2 * n }, (_, i) => { const d = new Date(Date.UTC(2026, 9, 22 + i)); return f.entries[map(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate())].id; });
   assert.deepEqual(days.slice(0, n), ids);
   assert.deepEqual(days.slice(n), ids);
-  const todayTitle = fixture(0, { year: 2026, month: 11, day: 12 }, extra).today; // epoch + 21 days -> slot 21
-  assert.equal(find(todayTitle, x => x.className === 'card-title')[0].textContent, 'Synthetic synthetic-history');
+  const last = new Date(Date.UTC(2026, 9, 22 + n - 1)); // epoch + (n - 1) days -> the last slot
+  const todayTitle = fixture(0, { year: last.getUTCFullYear(), month: last.getUTCMonth() + 1, day: last.getUTCDate() }, extra).today;
+  assert.equal(find(todayTitle, x => x.className === 'card-title')[0].textContent, 'Synthetic synthetic-b');
   // Surprise Me: every bin reaches its card, and from the last card every other card is reachable.
   for (let i = 0; i < n; i++) assert.equal(title(fixture((i + 0.5) / n, undefined, extra)), f.entries[i].title);
   const reached = new Set();
@@ -544,13 +555,13 @@ test('the app and daily rotation generalize to N cards: a synthetic 22-card libr
   }
   assert.equal(reached.size, n - 1);
   assert.ok(!reached.has(f.entries[n - 1].title));
-  // Categories: Arts and History now cycle six cards each, including the appended ones.
+  // Categories: each cycles all of its cards, including the appended ones.
   categories.forEach((category, i) => {
     const g = fixture(0, undefined, extra), expected = f.entries.filter(e => e.category === category).map(e => e.title), seen = [];
     for (let k = 0; k < expected.length; k++) { g.controls.children[i + 1].events.click(); seen.push(title(g)); }
     assert.deepEqual([...seen].sort(), [...expected].sort(), category);
   });
-  assert.equal(f.entries.filter(e => e.category === 'Arts & Culture').length, 6);
+  categories.forEach(c => assert.equal(f.entries.filter(e => e.category === c).length, baseCount(c) + extra.filter(e => e.category === c).length, c));
   // Appended cards render the same nested outline as the originals.
   selectEntry(f, n - 1);
   assert.deepEqual(headingLevels(f.article).map(([level]) => level), [3, 4, 5, 6, 6]);
