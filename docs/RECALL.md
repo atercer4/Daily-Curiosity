@@ -29,7 +29,7 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 ## Two ways a leaf changes color
 
 - ID: `autumn-pigments`
-- Prompt: How do autumn yellows and reds differ in the way they appear?
+- Prompt: How do autumn yellows, oranges, reds, and purples differ in the way they appear?
 - Response: Fading chlorophyll reveals yellow and orange pigments already present. Many leaves also make new red or purple pigments during autumn.
 
 ## How can a road hang from cables?

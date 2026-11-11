@@ -172,7 +172,7 @@ const DAILY_CURIOSITIES = [
       }
     ],
     "recall": {
-      "prompt": "How do autumn yellows and reds differ in the way they appear?",
+      "prompt": "How do autumn yellows, oranges, reds, and purples differ in the way they appear?",
       "reveal": "Fading chlorophyll reveals yellow and orange pigments already present. Many leaves also make new red or purple pigments during autumn."
     }
   },
