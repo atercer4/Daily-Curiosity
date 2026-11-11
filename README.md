@@ -4,7 +4,7 @@ Optional Recall / Reflection implementation, November 1, 2026. Requirements sour
 
 ## Preservation
 
-Since November 2026 this project lives in git (github.com/atercer4/daily-curiosity) and deploys to Netlify from `main`. The old `snapshots/` folders were retired; git history preserves every version. `tests/baseline/card-content-sha256.json` pins the original fields of all 20 cards and the daily-mapping test pins `SRC/daily.js`, replacing the snapshot hash checks. Run tests with `node tests/prototype.test.cjs`. Change rules: [docs/REVIEW_PROTOCOL.md](docs/REVIEW_PROTOCOL.md).
+Since November 2026 this project lives in git (github.com/atercer4/daily-curiosity) and deploys to Netlify from `main`. The old `snapshots/` folders were retired; git history preserves every version. `tests/baseline/card-content-sha256.json` pins the original fields of all 20 cards and the daily-mapping test pins `SRC/daily.js`, replacing the snapshot hash checks. Run tests with `node tests/prototype.test.cjs`. Change rules: [docs/REVIEW_PROTOCOL.md](docs/REVIEW_PROTOCOL.md). If a production deploy regresses, follow [docs/ROLLBACK.md](docs/ROLLBACK.md).
 
 ## Recall interaction
 
