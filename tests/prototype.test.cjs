@@ -480,3 +480,16 @@ test('forced-colors mode keeps the bar chart and the selected category visible w
   assert.match(block[1], /button\[aria-pressed="true"\] \{[^}]*background: Highlight;[^}]*color: HighlightText;/);
   assert.match(read('docs/QA.md'), /issue #9/);
 });
+
+test('docs/RELEASE_NOTES.md records the Phase 1 baseline, git-era changes, limitations, pending QA and rollback', () => {
+  const doc = read('docs/RELEASE_NOTES.md');
+  assert.match(read('README.md'), /\]\(docs\/RELEASE_NOTES\.md\)/);
+  for (const heading of ['## Baseline contents', '## Changes since the git import', '## Known limitations', '## Pending QA', '## Rollback'])
+    assert.ok(doc.includes('\n' + heading + '\n'), heading);
+  for (const issue of ['#3', '#5', '#7', '#9']) assert.match(doc, new RegExp('\\| ' + issue + ' \\|'));
+  assert.match(doc, /\]\(ROLLBACK\.md\)/);
+  const f = fixture();
+  assert.match(doc, new RegExp('\\*\\*Library:\\*\\* ' + f.entries.length + ' cards'));
+  const sourceCount = Array.from(f.entries).reduce((n, e) => n + e.sources.length, 0);
+  assert.match(doc, new RegExp(sourceCount + ' source links'));
+});
