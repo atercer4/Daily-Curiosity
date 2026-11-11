@@ -31,7 +31,7 @@ No card text changed other than the approved recall wording fix in issue #5.
 ## Known limitations
 
 - The daily card is read once on load: an open tab needs a reload after midnight, and timezone or system-clock changes can repeat or skip a card.
-- The library repeats every 20 days. This length will grow as Phase 2 adds cards.
+- The library repeats every 20 days. This length grows as Phase 2 adds cards: since issue #13 the rotation length equals the library size, and new cards are appended after the original 20.
 - Recall is ephemeral and unevaluated by design; nothing is recorded.
 - Source links are external and can break; existing link issues are noted in CONTENT.md.
 - The masthead and footer still read "v6"; this is cosmetic and unchanged here.
