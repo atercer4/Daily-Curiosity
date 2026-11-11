@@ -455,3 +455,19 @@ test('approved v7 recall wording fix: autumn-pigments prompt names every color i
   assert.equal(entry.recall.prompt, 'How do autumn yellows, oranges, reds, and purples differ in the way they appear?');
   assert.equal(entry.recall.reveal, 'Fading chlorophyll reveals yellow and orange pigments already present. Many leaves also make new red or purple pigments during autumn.');
 });
+
+test('docs/ROLLBACK.md documents restore, revert-by-PR, incident notes and a corrective task, and is linked from README', () => {
+  const doc = read('docs/ROLLBACK.md');
+  assert.match(read('README.md'), /\]\(docs\/ROLLBACK\.md\)/);
+  assert.match(doc, /Netlify/);
+  assert.match(doc, /Publish deploy/);
+  assert.match(doc, /git revert/);
+  assert.match(doc, /revert pull request/i);
+  assert.match(doc, /## 3\. Document the failure/);
+  assert.match(doc, /corrective task/i);
+  assert.match(doc, /labeled `auto`/);
+  assert.match(doc, /Don't force-push/);
+  assert.doesNotMatch(doc, /git push[^\n]*(--force|\s-f\b)/);
+  assert.doesNotMatch(doc, /git push[^\n]*\bmain\b/);
+  assert.doesNotMatch(doc, /git reset --hard/);
+});
