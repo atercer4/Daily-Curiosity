@@ -122,3 +122,15 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 - Prompt: How can an empty transport jar remain useful evidence of trade?
 - Response: Its shape, markings, and find location provide different clues about production and movement. Researchers combine them rather than treating one jar as a complete itinerary.
 
+
+## Clocks set slow on purpose
+
+- ID: `gps-relativity`
+- Prompt: Why are GPS satellite clocks set to tick slightly slow before launch?
+- Response: In orbit, weaker gravity makes them run ahead by more than their speed makes them fall behind. The offset cancels that net gain so they keep time with ground clocks.
+
+## Painting before the wall dries
+
+- ID: `true-fresco`
+- Prompt: Why did a fresco painter plaster only one day’s area at a time?
+- Response: The pigment had to go onto wet lime plaster, which fixes the color as it sets. Plaster that dried before painting could only take less durable secco work.

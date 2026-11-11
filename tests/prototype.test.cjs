@@ -125,8 +125,12 @@ test('each category cycles all of its cards twice without an immediate repeat', 
 
 test('initial Surprise Me covers every card bin, including their boundaries', () => {
   const n = fixture().entries.length;
+  // i / n can round to just below the bin in floating point (e.g. 15 / 22 * 22 < 15), so step up to the
+  // smallest value the app's Math.floor(random * n) places in bin i; that is still the bin's lower boundary.
+  const lowest = i => { let r = i / n; while (Math.floor(r * n) < i) r += Number.EPSILON; return r; };
   for (let i = 0; i < n; i++) {
-    for (const random of [i / n, (i + 1) / n - Number.EPSILON]) {
+    assert.ok(lowest(i) - i / n <= 4 * Number.EPSILON, 'boundary adjustment stays within rounding error');
+    for (const random of [lowest(i), (i + 1) / n - Number.EPSILON]) {
       const f = fixture(random);
       assert.equal(title(f), f.entries[i].title);
       assert.equal(f.controls.children[0].attributes['aria-pressed'], 'true');

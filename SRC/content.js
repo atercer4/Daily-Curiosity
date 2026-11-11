@@ -609,5 +609,67 @@ const DAILY_CURIOSITIES = [
       "prompt": "How can an empty transport jar remain useful evidence of trade?",
       "reveal": "Its shape, markings, and find location provide different clues about production and movement. Researchers combine them rather than treating one jar as a complete itinerary."
     }
+  },
+  {
+    "id": "gps-relativity",
+    "category": "Engineering & Technology",
+    "title": "Clocks set slow on purpose",
+    "hook": "Before a GPS satellite is launched, its atomic clocks are made to tick slightly slower than clocks on the ground. In orbit, that deliberate error disappears.",
+    "core": [
+      "GPS satellites orbit about 20,000 kilometers up, moving at roughly 14,000 kilometers per hour. Both facts affect their onboard atomic clocks. Because a satellite moves fast relative to the ground, special relativity predicts its clocks fall behind ground clocks by about 7 microseconds a day.",
+      "Because the satellite is farther from Earth’s mass, general relativity predicts the opposite: its clocks run ahead by about 45 microseconds a day. Gravity wins, leaving a net gain of about 38 microseconds daily. So the clocks are designed to tick at a slightly lower frequency, which lets them keep pace with the ground once in orbit."
+    ],
+    "deep": [
+      "Thirty-eight millionths of a second sounds negligible. The difficulty is that a receiver works out distance from how long a signal took to arrive, and radio signals travel at the speed of light. A tiny timing error becomes a large error in distance.",
+      "The Ohio State astronomer Richard Pogge estimates that without the relativistic correction, errors in position would accumulate at about 10 kilometers each day. The physicist Neil Ashby, writing in Physics Today, puts the build-up at more than 11 kilometers in a day, quickly making the system useless for navigation.",
+      "The interesting engineering choice is when the fix happens. Ashby describes a “factory offset” applied before launch. The correction is not a repair made after the clocks drift; it is built into them from the start, because the designers expected the orbit itself to change how those clocks keep time."
+    ],
+    "sources": [
+      {
+        "label": "Ohio State University (Richard Pogge) — Real-World Relativity: The GPS Navigation System",
+        "url": "https://www.astronomy.ohio-state.edu/pogge.1/Ast162/Unit5/gps.html"
+      },
+      {
+        "label": "Physics Today (Neil Ashby) — Relativity and the Global Positioning System",
+        "url": "https://physicstoday.aip.org/features/relativity-and-the-global-positioning-system"
+      }
+    ],
+    "recall": {
+      "prompt": "Why are GPS satellite clocks set to tick slightly slow before launch?",
+      "reveal": "In orbit, weaker gravity makes them run ahead by more than their speed makes them fall behind. The offset cancels that net gain so they keep time with ground clocks."
+    }
+  },
+  {
+    "id": "true-fresco",
+    "category": "Arts & Culture",
+    "title": "Painting before the wall dries",
+    "hook": "Some of the most lasting wall paintings were made against a deadline. The painter had to finish each section before the plaster dried, because drying is what held the color.",
+    "core": [
+      "In buon, or true, fresco, painters grind dry pigments in water and apply them to freshly laid lime plaster. The final, very smooth layer is called the intonaco. As it dries, the colors set with the plaster and become a permanent part of the wall rather than a coat of paint resting on top.",
+      "That creates a deadline. Only as much plaster as can be painted in one day is spread on the wall, and each day’s patch is called a giornata, Italian for “a day’s work.” A large fresco is therefore built piece by piece, one fresh area of plaster at a time."
+    ],
+    "deep": [
+      "Why does drying matter so much? Lime plaster sets by reacting with carbon dioxide in the air: calcium hydroxide becomes calcium carbonate. That reaction fixes the pigment particles in the plaster. Water carries the color in, and the chemistry of the setting wall locks it there.",
+      "The method leaves traces. The different day stages can usually be seen as faint seams, and in many large frescoes the divisions are visible from the ground. A wall-sized painting may contain ten to twenty or more giornate, so the seams quietly record a sequence of working days.",
+      "Painting on dry plaster, called a secco, works differently. Without the wet wall to hold it, pigment needs a binder such as egg, glue or oil. True fresco is generally more durable than secco work added on top of it, and some secco details have since fallen away, leaving the fresco underneath."
+    ],
+    "sources": [
+      {
+        "label": "The National Gallery, London — Glossary: fresco",
+        "url": "https://www.nationalgallery.org.uk/paintings/glossary/fresco"
+      },
+      {
+        "label": "Encyclopaedia Britannica — Fresco painting",
+        "url": "https://www.britannica.com/art/fresco-painting"
+      },
+      {
+        "label": "Wikipedia — Fresco (technique and chemistry)",
+        "url": "https://en.wikipedia.org/wiki/Fresco"
+      }
+    ],
+    "recall": {
+      "prompt": "Why did a fresco painter plaster only one day’s area at a time?",
+      "reveal": "The pigment had to go onto wet lime plaster, which fixes the color as it sets. Plaster that dried before painting could only take less durable secco work."
+    }
   }
 ];
