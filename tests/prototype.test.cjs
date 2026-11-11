@@ -471,3 +471,12 @@ test('docs/ROLLBACK.md documents restore, revert-by-PR, incident notes and a cor
   assert.doesNotMatch(doc, /git push[^\n]*\bmain\b/);
   assert.doesNotMatch(doc, /git reset --hard/);
 });
+
+test('forced-colors mode keeps the bar chart and the selected category visible with system colors', () => {
+  const css = read('SRC/styles.css');
+  const block = css.match(/@media \(forced-colors: active\) \{([\s\S]*?)\n\}/);
+  assert.ok(block, 'forced-colors media block exists');
+  assert.match(block[1], /\.bar-fill \{[^}]*background: CanvasText;[^}]*forced-color-adjust: none;/);
+  assert.match(block[1], /button\[aria-pressed="true"\] \{[^}]*background: Highlight;[^}]*color: HighlightText;/);
+  assert.match(read('docs/QA.md'), /issue #9/);
+});
