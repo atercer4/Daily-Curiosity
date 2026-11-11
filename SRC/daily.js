@@ -1,4 +1,6 @@
 /* Daily order is independent of the content authoring order. Months are 1-based. */
+/* New cards are appended to the end of DAILY_CARD_IDS so existing cards keep their relative order.
+   The rotation length equals the library size, so it grows as cards are added. */
 'use strict';
 const DAILY_CARD_IDS = Object.freeze([
   "venus-clocks",

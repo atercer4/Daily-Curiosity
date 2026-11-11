@@ -4,7 +4,9 @@ Optional Recall / Reflection implementation, November 1, 2026. Requirements sour
 
 ## Preservation
 
-Since November 2026 this project lives in git (github.com/atercer4/daily-curiosity) and deploys to Netlify from `main`. The old `snapshots/` folders were retired; git history preserves every version. `tests/baseline/card-content-sha256.json` pins the original fields of all 20 cards and the daily-mapping test pins `SRC/daily.js`, replacing the snapshot hash checks. Run tests with `node tests/prototype.test.cjs`. Change rules: [docs/REVIEW_PROTOCOL.md](docs/REVIEW_PROTOCOL.md). If a production deploy regresses, follow [docs/ROLLBACK.md](docs/ROLLBACK.md). What the Phase 1 baseline contains: [docs/RELEASE_NOTES.md](docs/RELEASE_NOTES.md).
+Since November 2026 this project lives in git (github.com/atercer4/daily-curiosity) and deploys to Netlify from `main`. The old `snapshots/` folders were retired; git history preserves every version. `tests/baseline/card-content-sha256.json` pins the original fields of the original 20 cards and the daily-mapping test pins the code in `SRC/daily.js` (everything except the ID list), replacing the snapshot hash checks.
+
+Adding cards (Phase 2, issue #13): the code and tests work for any library size. New cards go at the end of `DAILY_CARD_IDS`, after the original 20, whose order is pinned. Tests require unique IDs and titles, balanced categories (no category more than 2 cards ahead of another), and no two consecutive same-category cards in the daily rotation, including the wrap back to the start. The daily rotation length equals the library size, so it changes each time cards are added; this is reversible by removing the appended IDs. Run tests with `node tests/prototype.test.cjs`. Change rules: [docs/REVIEW_PROTOCOL.md](docs/REVIEW_PROTOCOL.md). If a production deploy regresses, follow [docs/ROLLBACK.md](docs/ROLLBACK.md). What the Phase 1 baseline contains: [docs/RELEASE_NOTES.md](docs/RELEASE_NOTES.md).
 
 ## Recall interaction
 
@@ -38,6 +40,6 @@ Tests use a DOM stub, so native visibility, keyboard operation, layout, accessib
 
 ## Known limitations and scope
 
-Recall is ephemeral and unevaluated; the app does not record whether readers think or reveal. Existing date limitations remain: timezone/system-clock changes may repeat or skip a daily card; an open tab needs reload after midnight; the library repeats every 20 days. Existing source-link issues remain documented in CONTENT.md.
+Recall is ephemeral and unevaluated; the app does not record whether readers think or reveal. Existing date limitations remain: timezone/system-clock changes may repeat or skip a daily card; an open tab needs reload after midnight; the library repeats every N days, where N is the number of cards (20 today). Existing source-link issues remain documented in CONTENT.md.
 
 No scoring, grades, right/wrong states, streaks, XP, progress bars, saved completion, accounts/profiles, analytics, notifications, social features, spaced repetition, adaptive difficulty, user notes/journaling, monetization, backend/API dependency, or theme customization was added.
