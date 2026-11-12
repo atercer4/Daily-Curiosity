@@ -22,6 +22,7 @@ const ORIGINAL_DAILY_IDS = ['venus-clocks', 'suspension-bridge', 'woodcut-revers
 // extra: synthetic cards appended (in the test only) to content and to the end of the daily order.
 function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, extra = []) {
   const controls = new NodeStub('div'), article = new NodeStub('article'), today = new NodeStub('article'), count = new NodeStub('span');
+  const cover = Object.fromEntries(['#today-question', '#today-tease', '#cover-category', '#cover-number', '#today-date'].map(id => [id, new NodeStub(id === '#today-date' ? 'time' : 'p')]));
   let random = initialRandom;
   const math = Object.create(Math);
   math.random = () => random;
@@ -30,6 +31,7 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
       if (selector === '#categories') return controls;
       if (selector === '#curiosity') return article;
       if (selector === '#today-curiosity') return today;
+      if (selector in cover) return cover[selector];
       throw Error('Unexpected selector ' + selector);
     },
     querySelectorAll: selector => {
@@ -45,7 +47,7 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
   vm.runInContext(extra.length ? daily.slice(0, listEnd) + extra.map(e => ',\n  ' + JSON.stringify(e.id)).join('') + daily.slice(listEnd) : daily, context);
   context.readLocalCalendarDate = () => date; // Inject calendar fields, not a mocked clock.
   vm.runInContext(read('SRC/app.js'), context);
-  return { controls, article, today, count, context, entries, setRandom: value => { random = value; } };
+  return { controls, article, today, count, cover, context, entries, setRandom: value => { random = value; } };
 }
 function descendants(node, tag) {
   return node.children.flatMap(child => [...(child.tag === tag ? [child] : []), ...descendants(child, tag)]);
@@ -447,7 +449,9 @@ test('daily mapping code is unchanged: SRC/daily.js outside the ID list matches 
 
 test('heading outline nests each card below its surface heading on Today and Explore', () => {
   const html = read('index.html');
-  assert.match(html, /<h1 id="today-title"[^>]*>Today’s Curiosity<\/h1>/);
+  // Design 1.0 step 2: the cover question is the page's only h1; Today's card title stays h2 below it.
+  assert.equal((html.match(/<h1\b/g) || []).length, 1);
+  assert.match(html, /<h1 id="today-question"[^>]*>Today’s Curiosity<\/h1>/);
   assert.match(html, /<h2 id="explore-title"[^>]*>Explore More<\/h2>/);
   assert.match(html, /<h3 id="selection-title"[^>]*>What are you curious about today\?<\/h3>/);
   assert.doesNotMatch(html, /<h[4-6]/);
@@ -648,4 +652,95 @@ test('Design 1.0 copy: section labels, invitation wording, and no hard-coded car
   assert.deepEqual(labels, ['The idea', 'Look closer', 'Reveal response']);
   assert.equal(f.controls.children[0].textContent, 'Take me somewhere unexpected');
   assert.doesNotMatch(read('SRC/app.js'), /Core Insight|Deep Dive &|Pause and recall/);
+});
+
+// Design System 1.0 step 2 (issue #23): the Today cover.
+const keyPhrases = f => f.cover['#today-question'].children.filter(n => typeof n !== 'string' && n.className === 'key-phrase');
+const coverQuestion = f => f.cover['#today-question'].children.map(n => typeof n === 'string' ? n : n.textContent).join('');
+test('Today cover falls back to title and hook, and uses optional question (with a {key phrase}) and tease', () => {
+  const f = fixture();
+  const todayEntry = f.entries.find(e => e.title === find(f.today, n => n.className === 'card-title')[0].textContent);
+  const index = f.entries.indexOf(todayEntry);
+  assert.ok(f.entries.every(e => e.question === undefined && e.tease === undefined), 'no card text changes in this step');
+  assert.equal(coverQuestion(f), todayEntry.title);
+  assert.equal(keyPhrases(f).length, 0);
+  assert.equal(f.cover['#today-tease'].textContent, todayEntry.hook);
+  assert.equal(f.cover['#cover-category'].textContent, todayEntry.category);
+  assert.equal(f.cover['#cover-number'].textContent, 'No. ' + String(index + 1).padStart(3, '0'));
+  const date = { year: 2026, month: 11, day: 11 };
+  const withFields = { ...todayEntry, question: 'Why would anyone launch a clock that’s {wrong on purpose?}', tease: 'A short, mysterious tease.' };
+  f.entries[index] = withFields;
+  f.context.renderCover(index, date);
+  assert.equal(coverQuestion(f), 'Why would anyone launch a clock that’s wrong on purpose?');
+  const key = keyPhrases(f);
+  assert.equal(key.length, 1);
+  assert.equal(key[0].tag, 'span');
+  assert.equal(key[0].textContent, 'wrong on purpose?');
+  assert.equal(f.cover['#today-tease'].textContent, 'A short, mysterious tease.');
+  f.entries[index] = { ...todayEntry, question: 'A question with no key phrase?' };
+  f.context.renderCover(index, date);
+  assert.equal(coverQuestion(f), 'A question with no key phrase?');
+  assert.equal(f.cover['#today-tease'].textContent, todayEntry.hook, 'tease falls back on its own');
+  f.entries[index] = { ...todayEntry, tease: 'Only a tease.' };
+  f.context.renderCover(index, date);
+  assert.equal(coverQuestion(f), todayEntry.title, 'question falls back on its own');
+  assert.equal(f.cover['#today-date'].textContent, 'Wednesday, 11 November');
+  assert.equal(f.cover['#today-date'].attributes.datetime, '2026-11-11');
+});
+
+test('Today cover shows the same card as the unchanged daily mapping on every day of the rotation', () => {
+  const n = fixture().entries.length;
+  for (let i = 0; i < n; i++) {
+    const d = new Date(Date.UTC(2026, 9, 22 + i));
+    const fields = { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1, day: d.getUTCDate() };
+    const f = fixture(0, fields);
+    const expected = f.entries[f.context.cardIndexForDate(fields.year, fields.month, fields.day)];
+    assert.equal(expected.id, ORIGINAL_DAILY_IDS[i] ?? vm.runInContext('DAILY_CARD_IDS', f.context)[i], 'Today mapping unchanged');
+    assert.equal(find(f.today, n => n.className === 'card-title')[0].textContent, expected.title);
+    assert.equal(coverQuestion(f), expected.question || expected.title);
+    assert.equal(f.cover['#cover-category'].textContent, expected.category);
+  }
+  const weekdays = [[2026, 11, 12, 'Thursday, 12 November', '2026-11-12'], [2024, 2, 29, 'Thursday, 29 February', '2024-02-29'], [2027, 1, 3, 'Sunday, 3 January', '2027-01-03']];
+  for (const [year, month, day, text, iso] of weekdays) {
+    const f = fixture(0, { year, month, day });
+    assert.equal(f.cover['#today-date'].textContent, text);
+    assert.equal(f.cover['#today-date'].attributes.datetime, iso);
+  }
+});
+
+test('Today cover markup: metadata, question, tease and a "Find out why" link whose target exists in the reading area', () => {
+  const html = read('index.html');
+  const cover = html.slice(html.indexOf('<section class="cover"'), html.indexOf('</section>', html.indexOf('<section class="cover"')));
+  const order = ['class="cover-meta"', 'Today’s curiosity', 'id="cover-category"', 'id="cover-number"', 'id="today-question"', 'id="today-tease"', 'class="cover-cta"'];
+  order.forEach((needle, i) => { assert.ok(cover.includes(needle), needle); if (i) assert.ok(cover.indexOf(needle) > cover.indexOf(order[i - 1]), needle); });
+  const cta = cover.match(/<a class="cover-cta" href="#([^"]+)">Find out why <span aria-hidden="true">↓<\/span><\/a>/);
+  assert.ok(cta, 'native link with the approved copy');
+  assert.equal((html.match(new RegExp(`id="${cta[1]}"`, 'g')) || []).length, 1, 'CTA target exists once');
+  assert.ok(html.indexOf(`id="${cta[1]}"`) > html.indexOf('</section>', html.indexOf('<section class="cover"')), 'target is below the cover');
+  assert.match(html, /<time id="today-date"/);
+  assert.ok(html.indexOf('<header class="masthead">') < html.indexOf('<section class="cover"'));
+  // Nothing else sits on the cover: drawings and the numbers strip come in later steps.
+  assert.doesNotMatch(cover, /<(img|svg|figure|button)\b/);
+});
+
+test('Today cover styling: base night theme for every category, AA text on night, phone first screen, motion only when allowed', () => {
+  const css = read('SRC/styles.css'), app = read('SRC/app.js');
+  assert.doesNotMatch(app, /cover[^\n]*data-category|data-theme/, 'no per-category cover theme until step 4');
+  assert.match(css, /\.cover \{ background-color: var\(--night\);/);
+  const lum = hex => { const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(v => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+  const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+  const muted = css.match(/--cover-muted: (#[0-9A-F]{6});/)[1];
+  for (const text of ['#F9F5E8', '#E2B867', muted]) assert.ok(ratio(text, '#16202E') >= 4.5, text + ' on night');
+  assert.ok(ratio('#1F1E1A', '#E2B867') >= 4.5, 'ink on the gold button');
+  assert.match(css, /\.cover-cta \{[^}]*min-height: 48px/);
+  const phone = css.slice(css.indexOf('@media (max-width: 480px)'));
+  assert.match(phone, /\.cover \{[^}]*min-height: calc\(100svh - var\(--masthead-phone\)\)/);
+  // Animation and smooth scrolling appear only inside the no-preference block.
+  const motionStart = css.indexOf('@media (prefers-reduced-motion: no-preference) {');
+  assert.ok(motionStart > 0);
+  const motionEnd = css.indexOf('\n}\n', motionStart);
+  const outside = css.slice(0, motionStart) + css.slice(motionEnd);
+  assert.doesNotMatch(outside, /animation|@keyframes|transition|scroll-behavior/);
+  assert.match(css.slice(motionStart, motionEnd), /scroll-behavior: smooth/);
+  assert.match(css, /@media \(forced-colors: active\)[\s\S]*\.cover-cta/);
 });
