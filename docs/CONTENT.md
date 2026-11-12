@@ -36,6 +36,8 @@ Hooks include mysteries, sensory observations, familiar experiences, historical 
 | 20 | History & Society | A shipping container made of clay | Trade / archaeology | Ordinary object as evidence; compare marks and context |
 | 21 | Engineering & Technology | Clocks set slow on purpose | Satellite navigation / relativity | Deliberate error; competing effects and a built-in fix |
 | 22 | Arts & Culture | Painting before the wall dries | Painting technique / materials | Deadline set by the material; chemistry and visible traces |
+| 23 | Science & Nature | The smell waiting on the ground | Soil chemistry / fluid physics | Sensory observation; hidden ingredients and the launch mechanism |
+| 24 | History & Society | The receipts that burned Parliament | Public finance / institutions | Obsolete record system as cause; follow the disposal |
 
 ## Source register and per-card visual decisions
 
@@ -220,9 +222,31 @@ Researched and written by the build agent (Claude); the Drive research inbox had
 - [Wikipedia — Fresco](https://en.wikipedia.org/wiki/Fresco): carbonation of lime (Ca(OH)₂ + CO₂ → CaCO₃ + H₂O) fixes the pigment; giornata seams usually visible, often from the ground; ten to twenty or more giornate in a wall-sized fresco; secco needs a binder (egg, glue, oil), is less durable, and some secco has fallen off.
 - Source note: Britannica's direct read returned only the opening of the article, so the chemistry, seams and secco claims rest on the Wikipedia article. The fact-checker should confirm those claims or suggest a stronger museum or conservation source.
 
+### Phase 2 additions (issue #19, November 2026)
+
+Researched and written by the build agent (Claude); the Drive research inbox had no candidate topics. Each card awaits ChatGPT's independent fact-check before merge (STANDING_DIRECTION sections 8 and 14). IDs are appended to `DAILY_CARD_IDS`, Science then History, so no two consecutive cards share a category (Arts → Science → History → wrap to `venus-clocks`, Science). Category counts are now 6 / 6 / 6 / 6.
+
+### 23. The smell waiting on the ground
+
+- ID: `petrichor`; category: Science & Nature.
+- Subject: Soil chemistry / fluid physics. Natural process: compounds that build up on dry ground are launched into the air by bubbles trapped in raindrops.
+- Visual: Omitted: the champagne-bubble comparison in the text does the explaining; a diagram would need external slow-motion imagery to add anything.
+- [Smithsonian Magazine — High-speed video shows when the smell of rain begins](https://www.smithsonianmag.com/smart-news/high-speed-video-shows-when-smell-rain-begins-180953958/): Australian scientists first described petrichor in 1964; ichor and petros etymology; oils and other compounds from decaying matter attached to mineral and clay surfaces; geosmin produced by soil bacteria; high-speed cameras; drops trap tiny air bubbles that shoot upward and burst "in a fizz of aerosols", as in champagne; moderate or light rains on sandy or clay soils produce the most aerosols; published in Nature Communications.
+- [EarthDate (Bureau of Economic Geology, UT Austin) — The scent of rain](https://www.earthdate.org/episodes/the-scent-of-rain): named petrichor in 1964 by Australian scientists; material attached to rock surfaces during dry spells; geosmin from soil bacteria (actinobacteria); humans detect a few parts per trillion; MIT 2015 finding; slower drops and more porous soils produce more aerosols; scent strongest after light rainfall on sandy soils.
+- Read on 12 November 2026. Source note: MIT News (the original press release) and CSIRO pages could not be read by the agent's fetch tool in this run, so the names Bear and Thomas, the journal Nature, and experiment counts are deliberately left out of the card. The fact-checker may suggest the MIT News release (https://news.mit.edu/2015/rainfall-can-release-aerosols-0114) as a stronger primary source.
+
+### 24. The receipts that burned Parliament
+
+- ID: `exchequer-tallies`; category: History & Society.
+- Subject: Public finance / institutions. Institutional arrangement: a medieval record-keeping system, abolished on paper, still had to be physically disposed of.
+- Visual: Omitted: a photograph of a tally stick would need an external image; the text describes the split stick.
+- [The History of Parliament — Burning the House down: the fire of 1834](https://historyofparliament.com/2013/10/16/the-fire-of-1834/): tally sticks as medieval Exchequer receipts, the Exchequer a government office based at Westminster; two large cartloads burned in the heating furnaces; chimney fire smouldered under the floor of the House of Lords chamber; a doorkeeper's wife spotted the flames; most of the medieval buildings destroyed; 16 October 1834; Prime Minister: "one of the greatest instances of stupidity upon record".
+- [Wikipedia — Burning of Parliament](https://en.wikipedia.org/wiki/Burning_of_Parliament): carved, notched wood, normally willow; split in two so both sides of an agreement had a record; 1782 Act requiring paper records, in force when the final sinecure-holder died in 1826; Treasury officials' instruction to clear the tallies; Weobley decided against giving them away as firewood; Joshua Cross and Patrick Furlong; the two heating furnaces directly below the peers' chamber; furnaces designed for coal, wood burns with a high flame; two tourists felt heat through their boots about 4 pm; flames spotted about 6 pm; Westminster Hall survived.
+- Read on 12 November 2026. Source note: UK Parliament's Living Heritage pages and the full History of Parliament article could not be read by the agent's fetch tool in this run, so the Wikipedia article (which cites Caroline Shenton's history) carries the detailed claims. The fact-checker should confirm them or suggest the UK Parliament page as a stronger source.
+
 ## Visual scope
 
-Two retained local HTML/CSS explanatory visuals, both inside the optional Deep Dive: Venus duration bars (117, 225, 243 Earth days on one zero-based scale) and woodcut reversal (reversed block R, normal paper R). Both retain relationship-based text alternatives and captions. No new visual assets, stock images, AI images, decorative diagrams, or external image requests. The other 20 cards intentionally omit visuals for the reasons above.
+Two retained local HTML/CSS explanatory visuals, both inside the optional Deep Dive: Venus duration bars (117, 225, 243 Earth days on one zero-based scale) and woodcut reversal (reversed block R, normal paper R). Both retain relationship-based text alternatives and captions. No new visual assets, stock images, AI images, decorative diagrams, or external image requests. The other 22 cards intentionally omit visuals for the reasons above.
 
 ## Source-read limitations and independent checks
 

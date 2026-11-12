@@ -140,10 +140,14 @@ test('initial Surprise Me covers every card bin, including their boundaries', ()
 
 test('Surprise Me reaches every other card from every current card; no immediate repeats', () => {
   const n = fixture().entries.length;
+  // As in the bin test above: slot / (n - 1) can round just below its bin (e.g. 13 / 23 * 23 < 13), so step
+  // up to the smallest value Math.floor(random * (n - 1)) places in the slot.
+  const lowest = slot => { let r = slot / (n - 1); while (Math.floor(r * (n - 1)) < slot) r += Number.EPSILON; return r; };
   for (let current = 0; current < n; current++) {
     const eligible = Array.from({ length: n }, (_, i) => i).filter(i => i !== current);
     eligible.forEach((expected, slot) => {
-      for (const random of [slot / (n - 1), (slot + 1) / (n - 1) - Number.EPSILON]) {
+      assert.ok(lowest(slot) - slot / (n - 1) <= 4 * Number.EPSILON, 'boundary adjustment stays within rounding error');
+      for (const random of [lowest(slot), (slot + 1) / (n - 1) - Number.EPSILON]) {
         const f = fixture((current + 0.5) / n);
         f.setRandom(random);
         f.controls.children[0].events.click();
