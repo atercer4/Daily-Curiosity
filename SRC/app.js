@@ -124,6 +124,9 @@ function renderCover(index, date) {
   document.querySelector('#today-tease').textContent = tease;
   document.querySelector('#cover-category').textContent = entry.category;
   document.querySelector('#cover-number').textContent = cardNumber(index);
+  // One cover component, four themes (DESIGN_SYSTEM.md section 1): the category picks the cover's
+  // background and drawing language in CSS; the masthead shares the cover's base colour.
+  ['#today-cover', '.masthead'].forEach(selector => document.querySelector(selector).setAttribute('data-category', categoryKeys[entry.category]));
   // Calendar fields were read locally; UTC is only used to find the weekday of that calendar date.
   const weekday = weekdays[new Date(Date.UTC(date.year, date.month - 1, date.day)).getUTCDay()];
   const time = document.querySelector('#today-date');
@@ -175,7 +178,10 @@ function tile(index) {
   // Every tile has the same visible action, so its accessible name adds the title: "Look inside <title>".
   open.setAttribute('aria-labelledby', open.id + ' ' + name.id);
   open.addEventListener('click', () => showCard(index, true));
-  item.append(element('p', entry.category + ' · ' + cardNumber(index), 'tile-meta'), name, element('p', firstSentence(entry.hook), 'tile-hook'), open);
+  // The category's line icon is drawn in CSS (inline SVG mask) and is decorative: the category is also written out.
+  const icon = element('span', null, 'tile-icon');
+  icon.setAttribute('aria-hidden', 'true');
+  item.append(element('p', entry.category + ' · ' + cardNumber(index), 'tile-meta'), name, element('p', firstSentence(entry.hook), 'tile-hook'), open, icon);
   return item;
 }
 
