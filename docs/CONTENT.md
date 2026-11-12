@@ -10,6 +10,15 @@ Science asks about observed natural processes; engineering follows mechanisms an
 
 Hooks include mysteries, sensory observations, familiar experiences, historical reversals, comparisons, and material journeys. New Deep Dives begin with distinct questions or concrete explanations rather than a repeated Imagine formula. Of 20 Deep Dive openings, only the retained tree-ring card starts with Imagine; Rosetta uses a short hypothetical comparison later. Bridge and woodcut openings were lightly revised. Analogies remain where helpful and are not required for every card. All cards retain the same voluntary three beats, with roughly 20–35-word Hooks, 85–115-word Core Insights, and 130–175-word Deep Dives. Length is a guardrail, not evidence of editorial quality.
 
+## Optional cover fields (Design System 1.0, issue #23)
+
+Cards may add two optional fields for Today's cover (DESIGN_SYSTEM.md section 2):
+
+- `question`: the italic cover headline. Wrap its key phrase in braces, for example `"Why would anyone launch a clock that’s {wrong on purpose?}"`; the braced phrase renders in cover gold. Use at most one braced phrase.
+- `tease`: one or two sentences, more mysterious than explanatory.
+
+Without them the cover shows the card's title and hook. Both are content and go through ChatGPT's fact-check (DESIGN_SYSTEM.md rule 3). No card has them yet; step 5 adds them.
+
 ## Topics, category identity, and visuals
 
 | # | Category | Topic / card title | Subdomain | Editorial approach |

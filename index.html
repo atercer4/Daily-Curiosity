@@ -13,12 +13,19 @@
 </head>
 <body>
   <a class="skip-link" href="#today-curiosity">Skip to today’s curiosity</a>
-  <header class="masthead"><span class="brand">Daily Curiosity<span aria-hidden="true"> ✳</span></span></header>
+  <header class="masthead"><span class="brand">Daily Curiosity<span aria-hidden="true"> ✳</span></span><time id="today-date" class="masthead-date"></time></header>
   <main>
+    <section class="cover" aria-labelledby="today-question">
+      <div class="cover-inner">
+        <p class="cover-meta"><span>Today’s curiosity</span><span id="cover-category" class="cover-category"></span><span id="cover-number"></span></p>
+        <h1 id="today-question" class="cover-question">Today’s Curiosity</h1>
+        <p id="today-tease" class="cover-tease"></p>
+        <a class="cover-cta" href="#today-curiosity">Find out why <span aria-hidden="true">↓</span></a>
+      </div>
+    </section>
+    <div class="page">
     <div class="intro"><p class="premise">One curious idea a day. Explore only as deeply as you want.</p></div>
-    <section class="today-surface" aria-labelledby="today-title">
-      <h1 id="today-title" class="surface-title">Today’s Curiosity</h1>
-      <p class="surface-help">One idea for your local calendar day. Come back tomorrow for another.</p>
+    <section class="today-surface" aria-labelledby="today-entry-title">
       <article id="today-curiosity" tabindex="-1" aria-labelledby="today-entry-title"></article>
     </section>
     <section class="explore-surface" aria-labelledby="explore-title">
@@ -31,6 +38,7 @@
     </section>
     <article id="curiosity" tabindex="-1" aria-labelledby="entry-title"></article>
     </section>
+    </div>
     <noscript><p class="notice">Please enable JavaScript to read today’s curiosity and explore the library. No network connection is needed.</p></noscript>
   </main>
   <footer><span class="footer-line">Daily Curiosity · a modern field journal for how the world works</span><span><span data-library-count>All</span> ideas. Explore at your own pace.</span></footer>

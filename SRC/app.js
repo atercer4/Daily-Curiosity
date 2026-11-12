@@ -98,6 +98,38 @@ function renderCard(article, index, titleId, level, moveFocus = false) {
   if (moveFocus) article.focus();
 }
 
+// Today's cover (DESIGN_SYSTEM.md section 2). Optional card fields: `question` (its key phrase may be
+// wrapped in {braces}) and `tease`. Without them the cover falls back to the card's title and hook.
+function coverText(entry) {
+  const question = entry.question || entry.title;
+  const match = /^([^{}]*)\{([^{}]+)\}([^{}]*)$/.exec(question);
+  return {
+    question: match ? [match[1], match[2], match[3]] : [question, '', ''],
+    tease: entry.tease || entry.hook
+  };
+}
+
+const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+function renderCover(index, date) {
+  const entry = DAILY_CURIOSITIES[index];
+  const { question, tease } = coverText(entry);
+  const heading = document.querySelector('#today-question');
+  heading.replaceChildren();
+  if (question[0]) heading.append(question[0]);
+  if (question[1]) heading.append(element('span', question[1], 'key-phrase'));
+  if (question[2]) heading.append(question[2]);
+  document.querySelector('#today-tease').textContent = tease;
+  document.querySelector('#cover-category').textContent = entry.category;
+  document.querySelector('#cover-number').textContent = 'No. ' + String(index + 1).padStart(3, '0');
+  // Calendar fields were read locally; UTC is only used to find the weekday of that calendar date.
+  const weekday = weekdays[new Date(Date.UTC(date.year, date.month - 1, date.day)).getUTCDay()];
+  const time = document.querySelector('#today-date');
+  time.setAttribute('datetime', [date.year, date.month, date.day].map((n, i) => String(n).padStart(i ? 2 : 4, '0')).join('-'));
+  time.textContent = `${weekday}, ${date.day} ${months[date.month - 1]}`;
+}
+
 function showCard(index, moveFocus = false) {
   currentIndex = index;
   renderCard(article, index, 'entry-title', 3, moveFocus);
@@ -130,5 +162,7 @@ choices.forEach(category => {
 // Counts in copy come from the library size, never hard-coded (DESIGN_SYSTEM.md section 5).
 document.querySelectorAll('[data-library-count]').forEach(node => { node.textContent = String(DAILY_CURIOSITIES.length); });
 const localDate = readLocalCalendarDate();
-renderCard(todayArticle, cardIndexForDate(localDate.year, localDate.month, localDate.day), 'today-entry-title', 2);
+const todayIndex = cardIndexForDate(localDate.year, localDate.month, localDate.day);
+renderCover(todayIndex, localDate);
+renderCard(todayArticle, todayIndex, 'today-entry-title', 2);
 selectCategory('Surprise Me', false);
