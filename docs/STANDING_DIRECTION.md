@@ -42,6 +42,20 @@ A mobile app only after the web experience has been validated.
 An optional reminder or a preview of the next discovery. A preview that collects nothing can be built autonomously; reminders by email or push notification collect visitor data and must escalate to the owner.
 Easy sharing of surprising discoveries through share links and good social previews. Comments, profiles or feeds count as social features and escalate.
 Encouraging people to keep exploring beyond the single daily idea.
+## 5b. Design System 1.0 (owner, 12 November 2026)
+The owner approved a visual redesign: "Direction F", a modern field journal and cabinet of curiosities. The full specification is [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md), which agents follow for all visual work.
+- Today opens on a dark, category-themed cover that leads with a question. Explore becomes "the cabinet of curiosities", a grid of tiles with a "?" Surprise Me tile.
+- The structure stays fixed; only the cover background and the drawing language change by category.
+- Approved within this decision, so these no longer escalate:
+  - self-hosting the two open-licence fonts (Playfair Display, Source Sans 3);
+  - optional per-card `question` and `tease` fields;
+  - original line-drawn figures, numbers strips and occasional interactives, under the rules in DESIGN_SYSTEM.md;
+  - turning Explore into the cabinet grid.
+- Interactive only when interaction teaches something materially better than prose or a static visual.
+- Every new line of copy (questions, teases, figure labels, numbers) is fact-checked like card text.
+- Still escalates: real or public-domain images, accounts, bookmarks or any saved state, and anything else on the section 7 list.
+- Priority: Design System 1.0 comes before further Phase 2 cards. New cards pause until the cover and the cabinet ship (DESIGN_SYSTEM.md section 6), then resume.
+
 ## 6. Roadmap
 ### Phase 1 — Feature freeze and public-product readiness (current, near completion)
 Finish the established web experience and create a stable baseline agents can safely improve: complete v7 final polish; fix the known accessibility/heading issue; resolve approved wording cleanup; final responsive and accessibility QA; verify static deployment; preserve all regression tests; final release notes; GitHub as source of truth; automated CI; Netlify deploy previews; production deployment workflow; rollback procedure.
