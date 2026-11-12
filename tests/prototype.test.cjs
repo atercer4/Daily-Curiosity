@@ -21,7 +21,7 @@ const ORIGINAL_DAILY_IDS = ['venus-clocks', 'suspension-bridge', 'woodcut-revers
   'autumn-pigments', 'qr-recovery', 'gothic-light', 'penny-black', 'tree-ring-calendar', 'bicycle-gears', 'ultramarine', 'roman-amphorae'];
 // extra: synthetic cards appended (in the test only) to content and to the end of the daily order.
 function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, extra = []) {
-  const controls = new NodeStub('div'), article = new NodeStub('article'), today = new NodeStub('article'), count = new NodeStub('span');
+  const controls = new NodeStub('div'), cabinet = new NodeStub('ul'), cabinetCount = new NodeStub('p'), article = new NodeStub('article'), today = new NodeStub('article'), count = new NodeStub('span');
   const cover = Object.fromEntries(['#today-question', '#today-tease', '#cover-category', '#cover-number', '#today-date'].map(id => [id, new NodeStub(id === '#today-date' ? 'time' : 'p')]));
   let random = initialRandom;
   const math = Object.create(Math);
@@ -29,6 +29,8 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
   const context = vm.createContext({ Math: math, document: {
     querySelector: selector => {
       if (selector === '#categories') return controls;
+      if (selector === '#cabinet') return cabinet;
+      if (selector === '#cabinet-count') return cabinetCount;
       if (selector === '#curiosity') return article;
       if (selector === '#today-curiosity') return today;
       if (selector in cover) return cover[selector];
@@ -47,7 +49,7 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
   vm.runInContext(extra.length ? daily.slice(0, listEnd) + extra.map(e => ',\n  ' + JSON.stringify(e.id)).join('') + daily.slice(listEnd) : daily, context);
   context.readLocalCalendarDate = () => date; // Inject calendar fields, not a mocked clock.
   vm.runInContext(read('SRC/app.js'), context);
-  return { controls, article, today, count, cover, context, entries, setRandom: value => { random = value; } };
+  return { controls, cabinet, cabinetCount, article, today, count, cover, context, entries, setRandom: value => { random = value; } };
 }
 function descendants(node, tag) {
   return node.children.flatMap(child => [...(child.tag === tag ? [child] : []), ...descendants(child, tag)]);
@@ -58,12 +60,24 @@ function find(node, predicate) {
 const title = f => find(f.article, n => n.className === 'card-title')[0].textContent;
 const headingLevels = article => find(article, n => /^h[1-6]$/.test(n.tag)).map(n => [Number(n.tag[1]), n.textContent]);
 const words = text => text.trim().split(/\s+/u).length;
+// The cabinet (issue #24): controls are the filter chips (All + categories); the first grid item is the "?" tile.
+const surpriseButton = f => f.cabinet.children[0].children[0];
+const tiles = f => f.cabinet.children.slice(1);
+const tileFor = (f, id) => tiles(f).find(t => find(t, n => n.className === 'tile-title')[0].id === 'tile-title-' + id);
+const tileButton = (f, id) => find(tileFor(f, id), n => n.tag === 'button')[0];
+const filterButton = (f, name) => f.controls.children.find(n => n.textContent === name);
+// Opens a card the way a reader does: through its tile, choosing "All" first if a filter hides it.
 function selectEntry(f, index) {
-  if (title(f) === f.entries[index].title) f.controls.children[0].events.click();
+  if (!tileFor(f, f.entries[index].id)) filterButton(f, 'All').events.click();
+  tileButton(f, f.entries[index].id).events.click();
+}
+// Opens a card through the "?" tile by steering Math.random to its slot.
+function surpriseTo(f, index) {
+  if (title(f) === f.entries[index].title) surpriseButton(f).events.click();
   const candidates = Array.from(f.entries).filter(e => e.title !== title(f));
   const slot = candidates.findIndex(e => e.id === f.entries[index].id);
   f.setRandom((slot + 0.5) / candidates.length);
-  f.controls.children[0].events.click();
+  surpriseButton(f).events.click();
 }
 function assertClosed(article) {
   const layers = descendants(article, 'details');
@@ -95,38 +109,78 @@ test('at least twenty sourced cards with unique IDs and titles, balanced categor
   });
 });
 
-test('five native choice buttons expose one selected state and initial hook without a gate', () => {
+test('five native filter chips expose one selected state; the "?" tile leads the grid; initial hook without a gate', () => {
   const f = fixture();
-  assert.deepEqual(f.controls.children.map(n => n.textContent), ['Take me somewhere unexpected', ...categories]);
+  assert.deepEqual(f.controls.children.map(n => n.textContent), ['All', ...categories]);
   assert.ok(f.controls.children.every(n => n.tag === 'button' && n.type === 'button'));
   assert.equal(f.controls.children[0].attributes['aria-pressed'], 'true');
   assert.equal(f.controls.children.filter(n => n.attributes['aria-pressed'] === 'true').length, 1);
+  const surprise = surpriseButton(f);
+  assert.equal(f.cabinet.children[0].className, 'tile tile-surprise');
+  assert.equal(surprise.tag, 'button'); assert.equal(surprise.type, 'button');
+  assert.equal(surprise.children[0].textContent, '?');
+  assert.equal(surprise.children[0].attributes['aria-hidden'], 'true');
+  assert.equal(surprise.children[1].textContent, 'Take me somewhere unexpected');
   assert.equal(title(f), f.entries[0].title);
   assert.ok(f.article.children.some(n => n.textContent === f.entries[0].hook));
   assertClosed(f.article);
   assert.equal(f.article.focused, undefined, 'No automatic focus steal on load');
 });
 
-test('each category cycles all of its cards twice without an immediate repeat', () => {
-  categories.forEach((category, i) => {
-    const f = fixture();
-    const expected = Array.from(f.entries.filter(e => e.category === category), e => e.id);
-    const seen = [], size = expected.length;
-    for (let repeat = 0; repeat < 2 * size; repeat++) {
-      const previous = title(f);
-      f.controls.children[i + 1].events.click();
-      const entry = f.entries.find(e => e.title === title(f));
-      assert.equal(entry.category, category);
-      assert.notEqual(title(f), previous);
-      seen.push(entry.id);
-      assert.equal(f.controls.children[i + 1].attributes['aria-pressed'], 'true');
-      assert.equal(f.controls.children.filter(n => n.attributes['aria-pressed'] === 'true').length, 1);
-      assert.equal(f.article.focused, true);
-    }
-    assert.equal(new Set(seen.slice(0, size)).size, size);
-    assert.deepEqual(seen.slice(0, size), seen.slice(size));
-    assert.deepEqual([...new Set(seen)].sort(), expected.sort());
+test('every tile shows category, number, title, the hook\'s first sentence and a native "Look inside" button', () => {
+  const f = fixture();
+  assert.equal(tiles(f).length, f.entries.length, 'one tile per card under "All"');
+  f.entries.forEach((entry, i) => {
+    const item = tiles(f)[i];
+    assert.equal(item.tag, 'li');
+    assert.equal(item.attributes['data-category'], { 'Science & Nature': 'science', 'Engineering & Technology': 'engineering', 'Arts & Culture': 'arts', 'History & Society': 'history' }[entry.category]);
+    const [meta, name, hook, button] = item.children;
+    assert.equal(meta.textContent, entry.category + ' · No. ' + String(i + 1).padStart(3, '0'));
+    assert.equal(name.textContent, entry.title);
+    assert.ok(entry.hook.startsWith(hook.textContent), entry.id + ' hook prefix');
+    assert.match(hook.textContent, /[.!?]["”’)]*$/, entry.id + ' ends a sentence');
+    assert.ok(hook.textContent.length < entry.hook.length || !/[.!?]\s/.test(entry.hook), entry.id + ' only the first sentence');
+    assert.equal(button.tag, 'button'); assert.equal(button.type, 'button');
+    assert.equal(button.children[0].textContent, 'Look inside');
+    assert.equal(button.children[1].textContent, ' →');
+    assert.equal(button.children[1].attributes['aria-hidden'], 'true');
+    assert.equal(button.attributes['aria-labelledby'], button.id + ' ' + name.id, 'accessible name is "Look inside <title>"');
   });
+  const ids = tiles(f).flatMap(t => find(t, n => n.id).map(n => n.id));
+  assert.equal(new Set(ids).size, ids.length, 'tile ids are unique');
+  assert.equal(f.context.firstSentence('One. Two.'), 'One.');
+  assert.equal(f.context.firstSentence('He said “Go.” Then left.'), 'He said “Go.”');
+  assert.equal(f.context.firstSentence('No full stop'), 'No full stop');
+});
+
+test('every card is reachable from the grid and from each filter; opening a tile moves focus and starts closed', () => {
+  const f = fixture();
+  ['All', ...categories].forEach(filter => {
+    const chip = filterButton(f, filter);
+    chip.events.click();
+    assert.equal(chip.attributes['aria-pressed'], 'true');
+    assert.equal(f.controls.children.filter(n => n.attributes['aria-pressed'] === 'true').length, 1);
+    const expected = f.entries.filter(e => filter === 'All' || e.category === filter);
+    assert.deepEqual(tiles(f).map(t => t.children[1].textContent), Array.from(expected, e => e.title), filter);
+    assert.equal(surpriseButton(f).children[1].textContent, 'Take me somewhere unexpected', 'the "?" tile stays under every filter');
+    assert.equal(f.cabinetCount.textContent, filter === 'All' ? `${f.entries.length} curiosities` : `${expected.length} of ${f.entries.length} curiosities · ${filter}`);
+    expected.forEach(entry => {
+      descendants(f.article, 'details').forEach(n => { n.open = true; });
+      f.article.focused = undefined;
+      tileButton(f, entry.id).events.click();
+      assert.equal(title(f), entry.title);
+      assertClosed(f.article);
+      assert.equal(f.article.focused, true, 'focus moves to the opened card');
+      assert.equal(chip.attributes['aria-pressed'], 'true', 'opening a tile keeps the filter');
+    });
+  });
+});
+
+test('counts come from the library size and filters split it exactly', () => {
+  const f = fixture();
+  const sizes = categories.map(c => { filterButton(f, c).events.click(); return tiles(f).length; });
+  assert.equal(sizes.reduce((a, b) => a + b, 0), f.entries.length);
+  assert.doesNotMatch(read('SRC/app.js'), /\b(five|twenty|Twenty|Five)\b/);
 });
 
 test('initial Surprise Me covers every card bin, including their boundaries', () => {
@@ -139,7 +193,7 @@ test('initial Surprise Me covers every card bin, including their boundaries', ()
     for (const random of [lowest(i), (i + 1) / n - Number.EPSILON]) {
       const f = fixture(random);
       assert.equal(title(f), f.entries[i].title);
-      assert.equal(f.controls.children[0].attributes['aria-pressed'], 'true');
+      assert.equal(f.controls.children[0].attributes['aria-pressed'], 'true', '"All" is selected on load');
     }
   }
 });
@@ -156,7 +210,9 @@ test('Surprise Me reaches every other card from every current card; no immediate
       for (const random of [lowest(slot), (slot + 1) / (n - 1) - Number.EPSILON]) {
         const f = fixture((current + 0.5) / n);
         f.setRandom(random);
-        f.controls.children[0].events.click();
+        f.article.focused = undefined;
+        surpriseButton(f).events.click();
+        assert.equal(f.article.focused, true);
         assert.equal(title(f), f.entries[expected].title);
         assert.notEqual(title(f), f.entries[current].title);
         assertClosed(f.article);
@@ -165,27 +221,27 @@ test('Surprise Me reaches every other card from every current card; no immediate
   }
 });
 
-test('switching categories uses the current card, not a saved preference or history', () => {
+test('filters change only the grid: the open card, Today and the "?" draw ignore them; no saved preference', () => {
   const f = fixture(0.99);
-  categories.forEach((category, i) => {
-    f.controls.children[(i + 1) % 4 + 1].events.click();
-    f.controls.children[i + 1].events.click();
-    const matches = f.entries.filter(e => e.category === category);
-    assert.equal(title(f), matches[0].title);
-    f.setRandom(0.999);
-    f.controls.children[0].events.click();
-    assert.equal(f.controls.children[0].attributes['aria-pressed'], 'true');
+  const open = title(f), today = [...f.today.children];
+  categories.forEach(category => {
+    filterButton(f, category).events.click();
+    assert.equal(title(f), open, 'filtering does not replace the open card');
+    assert.deepEqual(f.today.children, today);
   });
-  const within = fixture(2.5 / f.entries.length);
-  within.controls.children[1].events.click();
-  assert.equal(title(within), within.entries[3].title, 'Category continues from a card drawn by Surprise Me');
+  // With a filter on, the "?" still draws from the whole library (excluding only the open card).
+  filterButton(f, categories[0]).events.click();
+  const other = f.entries.findIndex(e => e.category !== categories[0] && e.title !== open);
+  surpriseTo(f, other);
+  assert.equal(title(f), f.entries[other].title);
+  assert.equal(filterButton(f, categories[0]).attributes['aria-pressed'], 'true');
 });
 
 test('every real selection path render complete content/sources and reset disclosures', () => {
   const f = fixture();
-  f.entries.forEach((entry, i) => {
+  [...f.entries.map((entry, i) => [entry, i, selectEntry]), ...f.entries.map((entry, i) => [entry, i, surpriseTo])].forEach(([entry, i, open]) => {
     descendants(f.article, 'details').forEach(n => { n.open = true; });
-    selectEntry(f, i);
+    open(f, i);
     assert.equal(title(f), entry.title);
     assertClosed(f.article);
     const paragraphs = descendants(f.article, 'p').map(n => n.textContent);
@@ -207,12 +263,14 @@ test('closing the core resets the deep dive, while reopening it does not reveal 
   core.open = true; core.events.toggle(); assert.equal(deep.open, false);
 });
 
-test('a new page instance forgets category state and starts with Surprise Me', () => {
+test('a new page instance forgets the filter and starts on "All" with a random card', () => {
   const first = fixture();
   first.controls.children[3].events.click();
+  assert.equal(first.controls.children[3].attributes['aria-pressed'], 'true');
   const n = first.entries.length;
   const reloaded = fixture((n - 0.5) / n);
   assert.equal(reloaded.controls.children[0].attributes['aria-pressed'], 'true');
+  assert.equal(tiles(reloaded).length, n);
   assert.equal(title(reloaded), reloaded.entries[n - 1].title);
   assertClosed(reloaded.article);
 });
@@ -329,14 +387,16 @@ test('leap days, century rules, year boundaries, and representative DST dates ad
   assert.match(daily, /getFullYear\(\)/); assert.match(daily, /getMonth\(\)/); assert.match(daily, /getDate\(\)/);
 });
 
-test('Today nodes and open disclosures survive every Explore category and Surprise action', () => {
+test('Today nodes and open disclosures survive every filter, tile and Surprise action', () => {
   const f = fixture();
   const nodes = [...f.today.children];
   const [core, deep] = descendants(f.today, 'details');
   core.open = true; deep.open = true;
-  f.controls.children.forEach(button => {
-    for (let i = 0; i < 6; i++) {
-      button.events.click();
+  const actions = [...f.controls.children.map(b => () => b.events.click()), () => surpriseButton(f).events.click(),
+    ...f.entries.map(e => () => selectEntry(f, f.entries.indexOf(e)))];
+  actions.forEach(action => {
+    for (let i = 0; i < 3; i++) {
+      action();
       assert.deepEqual(f.today.children, nodes);
       assert.equal(core.open, true); assert.equal(deep.open, true);
     }
@@ -385,7 +445,7 @@ test('original card fields stay byte-stable against the git-era baseline; no per
     assert.equal(createHash('sha256').update(JSON.stringify(fields)).digest('hex'), sha, 'original fields changed: ' + id);
   }
   for (const path of ['SRC/app.js','SRC/daily.js','SRC/content.js']) assert.doesNotMatch(read(path), /\b(localStorage|sessionStorage|indexedDB|fetch|XMLHttpRequest|sendBeacon|WebSocket|Notification)\b|document\.cookie/);
-  assert.match(read('index.html'), /Today’s Curiosity/); assert.match(read('index.html'), /Explore More/);
+  assert.match(read('index.html'), /Today’s Curiosity/); assert.match(read('index.html'), /The cabinet of curiosities/);
 });
 
 test('every recall prompt is optional, nested inside Deep Dive, and responses begin closed', () => {
@@ -420,7 +480,7 @@ test('same-card Today and Explore recall is independent and Explore changes rese
   explore.forEach(n=>n.open=true);
   today[2].open=false; assert.equal(explore[2].open,true);
   today[2].open=true;
-  f.controls.children[1].events.click();
+  selectEntry(f, (f.entries.findIndex(e=>e.title===title(f))+1)%f.entries.length);
   assert.equal(descendants(f.article,'details')[2].open,false);
   assert.equal(today[2].open,true);
   assert.equal(f.today.focused,undefined);
@@ -452,7 +512,7 @@ test('heading outline nests each card below its surface heading on Today and Exp
   // Design 1.0 step 2: the cover question is the page's only h1; Today's card title stays h2 below it.
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.match(html, /<h1 id="today-question"[^>]*>Today’s Curiosity<\/h1>/);
-  assert.match(html, /<h2 id="explore-title"[^>]*>Explore More<\/h2>/);
+  assert.match(html, /<h2 id="explore-title"[^>]*>The cabinet of curiosities<\/h2>/);
   assert.match(html, /<h3 id="selection-title"[^>]*>What are you curious about today\?<\/h3>/);
   assert.doesNotMatch(html, /<h[4-6]/);
   const outline = base => [[base, null], [base + 1, 'The idea'], [base + 2, 'Look closer'], [base + 3, 'Sources'], [base + 3, 'Remember this?']];
@@ -567,17 +627,19 @@ test('the app and daily rotation generalize to N cards: two synthetic cards appe
   for (let slot = 0; slot < n - 1; slot++) {
     const g = fixture((n - 0.5) / n, undefined, extra);
     g.setRandom((slot + 0.5) / (n - 1));
-    g.controls.children[0].events.click();
+    surpriseButton(g).events.click();
     reached.add(title(g));
   }
   assert.equal(reached.size, n - 1);
   assert.ok(!reached.has(f.entries[n - 1].title));
-  // Categories: each cycles all of its cards, including the appended ones.
-  categories.forEach((category, i) => {
-    const g = fixture(0, undefined, extra), expected = f.entries.filter(e => e.category === category).map(e => e.title), seen = [];
-    for (let k = 0; k < expected.length; k++) { g.controls.children[i + 1].events.click(); seen.push(title(g)); }
-    assert.deepEqual([...seen].sort(), [...expected].sort(), category);
+  // Filters: each category's tiles include the appended cards, and every tile opens its card.
+  categories.forEach(category => {
+    const g = fixture(0, undefined, extra), expected = f.entries.filter(e => e.category === category).map(e => e.title);
+    filterButton(g, category).events.click();
+    const seen = tiles(g).map(t => { find(t, n => n.tag === 'button')[0].events.click(); return title(g); });
+    assert.deepEqual(seen, Array.from(expected), category);
   });
+  assert.equal(fixture(0, undefined, extra).cabinetCount.textContent, n + ' curiosities');
   categories.forEach(c => assert.equal(f.entries.filter(e => e.category === c).length, baseCount(c) + extra.filter(e => e.category === c).length, c));
   // Appended cards render the same nested outline as the originals.
   selectEntry(f, n - 1);
@@ -650,7 +712,7 @@ test('Design 1.0 copy: section labels, invitation wording, and no hard-coded car
   assert.equal(f.count.textContent, String(f.entries.length), 'footer count comes from the library size');
   const labels = descendants(f.article, 'summary').map(s => s.children[0].textContent);
   assert.deepEqual(labels, ['The idea', 'Look closer', 'Reveal response']);
-  assert.equal(f.controls.children[0].textContent, 'Take me somewhere unexpected');
+  assert.equal(surpriseButton(f).children[1].textContent, 'Take me somewhere unexpected');
   assert.doesNotMatch(read('SRC/app.js'), /Core Insight|Deep Dive &|Pause and recall/);
 });
 
