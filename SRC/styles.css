@@ -17,6 +17,9 @@
   /* Text on the night cover: both pass AA (ivory 15.0:1, cover-muted well above 4.5:1). */
   --cover-muted: #C3CAD6;
   --masthead-phone: 88px;
+  /* Cover theme defaults (before a card is chosen): the night base with the blueprint grid. */
+  --cover-base: var(--night); --cover-drawing: none;
+  --cover-lines-a: linear-gradient(#ffffff08 1px, transparent 1px); --cover-lines-b: linear-gradient(90deg, #ffffff08 1px, transparent 1px);
   /* Faint paper grain: inline SVG noise, no image files. */
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .12 0 0 0 0 .11 0 0 0 0 .1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
 }
@@ -30,7 +33,7 @@
 body { margin: 0; background: var(--ivory) var(--grain); color: var(--ink); font: 1.0625rem/1.65 var(--text); }
 .masthead, footer { max-width: 1120px; margin: auto; padding: 25px 32px; display: flex; justify-content: space-between; gap: 16px; align-items: center; }
 /* The masthead sits on the dark cover band (DESIGN_SYSTEM.md section 2). */
-.masthead { max-width: none; padding-inline: max(32px, calc((100% - 1056px) / 2)); background: var(--night); color: var(--ivory); }
+.masthead { max-width: none; padding-inline: max(32px, calc((100% - 1056px) / 2)); background: var(--cover-base); color: var(--ivory); }
 .masthead .brand span { color: var(--cover-gold); }
 .masthead-date { font-size: .78rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--cover-muted); }
 .brand { font: 400 1.6rem/1.2 var(--display); letter-spacing: -.01em; }
@@ -117,8 +120,23 @@ article:focus { outline: 3px solid var(--navy); outline-offset: 4px; }
 .recall-response > p { margin: 18px 0 0; }
 .recall-response summary > span:first-child { font: 600 1rem/1.3 var(--text); }
 
-/* Today cover (DESIGN_SYSTEM.md section 2). Base navy blueprint theme for every category until step 4. */
-.cover { background-color: var(--night); background-image: linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px); background-size: 32px 32px; color: var(--ivory); padding: 24px 32px 64px; }
+/* Today cover (DESIGN_SYSTEM.md section 2). */
+/* Design 1.0 step 4: one cover component with four category themes (DESIGN_SYSTEM.md section 1).
+   Only the base colour and the drawing language change; the structure is identical. All CSS and inline SVG.
+   Drawing lines are ivory at stroke-opacity .05 at most, so text keeps AA contrast even where lines cross. */
+.cover { background-color: var(--cover-base); background-image: var(--cover-drawing), var(--cover-lines-a), var(--cover-lines-b); background-repeat: no-repeat, repeat, repeat; background-position: right max(0px, calc(50% - 560px)) center, 0 0, 0 0; background-size: min(44vw, 440px) auto, 32px 32px, 32px 32px; color: var(--ivory); padding: 24px 32px 64px; }
+/* Navy blueprint: technical grid, orbit and construction lines. */
+.cover[data-category="engineering"], .masthead[data-category="engineering"] { --cover-base: #16202E; --cover-muted: #C3CAD6; }
+.cover[data-category="engineering"] { --cover-drawing: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cg fill='none' stroke='%23F9F5E8' stroke-opacity='.05' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='200' cy='200' r='150'/%3E%3Ccircle cx='200' cy='200' r='40'/%3E%3Cellipse cx='200' cy='200' rx='190' ry='64' transform='rotate(-24 200 200)'/%3E%3Cpath d='M200 24V376M24 200H376' stroke-dasharray='6 8'/%3E%3Ccircle cx='364' cy='130' r='8'/%3E%3Cpath d='M50 384H350M50 376V392M350 376V392'/%3E%3C/g%3E%3C/svg%3E"); }
+/* Deep green specimen plate: a ruled plate frame, a botanical line drawing and a specimen label. */
+.cover[data-category="science"], .masthead[data-category="science"] { --cover-base: #16271E; --cover-muted: #C4D2C6; }
+.cover[data-category="science"] { --cover-drawing: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cg fill='none' stroke='%23F9F5E8' stroke-opacity='.05' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='14' y='14' width='372' height='372'/%3E%3Crect x='24' y='24' width='352' height='352'/%3E%3Cpath d='M190 350C110 280 100 160 190 56C280 160 270 280 190 350Z'/%3E%3Cpath d='M190 372V80M190 300L144 262M190 300L236 262M190 240L136 200M190 240L244 200M190 180L152 144M190 180L228 144M190 124L172 106M190 124L208 106'/%3E%3Crect x='272' y='318' width='92' height='44'/%3E%3Cpath d='M284 334H352M284 348H334'/%3E%3C/g%3E%3C/svg%3E"); --cover-lines-a: none; --cover-lines-b: none; }
+/* Red-brown pigment and paper: brushwork, swatches and a brush. */
+.cover[data-category="arts"], .masthead[data-category="arts"] { --cover-base: #2D1912; --cover-muted: #DCC8BC; }
+.cover[data-category="arts"] { --cover-drawing: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cg fill='none' stroke='%23F9F5E8' stroke-opacity='.05' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M40 310C120 250 220 340 360 260' stroke-width='22'/%3E%3Cpath d='M60 196C150 140 240 214 344 150' stroke-width='12'/%3E%3Crect x='56' y='52' width='40' height='40'/%3E%3Crect x='108' y='52' width='40' height='40'/%3E%3Crect x='160' y='52' width='40' height='40'/%3E%3Cpath d='M372 32L290 114M290 114C270 104 248 116 250 138C252 152 244 160 236 166C262 172 292 160 294 132'/%3E%3C/g%3E%3C/svg%3E"); --cover-lines-a: none; --cover-lines-b: none; }
+/* Plum-brown archive: ruled ledger lines, a document and a seal. */
+.cover[data-category="history"], .masthead[data-category="history"] { --cover-base: #271A27; --cover-muted: #D5C6D4; }
+.cover[data-category="history"] { --cover-drawing: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cg fill='none' stroke='%23F9F5E8' stroke-opacity='.05' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M28 14V386M36 14V386'/%3E%3Crect x='72' y='40' width='190' height='250'/%3E%3Cpath d='M96 90H238M96 120H238M96 150H214M96 180H238M96 210H190'/%3E%3Ccircle cx='300' cy='300' r='70'/%3E%3Ccircle cx='300' cy='300' r='58'/%3E%3Cpath d='M300 262L310 290H340L316 308L325 336L300 319L275 336L284 308L260 290H290Z'/%3E%3C/g%3E%3C/svg%3E"); --cover-lines-b: none; }
 .cover-inner { max-width: 1056px; margin: auto; }
 .cover-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0 0 20px; font-size: .78rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--cover-muted); }
 .cover-category:empty, #cover-number:empty { display: none; }
@@ -132,6 +150,8 @@ article:focus { outline: 3px solid var(--navy); outline-offset: 4px; }
 @media (max-width: 480px) {
   /* Rule 4: on phones the first screen holds only masthead, metadata, question, tease and button. */
   .cover { min-height: calc(100vh - var(--masthead-phone)); min-height: calc(100svh - var(--masthead-phone)); padding: 20px 16px 40px; }
+  /* The drawing shrinks and sits below the button, behind empty space. */
+  .cover { background-position: right -48px bottom 0, 0 0, 0 0; background-size: 220px auto, 32px 32px, 32px 32px; }
   .cover-meta { gap: 4px 10px; }
 }
 /* The cabinet of curiosities (DESIGN_SYSTEM.md section 2.4): filter chips, a "?" tile, then one tile per card. */
@@ -139,6 +159,12 @@ article:focus { outline: 3px solid var(--navy); outline-offset: 4px; }
 .selection .cabinet-count { color: var(--muted); }
 .cabinet { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 14px; }
 .tile { display: flex; flex-direction: column; min-width: 0; padding: 18px 18px 14px; background: var(--ivory); border: 1px solid var(--rule); border-top: 3px solid var(--accent); border-radius: 4px; }
+/* Original line icons per category (inline SVG used as a mask, coloured with the category accent; decorative). */
+.tile-icon { order: -1; width: 28px; height: 28px; margin-bottom: 10px; background-color: var(--accent); -webkit-mask: var(--tile-icon) center / contain no-repeat; mask: var(--tile-icon) center / contain no-repeat; }
+.tile[data-category="engineering"] { --tile-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3Cellipse cx='12' cy='12' rx='10' ry='4' transform='rotate(-25 12 12)'/%3E%3Cpath d='M12 2v3M12 19v3'/%3E%3C/g%3E%3C/svg%3E"); }
+.tile[data-category="science"] { --tile-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 20C6 15 6 9 12 3C18 9 18 15 12 20Z'/%3E%3Cpath d='M12 22V7M12 15L9 12M12 11L15 8'/%3E%3C/g%3E%3C/svg%3E"); }
+.tile[data-category="arts"] { --tile-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 3L12 12'/%3E%3Cpath d='M12 12C9 10 5 12 5 15.5C5 18 4 19 2.5 20C7 21.5 12 20 12 16Z'/%3E%3C/g%3E%3C/svg%3E"); }
+.tile[data-category="history"] { --tile-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='3' width='12' height='16' rx='1'/%3E%3Cpath d='M7 7H13M7 10H13M7 13H10'/%3E%3Ccircle cx='17.5' cy='17.5' r='3.5'/%3E%3C/g%3E%3C/svg%3E"); }
 .tile-meta { margin: 0 0 8px; font-size: .74rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
 .selection .tile-meta { color: var(--accent); font-size: .74rem; margin-bottom: 8px; }
 .tile-title { margin: 0 0 8px; font: 400 1.3rem/1.2 var(--display); color: var(--ink); text-wrap: balance; overflow-wrap: anywhere; }
@@ -173,4 +199,7 @@ article:focus { outline: 3px solid var(--navy); outline-offset: 4px; }
   button[aria-pressed="true"] { background: Highlight; color: HighlightText; border-color: Highlight; forced-color-adjust: none; }
   .cover-cta { border: 2px solid ButtonText; }
   .tile, .tile-surprise { border: 1px solid CanvasText; }
+  /* Cover drawings are decorative; system colours replace them. The tile icons stay visible as system text colour. */
+  .cover { background-image: none; }
+  .tile-icon { forced-color-adjust: none; background-color: CanvasText; }
 }

@@ -22,7 +22,7 @@ const ORIGINAL_DAILY_IDS = ['venus-clocks', 'suspension-bridge', 'woodcut-revers
 // extra: synthetic cards appended (in the test only) to content and to the end of the daily order.
 function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, extra = []) {
   const controls = new NodeStub('div'), cabinet = new NodeStub('ul'), cabinetCount = new NodeStub('p'), article = new NodeStub('article'), today = new NodeStub('article'), count = new NodeStub('span');
-  const cover = Object.fromEntries(['#today-question', '#today-tease', '#cover-category', '#cover-number', '#today-date'].map(id => [id, new NodeStub(id === '#today-date' ? 'time' : 'p')]));
+  const cover = Object.fromEntries(['#today-question', '#today-tease', '#cover-category', '#cover-number', '#today-date', '#today-cover', '.masthead'].map(id => [id, new NodeStub({ '#today-date': 'time', '#today-cover': 'section', '.masthead': 'header' }[id] || 'p')]));
   let random = initialRandom;
   const math = Object.create(Math);
   math.random = () => random;
@@ -785,10 +785,10 @@ test('Today cover markup: metadata, question, tease and a "Find out why" link wh
   assert.doesNotMatch(cover, /<(img|svg|figure|button)\b/);
 });
 
-test('Today cover styling: base night theme for every category, AA text on night, phone first screen, motion only when allowed', () => {
-  const css = read('SRC/styles.css'), app = read('SRC/app.js');
-  assert.doesNotMatch(app, /cover[^\n]*data-category|data-theme/, 'no per-category cover theme until step 4');
-  assert.match(css, /\.cover \{ background-color: var\(--night\);/);
+test('Today cover styling: night base before a card is chosen, AA text on night, phone first screen, motion only when allowed', () => {
+  const css = read('SRC/styles.css');
+  assert.match(css, /--cover-base: var\(--night\);/, 'default cover base is night');
+  assert.match(css, /\.cover \{ background-color: var\(--cover-base\);/);
   const lum = hex => { const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(v => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
   const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
   const muted = css.match(/--cover-muted: (#[0-9A-F]{6});/)[1];
@@ -805,4 +805,101 @@ test('Today cover styling: base night theme for every category, AA text on night
   assert.doesNotMatch(outside, /animation|@keyframes|transition|scroll-behavior/);
   assert.match(css.slice(motionStart, motionEnd), /scroll-behavior: smooth/);
   assert.match(css, /@media \(forced-colors: active\)[\s\S]*\.cover-cta/);
+});
+
+// Design System 1.0 step 4 (issue #25): four category cover themes and tile icons.
+const themeKeys = { 'Science & Nature': 'science', 'Engineering & Technology': 'engineering', 'Arts & Culture': 'arts', 'History & Society': 'history' };
+const cssRule = (css, selector) => { const i = css.indexOf(selector + ' {'); return i < 0 ? null : css.slice(i, css.indexOf('}', i)); };
+test('each category maps to one cover theme: Today sets the cover and masthead theme from its card on every day', () => {
+  const css = read('SRC/styles.css');
+  for (const key of Object.values(themeKeys)) {
+    const vars = cssRule(css, `.cover[data-category="${key}"], .masthead[data-category="${key}"]`);
+    assert.ok(vars, key + ' base and muted text');
+    assert.match(vars, /--cover-base: #[0-9A-F]{6};/);
+    assert.match(vars, /--cover-muted: #[0-9A-F]{6};/);
+    const drawing = cssRule(css, `.cover[data-category="${key}"]`);
+    assert.ok(drawing, key + ' drawing');
+    assert.match(drawing, /--cover-drawing: url\("data:image\/svg\+xml,/);
+  }
+  const drawings = Object.values(themeKeys).map(key => cssRule(css, `.cover[data-category="${key}"]`));
+  assert.equal(new Set(drawings).size, 4, 'four distinct drawing languages');
+  // One component: the structure rule is shared, and only custom properties change per theme.
+  assert.equal((css.match(/^\.cover \{/gm) || []).length, 1);
+  for (const rule of css.matchAll(/\.(?:cover|masthead)\[data-category="[a-z]+"\][^{]*\{([^}]*)\}/g))
+    for (const decl of rule[1].split(';').map(d => d.trim()).filter(Boolean)) assert.match(decl, /^--[a-z-]+:/, 'theme rules only set custom properties: ' + decl.slice(0, 40));
+  const n = fixture().entries.length;
+  for (let i = 0; i < n; i++) {
+    const d = new Date(Date.UTC(2026, 9, 22 + i));
+    const f = fixture(0, { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1, day: d.getUTCDate() });
+    const entry = f.entries.find(e => e.title === find(f.today, x => x.className === 'card-title')[0].textContent);
+    assert.equal(f.cover['#today-cover'].attributes['data-category'], themeKeys[entry.category], entry.id);
+    assert.equal(f.cover['.masthead'].attributes['data-category'], themeKeys[entry.category], entry.id);
+  }
+});
+
+test('cover themes: ivory, cover gold and muted text pass AA on every base, even where drawing lines cross', () => {
+  const css = read('SRC/styles.css');
+  const lum = hex => { const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(v => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+  const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+  const mix = (a, b, t) => '#' + [1, 3, 5].map(i => Math.round(parseInt(a.slice(i, i + 2), 16) * (1 - t) + parseInt(b.slice(i, i + 2), 16) * t).toString(16).padStart(2, '0')).join('');
+  // Drawings are ivory lines at stroke-opacity .05 at most; the grid and ledger lines are #ffffff08 (about .03 each).
+  const drawings = [...css.matchAll(/--cover-drawing: url\("data:image\/svg\+xml,([^"]+)"\)/g)].map(m => decodeURIComponent(m[1]));
+  assert.equal(drawings.length, 4);
+  for (const svg of drawings) {
+    assert.match(svg, /^<svg[^>]*><g fill='none' stroke='#F9F5E8' stroke-opacity='([\d.]+)'[^>]*>/, 'one faint ivory stroke style');
+    assert.ok(Number(svg.match(/stroke-opacity='([\d.]+)'/)[1]) <= 0.05, 'faint drawing lines');
+    assert.equal((svg.match(/opacity|fill=|stroke=/g) || []).length, 3, 'no other fills, colours or opacities');
+  }
+  for (const m of css.matchAll(/--cover-lines-[ab]: (linear-gradient\([^;]*\));/g)) assert.match(m[1], /#ffffff08/);
+  // Worst case: two drawing lines crossing over both grid lines.
+  const worst = 2 * 0.05 + 2 * 8 / 255;
+  for (const key of Object.values(themeKeys)) {
+    const vars = cssRule(css, `.cover[data-category="${key}"], .masthead[data-category="${key}"]`);
+    const base = vars.match(/--cover-base: (#[0-9A-F]{6})/)[1], muted = vars.match(/--cover-muted: (#[0-9A-F]{6})/)[1];
+    for (const surface of [base, mix(base, '#F9F5E8', worst)])
+      for (const text of ['#F9F5E8', '#E2B867', muted]) assert.ok(ratio(text, surface) >= 4.5, `${text} on ${key} ${surface}: ${ratio(text, surface).toFixed(2)}`);
+    assert.ok(lum(base) < lum('#3E5F8A'), key + ' cover stays dark');
+  }
+});
+
+test('tile icons: one original inline-SVG line icon per category, decorative (aria-hidden), no external assets', () => {
+  const css = read('SRC/styles.css');
+  const icons = Object.values(themeKeys).map(key => {
+    const rule = cssRule(css, `.tile[data-category="${key}"]`);
+    assert.ok(rule, key + ' icon');
+    const url = rule.match(/--tile-icon: url\("(data:image\/svg\+xml,[^"]+)"\)/);
+    assert.ok(url, key + ' inline SVG data URI');
+    return url[1];
+  });
+  assert.equal(new Set(icons).size, 4, 'four distinct icons');
+  assert.match(cssRule(css, '.tile-icon'), /mask: var\(--tile-icon\)[^;]*;[^}]*$/);
+  assert.match(cssRule(css, '.tile-icon'), /background-color: var\(--accent\)/);
+  // All inline SVG (cover drawings and icons) is self-contained: no links, images, scripts or fonts.
+  const svgs = [...css.matchAll(/url\("data:image\/svg\+xml,([^"]+)"\)/g)].map(m => decodeURIComponent(m[1]));
+  assert.ok(svgs.length >= 9, 'grain, four drawings and four icons');
+  for (const svg of svgs) {
+    assert.doesNotMatch(svg, /href|<image|<script|<foreignObject|<text|@import|url\((?!#)/i, 'only internal url(#id) references');
+    assert.equal((svg.match(/https?:\/\//g) || []).join(), 'http://', 'only the SVG namespace');
+    assert.match(svg, /xmlns='http:\/\/www\.w3\.org\/2000\/svg'/);
+  }
+  const f = fixture();
+  tiles(f).forEach((item, i) => {
+    const icon = item.children[item.children.length - 1];
+    assert.equal(icon.tag, 'span');
+    assert.equal(icon.className, 'tile-icon');
+    assert.equal(icon.attributes['aria-hidden'], 'true');
+    assert.equal(icon.textContent, undefined, 'no text inside the icon');
+    assert.equal(item.attributes['data-category'], themeKeys[f.entries[i].category]);
+  });
+  assert.equal(find(surpriseButton(f), n => n.className === 'tile-icon').length, 0, 'the "?" tile keeps its own mark');
+});
+
+test('forced colors: cover drawings give way to system colours, tile icons stay visible, earlier support is kept', () => {
+  const css = read('SRC/styles.css');
+  const block = css.match(/@media \(forced-colors: active\) \{([\s\S]*?)\n\}/)[1];
+  assert.match(block, /\.cover \{ background-image: none; \}/);
+  assert.match(block, /\.tile-icon \{ forced-color-adjust: none; background-color: CanvasText; \}/);
+  assert.match(block, /\.bar-fill \{[^}]*background: CanvasText;/);
+  assert.match(block, /button\[aria-pressed="true"\] \{[^}]*Highlight/);
+  assert.match(block, /\.cover-cta \{ border: 2px solid ButtonText; \}/);
 });
