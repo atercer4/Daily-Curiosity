@@ -47,3 +47,9 @@ Observe outside the app, without analytics: is the prompt clearly optional, does
 ## Limitations
 
 Ephemeral recall state, no response input/evaluation, fixed 20-day content cycle, date read only on load, timezone/clock changes can repeat or skip cards, inherited external source availability issues, and pending independent browser/editorial QA. No deployment performed.
+
+## Issue #24: the cabinet of curiosities (12 November 2026)
+
+- Automated: every card is reachable from the grid under "All" and under its category filter; the "?" tile never repeats the open card and stays under every filter; opening a tile moves focus to the card with three closed layers; filters change only the grid; counts come from the library size; Today is untouched by every Explore action.
+- Headless Chromium at 320, 390 and 1280 px ([320](design/qa/dc-24-320.jpg), [390](design/qa/dc-24-390.jpg), [1280](design/qa/dc-24-1280.jpg)): no horizontal overflow, every chip and tile button at least 44px tall, no console errors. Pressing Enter on a "Look inside" button opened that card and focused it. Each tile button's accessible name is "Look inside <title>" via `aria-labelledby`.
+- [ ] Pending in real browsers: screen-reader pass of the tile list and filter chips, 200%/400% zoom, Windows High Contrast (tiles keep a CanvasText border; the selected chip keeps Highlight).

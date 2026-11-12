@@ -30,7 +30,9 @@ The v7 baseline was imported from Dropbox on 10 November 2026, with the old `sna
 | #20 | #19 | Phase 2 cards: `petrichor` (the smell of rain) and `exchequer-tallies` (tally sticks and the 1834 fire). |
 | #28 | #21 | Design System 1.0 (Direction F) recorded in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md). |
 | #31 | #30 | Fallback builder documented for when Claude is unavailable. |
-| (this PR) | #22 | Design System 1.0 step 1: self-hosted Playfair Display and Source Sans 3 (OFL), section 3 tokens and paper grain, labels The idea / Look closer / Remember this?, Surprise Me reads “Take me somewhere unexpected”, no hard-coded counts or “v6” badge. |
+| #32 | #22 | Design System 1.0 step 1: self-hosted Playfair Display and Source Sans 3 (OFL), section 3 tokens and paper grain, labels The idea / Look closer / Remember this?, Surprise Me reads “Take me somewhere unexpected”, no hard-coded counts or “v6” badge. |
+| #33 | #23 | Design System 1.0 step 2: the Today cover (question and tease, falling back to title and hook) and the phone first screen. |
+| (this PR) | #24 | Design System 1.0 step 3: Explore becomes “The cabinet of curiosities”, a grid of tiles with “All” plus category filter chips and a dark “?” Surprise Me tile; opening a tile shows the card below and moves focus to it. Category cycling is replaced by filtering. |
 
 No original card text changed other than the approved recall wording fix in issue #5.
 

@@ -1,14 +1,15 @@
 /* Local data + native disclosures. Independent Today and Explore surfaces; no storage or requests. */
 'use strict';
 const categoryNavigation = document.querySelector('#categories');
+const cabinet = document.querySelector('#cabinet');
+const cabinetCount = document.querySelector('#cabinet-count');
 const article = document.querySelector('#curiosity');
 const todayArticle = document.querySelector('#today-curiosity');
-const choices = ['Surprise Me', ...CATEGORIES];
-// Design System 1.0 copy: the Surprise Me choice keeps its role but reads as an invitation.
-const choiceLabels = { 'Surprise Me': 'Take me somewhere unexpected' };
+// The cabinet of curiosities (DESIGN_SYSTEM.md section 2.4): "All" plus the four categories filter the grid.
+const filters = ['All', ...CATEGORIES];
 // Category accent keys for CSS (data-category); the structure is identical for every category.
 const categoryKeys = { 'Science & Nature': 'science', 'Engineering & Technology': 'engineering', 'Arts & Culture': 'arts', 'History & Society': 'history' };
-let selectedCategory = 'Surprise Me';
+let selectedFilter = 'All';
 let currentIndex = -1;
 
 function element(tag, text, className) {
@@ -122,7 +123,7 @@ function renderCover(index, date) {
   if (question[2]) heading.append(question[2]);
   document.querySelector('#today-tease').textContent = tease;
   document.querySelector('#cover-category').textContent = entry.category;
-  document.querySelector('#cover-number').textContent = 'No. ' + String(index + 1).padStart(3, '0');
+  document.querySelector('#cover-number').textContent = cardNumber(index);
   // Calendar fields were read locally; UTC is only used to find the weekday of that calendar date.
   const weekday = weekdays[new Date(Date.UTC(date.year, date.month - 1, date.day)).getUTCDay()];
   const time = document.querySelector('#today-date');
@@ -130,33 +131,75 @@ function renderCover(index, date) {
   time.textContent = `${weekday}, ${date.day} ${months[date.month - 1]}`;
 }
 
+const cardNumber = index => 'No. ' + String(index + 1).padStart(3, '0');
+
+// The hook's first sentence, for the tile (closing quotes and brackets stay with it).
+function firstSentence(text) {
+  const match = /^.*?[.!?]["”’)]*(?=\s|$)/.exec(text);
+  return match ? match[0] : text;
+}
+
 function showCard(index, moveFocus = false) {
   currentIndex = index;
   renderCard(article, index, 'entry-title', 3, moveFocus);
+}
+
+// Surprise Me: the full library, excluding only the Explore card on screen. No browsing history.
+function surprise(moveFocus = true) {
+  const candidates = DAILY_CURIOSITIES.map((_, i) => i).filter(i => i !== currentIndex);
+  showCard(candidates[Math.floor(Math.random() * candidates.length)], moveFocus);
+}
+
+// The dark "?" tile always leads the grid, whatever the filter.
+const surpriseTile = element('li', null, 'tile tile-surprise');
+const surpriseButton = element('button', null, 'tile-surprise-button');
+surpriseButton.type = 'button';
+const mark = element('span', '?', 'tile-mark');
+mark.setAttribute('aria-hidden', 'true');
+surpriseButton.append(mark, element('span', 'Take me somewhere unexpected', 'tile-surprise-label'));
+surpriseButton.addEventListener('click', () => surprise());
+surpriseTile.append(surpriseButton);
+
+function tile(index) {
+  const entry = DAILY_CURIOSITIES[index];
+  const item = element('li', null, 'tile');
+  item.setAttribute('data-category', categoryKeys[entry.category]);
+  const name = element('p', entry.title, 'tile-title');
+  name.id = 'tile-title-' + entry.id;
+  const open = element('button', null, 'tile-action');
+  open.type = 'button';
+  open.id = 'tile-open-' + entry.id;
+  const arrow = element('span', ' →');
+  arrow.setAttribute('aria-hidden', 'true');
+  open.append(element('span', 'Look inside'), arrow);
+  // Every tile has the same visible action, so its accessible name adds the title: "Look inside <title>".
+  open.setAttribute('aria-labelledby', open.id + ' ' + name.id);
+  open.addEventListener('click', () => showCard(index, true));
+  item.append(element('p', entry.category + ' · ' + cardNumber(index), 'tile-meta'), name, element('p', firstSentence(entry.hook), 'tile-hook'), open);
+  return item;
+}
+
+function renderCabinet() {
+  const shown = DAILY_CURIOSITIES.map((entry, i) => selectedFilter === 'All' || entry.category === selectedFilter ? i : -1).filter(i => i !== -1);
+  cabinet.replaceChildren();
+  cabinet.append(surpriseTile, ...shown.map(tile));
+  const total = DAILY_CURIOSITIES.length;
+  cabinetCount.textContent = selectedFilter === 'All' ? `${total} curiosities` : `${shown.length} of ${total} curiosities · ${selectedFilter}`;
   [...categoryNavigation.children].forEach((button, i) => {
-    button.setAttribute('aria-pressed', String(choices[i] === selectedCategory));
+    button.setAttribute('aria-pressed', String(filters[i] === selectedFilter));
   });
 }
 
-function selectCategory(category, moveFocus = true) {
-  let index;
-  if (category === 'Surprise Me') {
-    // Same full library, excluding only the card on screen. No browsing history.
-    const candidates = DAILY_CURIOSITIES.map((_, i) => i).filter(i => i !== currentIndex);
-    index = candidates[Math.floor(Math.random() * candidates.length)];
-  } else {
-    const matches = DAILY_CURIOSITIES.map((entry, i) => entry.category === category ? i : -1).filter(i => i !== -1);
-    // Cycle every card in this category using only the current card.
-    index = matches[(matches.indexOf(currentIndex) + 1) % matches.length];
-  }
-  selectedCategory = category;
-  showCard(index, moveFocus);
+// Filtering changes only the grid; the open Explore card and Today stay as they are.
+function selectFilter(filter) {
+  selectedFilter = filter;
+  renderCabinet();
 }
 
-choices.forEach(category => {
-  const button = element('button', choiceLabels[category] || category);
+filters.forEach(filter => {
+  const button = element('button', filter);
   button.type = 'button';
-  button.addEventListener('click', () => selectCategory(category));
+  button.addEventListener('click', () => selectFilter(filter));
   categoryNavigation.append(button);
 });
 // Counts in copy come from the library size, never hard-coded (DESIGN_SYSTEM.md section 5).
@@ -165,4 +208,5 @@ const localDate = readLocalCalendarDate();
 const todayIndex = cardIndexForDate(localDate.year, localDate.month, localDate.day);
 renderCover(todayIndex, localDate);
 renderCard(todayArticle, todayIndex, 'today-entry-title', 2);
-selectCategory('Surprise Me', false);
+renderCabinet();
+surprise(false);
