@@ -24,7 +24,9 @@ const DAILY_CARD_IDS = Object.freeze([
   "ultramarine",
   "roman-amphorae",
   "gps-relativity",
-  "true-fresco"
+  "true-fresco",
+  "petrichor",
+  "exchequer-tallies"
 ]);
 const DAILY_EPOCH = Date.UTC(2026, 9, 22);
 

@@ -671,5 +671,63 @@ const DAILY_CURIOSITIES = [
       "prompt": "Why did a fresco painter plaster only one day’s area at a time?",
       "reveal": "The pigment had to go onto wet lime plaster, which fixes the color as it sets. Plaster that dried before painting could only take less durable secco work."
     }
+  },
+  {
+    "id": "petrichor",
+    "category": "Science & Nature",
+    "title": "The smell waiting on the ground",
+    "hook": "After a dry spell, the first light rain often brings a rich, earthy smell. Most of that smell is not in the falling water. It was already waiting on the ground.",
+    "core": [
+      "In 1964, Australian scientists gave the scent a name: petrichor, from Greek words for stone and for ichor, the fluid said to flow in the veins of the gods. It comes largely from two ingredients. During dry spells, oils and other compounds from decaying plant matter collect on rock and soil surfaces.",
+      "The second ingredient is geosmin, a compound made by bacteria that live in soil. People are remarkably sensitive to it: we can notice just a few parts per trillion in the air. Rain lifts these compounds off the ground and carries them to our noses."
+    ],
+    "deep": [
+      "How does a raindrop throw a smell into the air? In 2015, researchers at MIT used high-speed cameras to film drops landing on different surfaces. When a drop hits a porous surface such as soil, it traps tiny air bubbles where it lands.",
+      "Those bubbles rise through the drop and burst out of its top, much like bubbles in a glass of champagne. Each burst releases a fizz of aerosols: tiny particles that drift away on the air, carrying scent compounds with them. The team published the work in Nature Communications.",
+      "The details fit a familiar experience. Moderate or light rain on sandy or clay soils produced the most aerosols. Slower drops and more porous ground both produced more. That is one reason the scent is often strongest when a light shower falls on dry, sandy ground. The smell of rain is really the smell of the ground, launched into the air one bursting bubble at a time."
+    ],
+    "sources": [
+      {
+        "label": "Smithsonian Magazine — High-speed video shows when the smell of rain begins",
+        "url": "https://www.smithsonianmag.com/smart-news/high-speed-video-shows-when-smell-rain-begins-180953958/"
+      },
+      {
+        "label": "EarthDate (Bureau of Economic Geology, UT Austin) — The scent of rain",
+        "url": "https://www.earthdate.org/episodes/the-scent-of-rain"
+      }
+    ],
+    "recall": {
+      "prompt": "Where does the earthy smell of rain on dry ground come from?",
+      "reveal": "Plant oils and geosmin from soil bacteria build up on the ground. Raindrops trap tiny air bubbles that burst and carry those compounds into the air."
+    }
+  },
+  {
+    "id": "exchequer-tallies",
+    "category": "History & Society",
+    "title": "The receipts that burned Parliament",
+    "hook": "In 1834, most of the old Houses of Parliament in London burned down. The fire began with a pile of wooden receipts the government had used for centuries and no longer needed.",
+    "core": [
+      "Since medieval times, the Exchequer, a government office based at Westminster, had recorded payments on tally sticks: pieces of carved, notched wood, normally willow. Each stick was split in two, so that both sides of an agreement kept a matching record of what had been paid.",
+      "Paper eventually replaced them. A 1782 Act of Parliament said records should be kept on paper, not tallies, but it came into force only in 1826, when the last holder of an old Exchequer office died. That left Westminster with two large cartloads of obsolete wooden accounts, and someone had to get rid of them."
+    ],
+    "deep": [
+      "Treasury officials told the Clerk of Works, Richard Weobley, to clear the old tallies. He decided against giving them to parliamentary staff as firewood. Instead, on 16 October 1834, two labourers, Joshua Cross and Patrick Furlong, burned them in the two heating furnaces directly below the House of Lords.",
+      "The furnaces had been designed to burn coal, but wood burns with a high flame. A chimney fire smouldered under the floor of the Lords chamber. Around four in the afternoon, two visiting tourists felt heat from the floor coming through their boots. At about six, a doorkeeper’s wife spotted the flames.",
+      "The fire destroyed most of the medieval buildings, though Westminster Hall survived. The Prime Minister called it “one of the greatest instances of stupidity upon record.” The episode shows how an institution’s habits can outlive their purpose: a record-keeping system abandoned on paper still had to be physically disposed of, and the way it was done cost Parliament its home."
+    ],
+    "sources": [
+      {
+        "label": "The History of Parliament — Burning the House down: the fire of 1834",
+        "url": "https://historyofparliament.com/2013/10/16/the-fire-of-1834/"
+      },
+      {
+        "label": "Wikipedia — Burning of Parliament",
+        "url": "https://en.wikipedia.org/wiki/Burning_of_Parliament"
+      }
+    ],
+    "recall": {
+      "prompt": "How did old wooden accounting records cause the 1834 fire at Westminster?",
+      "reveal": "Obsolete Exchequer tally sticks were burned in coal furnaces below the House of Lords. The wood’s high flames started a chimney fire that spread through the old palace."
+    }
   }
 ];
