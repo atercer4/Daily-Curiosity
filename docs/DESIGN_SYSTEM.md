@@ -26,7 +26,7 @@ Build these as one cover component with four themes, not four separate designs.
 1. **Cover** (dark, category-themed):
    - masthead with the ✳ mark and the date;
    - a small metadata line: Today's curiosity · category · number;
-   - the **question**: an italic serif headline, with its key phrase in gold;
+   - the **question**: an italic serif headline, with its key phrase in cover gold (`#E2B867`, dark covers only);
    - a short **tease**: one or two sentences, more mysterious than explanatory;
    - a **"Find out why ↓"** button;
    - an optional cover drawing.
@@ -49,13 +49,14 @@ Build these as one cover component with four themes, not four separate designs.
 | ivory | `#F9F5E8` | Page background |
 | parchment | `#EDE2C8` | Numbers strip, surfaces |
 | ink | `#1F1E1A` | Text (15.3:1 on ivory) |
-| night | `#16202E` | Cover base (themes tint it) |
+| night | `#16202E` | Cover base (themes tint it); ivory text on it is 15.0:1 |
 | navy | `#3E5F8A` | Engineering accent, links (6.0:1) |
 | green | `#4C6B50` | Science accent (5.5:1) |
 | red-brown | `#9A3E24` | Arts accent (6.2:1) |
 | plum | `#64466A` | History accent (7.3:1) |
 | muted | `#6B6455` | Secondary text (5.4:1) |
-| gold | `#B8893D` / `#E2B867` on dark | Decoration only: the ✳ mark, rules, markers. **Never text on ivory** (2.9:1). |
+| gold | `#B8893D` | On light surfaces: decoration only (the ✳ mark, rules, markers). **Never text on ivory or parchment** (2.9:1). |
+| cover gold | `#E2B867` | On dark covers only: the ✳ mark, the question's key phrase and the cover button (8.8:1 on night). |
 | rule | `#D9CBA8` | Hairlines |
 
 **Fonts:** Playfair Display (titles, questions, display numbers, short italic notes) and Source Sans 3 (body, UI, labels).
