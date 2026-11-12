@@ -4,6 +4,10 @@ const categoryNavigation = document.querySelector('#categories');
 const article = document.querySelector('#curiosity');
 const todayArticle = document.querySelector('#today-curiosity');
 const choices = ['Surprise Me', ...CATEGORIES];
+// Design System 1.0 copy: the Surprise Me choice keeps its role but reads as an invitation.
+const choiceLabels = { 'Surprise Me': 'Take me somewhere unexpected' };
+// Category accent keys for CSS (data-category); the structure is identical for every category.
+const categoryKeys = { 'Science & Nature': 'science', 'Engineering & Technology': 'engineering', 'Arts & Culture': 'arts', 'History & Society': 'history' };
 let selectedCategory = 'Surprise Me';
 let currentIndex = -1;
 
@@ -55,13 +59,14 @@ function renderCard(article, index, titleId, level, moveFocus = false) {
   const entry = DAILY_CURIOSITIES[index];
   const heading = offset => 'h' + (level + offset);
   article.replaceChildren();
+  article.setAttribute('data-category', categoryKeys[entry.category]);
   article.append(element('p', entry.category, 'eyebrow'));
   const title = element(heading(0), entry.title);
   title.id = titleId;
   title.className = 'card-title';
   article.append(title, element('p', '01 / Hook', 'beat-label'), element('p', entry.hook, 'hook'));
-  const core = disclosure('02 / Core Insight', 'Core insight', entry.core, heading(1));
-  const deep = disclosure('03 / Deep Dive & Sources', 'Deep dive', entry.deep, heading(2));
+  const core = disclosure('The idea', 'The idea', entry.core, heading(1));
+  const deep = disclosure('Look closer', 'Look closer', entry.deep, heading(2));
   if (entry.visual) deep.body.append(explanatoryVisual(entry.visual));
   deep.body.append(element(heading(3), 'Sources', 'sources-title'));
   const sources = element('ul', null, 'sources');
@@ -74,7 +79,7 @@ function renderCard(article, index, titleId, level, moveFocus = false) {
   });
   deep.body.append(sources);
   const recall = element('section', null, 'recall');
-  recall.append(element(heading(3), 'Optional · Pause and recall', 'sources-title'), element('p', entry.recall.prompt));
+  recall.append(element(heading(3), 'Remember this?', 'sources-title'), element('p', entry.recall.prompt));
   const response = element('details', null, 'recall-response');
   const revealControl = element('summary');
   revealControl.append(element('span', 'Reveal response'), element('span', 'Open', 'when-closed'), element('span', 'Close', 'when-open'));
@@ -117,11 +122,13 @@ function selectCategory(category, moveFocus = true) {
 }
 
 choices.forEach(category => {
-  const button = element('button', category);
+  const button = element('button', choiceLabels[category] || category);
   button.type = 'button';
   button.addEventListener('click', () => selectCategory(category));
   categoryNavigation.append(button);
 });
+// Counts in copy come from the library size, never hard-coded (DESIGN_SYSTEM.md section 5).
+document.querySelectorAll('[data-library-count]').forEach(node => { node.textContent = String(DAILY_CURIOSITIES.length); });
 const localDate = readLocalCalendarDate();
 renderCard(todayArticle, cardIndexForDate(localDate.year, localDate.month, localDate.day), 'today-entry-title', 2);
 selectCategory('Surprise Me', false);

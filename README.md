@@ -12,13 +12,13 @@ Adding cards (Phase 2, issue #13): the code and tests work for any library size.
 
 Each of the 20 cards has one `recall` object with `prompt` and `reveal` strings in SRC/content.js. [All 20 prompts and responses](docs/RECALL.md) are documented. They retrieve the card’s central mechanism, distinction, tradeoff, or cultural insight without asking for incidental numbers. Responses summarize existing sourced content; no new factual material or source links were added.
 
-A section labeled “Optional · Pause and recall” appears after Sources inside Deep Dive. Its prompt is hidden by the closed Deep Dive. A native details/summary control labeled “Reveal response” lets the reader think first and open or close the answer. There are no inputs or evaluations. Navigation remains available.
+A section headed “Remember this?” (Design System 1.0 label; formerly “Optional · Pause and recall”) appears after Sources inside Look closer (the Deep Dive). Its prompt is hidden by the closed Deep Dive. A native details/summary control labeled “Reveal response” lets the reader think first and open or close the answer. There are no inputs or evaluations. Navigation remains available.
 
 Each rendering creates fresh recall DOM nodes within that article. Today and Explore share only content data, not open state. Revealing one does not affect the other, even for the same card. Changing Explore cards creates a closed response for the new card and leaves Today untouched. Closing Deep Dive or Core also resets that surface’s response. Reload resets all disclosures. Recall introduces no auto-focus, live regions, timers, announcements, storage, or remote calls.
 
 ## Preserved behavior
 
-Today remains date-determined; Explore retains five-card category cycling and Surprise Me. SRC/daily.js is byte-identical to v5: local fields acquired once on load; pure cardIndexForDate uses UTC calendar arithmetic and positive modulo around the 2026-10-22 epoch. The fixed permutation remains unchanged, recorded in git history. Explore may match Today and excludes only its current card on subsequent random draws.
+Today remains date-determined; Explore retains category cycling (each category's cards in turn) and Surprise Me, whose button reads “Take me somewhere unexpected”. SRC/daily.js is byte-identical to v5: local fields acquired once on load; pure cardIndexForDate uses UTC calendar arithmetic and positive modulo around the 2026-10-22 epoch. The fixed permutation remains unchanged, recorded in git history. Explore may match Today and excludes only its current card on subsequent random draws.
 
 All original card fields, category assignments, Hook/Core/Deep text, 36 source links, and two explanatory visuals are preserved. Only recall data was added. [CONTENT.md](docs/CONTENT.md) remains the historical v4 content/source register. Heading outline (fixed in issue #3): Today’s card title is h2 under the h1 “Today’s Curiosity”; Explore’s category prompt and card title are h3 under the h2 “Explore More”, and each card’s Core, Deep Dive and Sources/Recall headings follow one level below. Styles are keyed to classes, so the two surfaces look identical.
 
@@ -27,7 +27,7 @@ All original card fields, category assignments, Hook/Core/Deep text, 36 source l
 - SRC/content.js: 20 data-driven prompt/response pairs; original fields preserved.
 - SRC/app.js: native optional recall disclosure and local reset handlers.
 - SRC/styles.css: recall section spacing and border.
-- index.html: v6 header/footer labels.
+- index.html: header/footer labels (Design System 1.0 since issue #22: no version badge, library count filled in from the content).
 - tests/prototype.test.cjs: recall coverage, snapshot verification; existing scope guards retained. The common closed-disclosure assertion now expects three nested details, and the content-preservation test compares original fields after excluding recall.
 - README.md, docs/QA.md: current behavior and QA handoff.
 - Added docs/RECALL.md and the verified v5 snapshot with SHA256.json.

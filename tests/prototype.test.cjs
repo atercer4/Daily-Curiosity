@@ -21,7 +21,7 @@ const ORIGINAL_DAILY_IDS = ['venus-clocks', 'suspension-bridge', 'woodcut-revers
   'autumn-pigments', 'qr-recovery', 'gothic-light', 'penny-black', 'tree-ring-calendar', 'bicycle-gears', 'ultramarine', 'roman-amphorae'];
 // extra: synthetic cards appended (in the test only) to content and to the end of the daily order.
 function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, extra = []) {
-  const controls = new NodeStub('div'), article = new NodeStub('article'), today = new NodeStub('article');
+  const controls = new NodeStub('div'), article = new NodeStub('article'), today = new NodeStub('article'), count = new NodeStub('span');
   let random = initialRandom;
   const math = Object.create(Math);
   math.random = () => random;
@@ -30,6 +30,10 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
       if (selector === '#categories') return controls;
       if (selector === '#curiosity') return article;
       if (selector === '#today-curiosity') return today;
+      throw Error('Unexpected selector ' + selector);
+    },
+    querySelectorAll: selector => {
+      if (selector === '[data-library-count]') return [count];
       throw Error('Unexpected selector ' + selector);
     },
     createElement: tag => new NodeStub(tag)
@@ -41,7 +45,7 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
   vm.runInContext(extra.length ? daily.slice(0, listEnd) + extra.map(e => ',\n  ' + JSON.stringify(e.id)).join('') + daily.slice(listEnd) : daily, context);
   context.readLocalCalendarDate = () => date; // Inject calendar fields, not a mocked clock.
   vm.runInContext(read('SRC/app.js'), context);
-  return { controls, article, today, context, entries, setRandom: value => { random = value; } };
+  return { controls, article, today, count, context, entries, setRandom: value => { random = value; } };
 }
 function descendants(node, tag) {
   return node.children.flatMap(child => [...(child.tag === tag ? [child] : []), ...descendants(child, tag)]);
@@ -91,7 +95,7 @@ test('at least twenty sourced cards with unique IDs and titles, balanced categor
 
 test('five native choice buttons expose one selected state and initial hook without a gate', () => {
   const f = fixture();
-  assert.deepEqual(f.controls.children.map(n => n.textContent), ['Surprise Me', ...categories]);
+  assert.deepEqual(f.controls.children.map(n => n.textContent), ['Take me somewhere unexpected', ...categories]);
   assert.ok(f.controls.children.every(n => n.tag === 'button' && n.type === 'button'));
   assert.equal(f.controls.children[0].attributes['aria-pressed'], 'true');
   assert.equal(f.controls.children.filter(n => n.attributes['aria-pressed'] === 'true').length, 1);
@@ -258,7 +262,8 @@ test('runtime scope remains static: no external assets, data collection, persist
   }
   assert.doesNotMatch(app, /\b(fetch|XMLHttpRequest|WebSocket|localStorage|sessionStorage|indexedDB|sendBeacon|Notification|geolocation|setInterval)\b|document\.cookie|https?:\/\//);
   assert.doesNotMatch(html, /<(form|input|textarea|audio|video|iframe)\b/);
-  assert.doesNotMatch(css, /@import|https?:/);
+  // Inline data: URIs (the SVG paper grain) contain the SVG namespace string but make no request.
+  assert.doesNotMatch(css.replace(/url\("data:[^"]*"\)/g, ''), /@import|https?:/);
   const f = fixture();
   assert.equal(descendants(f.article, 'button').length, 0, 'No extra card actions');
 });
@@ -394,7 +399,7 @@ test('every recall prompt is optional, nested inside Deep Dive, and responses be
     assert.equal(sections.length,1);
     assert.equal(descendants(sections[0],'p')[0].textContent,entry.recall.prompt);
     assert.equal(descendants(response,'p')[0].textContent,entry.recall.reveal);
-    assert.match(descendants(sections[0],'h6')[0].textContent,/Optional/);
+    assert.equal(descendants(sections[0],'h6')[0].textContent,'Remember this?');
     assert.equal(response.children[0].tag,'summary');
     assert.equal(response.open,false);
     core.open=true; deep.open=true; response.open=true;
@@ -446,7 +451,7 @@ test('heading outline nests each card below its surface heading on Today and Exp
   assert.match(html, /<h2 id="explore-title"[^>]*>Explore More<\/h2>/);
   assert.match(html, /<h3 id="selection-title"[^>]*>What are you curious about today\?<\/h3>/);
   assert.doesNotMatch(html, /<h[4-6]/);
-  const outline = base => [[base, null], [base + 1, 'Core insight'], [base + 2, 'Deep dive'], [base + 3, 'Sources'], [base + 3, 'Optional · Pause and recall']];
+  const outline = base => [[base, null], [base + 1, 'The idea'], [base + 2, 'Look closer'], [base + 3, 'Sources'], [base + 3, 'Remember this?']];
   const f = fixture();
   f.entries.forEach((entry, i) => {
     selectEntry(f, i);
@@ -574,4 +579,73 @@ test('the app and daily rotation generalize to N cards: two synthetic cards appe
   selectEntry(f, n - 1);
   assert.deepEqual(headingLevels(f.article).map(([level]) => level), [3, 4, 5, 6, 6]);
   assertClosed(f.article);
+});
+
+// Design System 1.0 step 1 (issue #22): self-hosted fonts, tokens, texture and copy.
+test('Design 1.0 fonts are self-hosted woff2 files with their OFL licences, loaded from local paths', () => {
+  const css = read('SRC/styles.css');
+  const faces = [...css.matchAll(/@font-face \{([^}]*)\}/g)].map(m => m[1]);
+  assert.ok(faces.length >= 4);
+  const families = new Set(faces.map(face => face.match(/font-family: '([^']+)'/)[1]));
+  assert.deepEqual([...families].sort(), ['Playfair Display', 'Source Sans 3']);
+  for (const face of faces) {
+    const urls = [...face.matchAll(/url\("([^"]+)"\)/g)].map(m => m[1]);
+    assert.equal(urls.length, 1);
+    assert.match(urls[0], /^fonts\/[a-z0-9-]+\.woff2$/, 'local woff2 path: ' + urls[0]);
+    const bytes = readFileSync(join(__dirname, '..', 'SRC', urls[0]));
+    assert.equal(bytes.subarray(0, 4).toString('latin1'), 'wOF2', 'real woff2 file: ' + urls[0]);
+  }
+  for (const licence of ['SRC/fonts/OFL-PlayfairDisplay.txt', 'SRC/fonts/OFL-SourceSans3.txt']) {
+    const text = read(licence);
+    assert.match(text, /SIL OPEN FONT LICENSE Version 1\.1/);
+    assert.match(text.split('\n')[0], /^Copyright /);
+  }
+});
+
+test('Design 1.0 makes no http(s) requests from CSS or HTML: only card source links are absolute URLs', () => {
+  const css = read('SRC/styles.css'), html = read('index.html');
+  // Inline data: URIs (the SVG grain) carry the SVG namespace string but make no request.
+  const cssWithoutData = css.replace(/url\("data:[^"]*"\)/g, '');
+  assert.doesNotMatch(cssWithoutData, /https?:|@import|\/\//);
+  for (const match of css.matchAll(/url\("([^"]+)"\)/g)) assert.match(match[1], /^(data:|fonts\/)/);
+  assert.doesNotMatch(html, /https?:|\/\//);
+  assert.doesNotMatch(read('SRC/app.js'), /https?:\/\//);
+  // Card sources are the only absolute URLs, and they are rendered as plain links.
+  for (const entry of fixture().entries) for (const source of entry.sources) assert.equal(new URL(source.url).protocol, 'https:');
+});
+
+test('Design 1.0 tokens: section 3 colours are defined, gold is decoration only, and text colours pass AA on ivory', () => {
+  const css = read('SRC/styles.css');
+  const tokens = { ivory: '#F9F5E8', parchment: '#EDE2C8', ink: '#1F1E1A', night: '#16202E', navy: '#3E5F8A', green: '#4C6B50',
+    'red-brown': '#9A3E24', plum: '#64466A', muted: '#6B6455', gold: '#B8893D', 'cover-gold': '#E2B867', rule: '#D9CBA8' };
+  for (const [name, value] of Object.entries(tokens)) assert.match(css, new RegExp(`--${name}: ${value};`), name);
+  // Gold may only colour the ✳ mark and list markers on light surfaces, never text.
+  for (const rule of css.matchAll(/([^{}]+)\{([^}]*)\}/g)) {
+    if (/(^|[^-])color: var\(--gold\)/.test(rule[2])) assert.match(rule[1].trim(), /^(\.brand span|\.sources li::marker)$/, rule[1]);
+  }
+  const lum = hex => { const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(v => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+  const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+  for (const text of ['ink', 'navy', 'green', 'red-brown', 'plum', 'muted'])
+    for (const surface of ['ivory', 'parchment']) assert.ok(ratio(tokens[text], tokens[surface]) >= 4.5, `${text} on ${surface}`);
+  assert.ok(ratio(tokens.ivory, tokens.ink) >= 4.5, 'selected chip');
+  assert.ok(ratio(tokens.gold, tokens.ivory) < 4.5, 'gold really is decoration-only');
+  for (const [category, key] of [['science', 'green'], ['engineering', 'navy'], ['arts', 'red-brown'], ['history', 'plum']])
+    assert.match(css, new RegExp(`\\[data-category="${category}"\\] \\{ --accent: var\\(--${key}\\); \\}`));
+  const f = fixture();
+  for (const article of [f.today, f.article]) {
+    const entry = f.entries.find(e => e.title === find(article, n => n.className === 'card-title')[0].textContent);
+    assert.equal(article.attributes['data-category'], { 'Science & Nature': 'science', 'Engineering & Technology': 'engineering', 'Arts & Culture': 'arts', 'History & Society': 'history' }[entry.category]);
+  }
+});
+
+test('Design 1.0 copy: section labels, invitation wording, and no hard-coded card counts or version badges', () => {
+  const html = read('index.html');
+  assert.doesNotMatch(html, /\b(five|twenty|Twenty|Five|v6|Concept A)\b|\b\d+ (ideas|cards)\b/);
+  assert.match(html, /a modern field journal for how the world works/);
+  const f = fixture();
+  assert.equal(f.count.textContent, String(f.entries.length), 'footer count comes from the library size');
+  const labels = descendants(f.article, 'summary').map(s => s.children[0].textContent);
+  assert.deepEqual(labels, ['The idea', 'Look closer', 'Reveal response']);
+  assert.equal(f.controls.children[0].textContent, 'Take me somewhere unexpected');
+  assert.doesNotMatch(read('SRC/app.js'), /Core Insight|Deep Dive &|Pause and recall/);
 });

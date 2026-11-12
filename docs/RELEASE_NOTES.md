@@ -27,7 +27,10 @@ The v7 baseline was imported from Dropbox on 10 November 2026, with the old `sna
 | #10 | #9 | Forced-colors (high contrast) support: the Venus bar chart and the selected category stay visible. |
 | #14, #16 | #13, #15 | Code and tests generalized from exactly 20 cards to N cards; new cards append to the daily rotation. |
 | #18 | #17 | First Phase 2 cards: `gps-relativity` (GPS clocks and relativity) and `true-fresco` (true fresco). |
-| (this PR) | #19 | Phase 2 cards: `petrichor` (the smell of rain) and `exchequer-tallies` (tally sticks and the 1834 fire). |
+| #20 | #19 | Phase 2 cards: `petrichor` (the smell of rain) and `exchequer-tallies` (tally sticks and the 1834 fire). |
+| #28 | #21 | Design System 1.0 (Direction F) recorded in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md). |
+| #31 | #30 | Fallback builder documented for when Claude is unavailable. |
+| (this PR) | #22 | Design System 1.0 step 1: self-hosted Playfair Display and Source Sans 3 (OFL), section 3 tokens and paper grain, labels The idea / Look closer / Remember this?, Surprise Me reads “Take me somewhere unexpected”, no hard-coded counts or “v6” badge. |
 
 No original card text changed other than the approved recall wording fix in issue #5.
 
@@ -37,7 +40,6 @@ No original card text changed other than the approved recall wording fix in issu
 - The library repeats every 24 days. This length grows as Phase 2 adds cards: since issue #13 the rotation length equals the library size, and new cards are appended after the original 20.
 - Recall is ephemeral and unevaluated by design; nothing is recorded.
 - Source links are external and can break; existing link issues are noted in CONTENT.md.
-- The masthead and footer still read "v6"; this is cosmetic and unchanged here.
 
 ## Pending QA
 
