@@ -686,16 +686,16 @@ const DAILY_CURIOSITIES = [
     "category": "Arts & Culture",
     "title": "Painting before the wall dries",
     "question": "Why did fresco painters {race the drying plaster?}",
-    "tease": "Some of the most lasting wall paintings were made against a deadline. The drying that set the deadline is also what held the color.",
-    "hook": "Some of the most lasting wall paintings were made against a deadline. The painter had to finish each section before the plaster dried, because drying is what held the color.",
+    "tease": "Some of the most lasting wall paintings were made against a deadline. The setting plaster that created the deadline is also what held the color.",
+    "hook": "Some of the most lasting wall paintings were made against a deadline. The painter had to finish each section before the plaster set, because the setting plaster is what locked in the color.",
     "core": [
       "In buon, or true, fresco, painters grind dry pigments in water and apply them to freshly laid lime plaster. The final, very smooth layer is called the intonaco. As it dries, the colors set with the plaster and become a permanent part of the wall rather than a coat of paint resting on top.",
       "That creates a deadline. Only as much plaster as can be painted in one day is spread on the wall, and each day’s patch is called a giornata, Italian for “a day’s work.” A large fresco is therefore built piece by piece, one fresh area of plaster at a time."
     ],
     "deep": [
-      "Why does drying matter so much? Lime plaster sets by reacting with carbon dioxide in the air: calcium hydroxide becomes calcium carbonate. That reaction fixes the pigment particles in the plaster. Water carries the color in, and the chemistry of the setting wall locks it there.",
-      "The method leaves traces. The different day stages can usually be seen as faint seams, and in many large frescoes the divisions are visible from the ground. A wall-sized painting may contain ten to twenty or more giornate, so the seams quietly record a sequence of working days.",
-      "Painting on dry plaster, called a secco, works differently. Without the wet wall to hold it, pigment needs a binder such as egg, glue or oil. True fresco is generally more durable than secco work added on top of it, and some secco details have since fallen away, leaving the fresco underneath."
+      "Why does wet plaster matter so much? Lime plaster sets by reacting with carbon dioxide in the air: calcium hydroxide becomes calcium carbonate. That reaction fixes the pigment particles in the plaster. The pigment grains end up held in a layer of calcium carbonate at the surface, so the color becomes part of the wall’s surface.",
+      "The method also shapes how a fresco is planned. Successive coats of plaster are troweled onto the wall, and the design, called the cartoon, is drawn on the next-to-last layer, the arriccio. The smooth intonaco then goes on in day-sized patches, so the whole design has to be divided into sections that can each be finished in a single day.",
+      "Painting on dry plaster, called a secco, works differently. The paint goes on after the plaster has dried, either over finished true fresco or onto dry intonaco, so it misses the setting wall that locks in the color. Britannica calls true fresco the most durable technique; as its plaster sets, the pigment is fixed in the wall itself."
     ],
     "sources": [
       {
@@ -709,11 +709,15 @@ const DAILY_CURIOSITIES = [
       {
         "label": "Wikipedia — Fresco (technique and chemistry)",
         "url": "https://en.wikipedia.org/wiki/Fresco"
+      },
+      {
+        "label": "Museu Nacional d’Art de Catalunya — Glossary: carbonation",
+        "url": "https://www.museunacional.cat/en/carbonation"
       }
     ],
     "recall": {
       "prompt": "Why did a fresco painter plaster only one day’s area at a time?",
-      "reveal": "The pigment had to go onto wet lime plaster, which fixes the color as it sets. Plaster that dried before painting could only take less durable secco work."
+      "reveal": "The pigment had to go onto wet lime plaster, which fixes the color as it sets. Only a day’s worth could be painted before it set."
     }
   },
   {
@@ -729,8 +733,8 @@ const DAILY_CURIOSITIES = [
     ],
     "deep": [
       "How does a raindrop throw a smell into the air? In 2015, researchers at MIT used high-speed cameras to film drops landing on different surfaces. When a drop hits a porous surface such as soil, it traps tiny air bubbles where it lands.",
-      "Those bubbles rise through the drop and burst out of its top, much like bubbles in a glass of champagne. Each burst releases a fizz of aerosols: tiny particles that drift away on the air, carrying scent compounds with them. The team published the work in Nature Communications.",
-      "The details fit a familiar experience. Moderate or light rain on sandy or clay soils produced the most aerosols. Slower drops and more porous ground both produced more. That is one reason the scent is often strongest when a light shower falls on dry, sandy ground. The smell of rain is really the smell of the ground, launched into the air one bursting bubble at a time."
+      "Those bubbles rise through the drop and burst out of its top, much like bubbles in a glass of champagne. Each burst releases a fizz of aerosols: tiny particles that drift away on the air. The researchers think these particles carry the scent compounds with them. The team published the work in Nature Communications.",
+      "The details fit a familiar experience. Moderate or light rain on sandy or clay soils produced the most aerosols. Slower drops and more porous ground both produced more. That is one reason the scent is often strongest when a light shower falls on dry, sandy ground. The smell of rain is really the smell of the ground, likely launched into the air one bursting bubble at a time."
     ],
     "sources": [
       {
@@ -740,6 +744,10 @@ const DAILY_CURIOSITIES = [
       {
         "label": "EarthDate (Bureau of Economic Geology, UT Austin) — The scent of rain",
         "url": "https://www.earthdate.org/episodes/the-scent-of-rain"
+      },
+      {
+        "label": "MIT News — Rainfall can release aerosols, study finds",
+        "url": "https://news.mit.edu/2015/rainfall-can-release-aerosols-0114"
       }
     ],
     "recall": {
@@ -752,15 +760,15 @@ const DAILY_CURIOSITIES = [
     "category": "History & Society",
     "title": "The receipts that burned Parliament",
     "question": "How did {old wooden receipts} burn down Parliament?",
-    "tease": "In 1834, most of the old Houses of Parliament burned. The fire began with records the government had kept for centuries and no longer needed.",
+    "tease": "In 1834, most of the old Houses of Parliament burned. The fire began with wooden records from an accounting system the government had used for centuries.",
     "hook": "In 1834, most of the old Houses of Parliament in London burned down. The fire began with a pile of wooden receipts the government had used for centuries and no longer needed.",
     "core": [
-      "Since medieval times, the Exchequer, a government office based at Westminster, had recorded payments on tally sticks: pieces of carved, notched wood, normally willow. Each stick was split in two, so that both sides of an agreement kept a matching record of what had been paid.",
-      "Paper eventually replaced them. A 1782 Act of Parliament said records should be kept on paper, not tallies, but it came into force only in 1826, when the last holder of an old Exchequer office died. That left Westminster with two large cartloads of obsolete wooden accounts, and someone had to get rid of them."
+      "Since medieval times, the Exchequer, a government office based at Westminster, had recorded payments on tally sticks: pieces of carved, notched wood. Each stick was split in two, so that both sides of an agreement kept a matching record of what had been paid. When the two halves were later matched, they showed that the accounts “tallied.”",
+      "Paper records eventually replaced them, and tallies were abolished in 1826. That left Westminster with two large cartloads of obsolete wooden accounts, and someone had to get rid of them."
     ],
     "deep": [
       "Treasury officials told the Clerk of Works, Richard Weobley, to clear the old tallies. He decided against giving them to parliamentary staff as firewood. Instead, on 16 October 1834, two labourers, Joshua Cross and Patrick Furlong, burned them in the two heating furnaces directly below the House of Lords.",
-      "The furnaces had been designed to burn coal, but wood burns with a high flame. A chimney fire smouldered under the floor of the Lords chamber. Around four in the afternoon, two visiting tourists felt heat from the floor coming through their boots. At about six, a doorkeeper’s wife spotted the flames.",
+      "Burning so much wood there proved disastrous. A chimney fire smouldered under the floor of the Lords chamber. During the afternoon, a party of visitors being shown around noticed heat and smoke coming up through the floor. At about six, a doorkeeper’s wife spotted the flames.",
       "The fire destroyed most of the medieval buildings, though Westminster Hall survived. The Prime Minister called it “one of the greatest instances of stupidity upon record.” The episode shows how an institution’s habits can outlive their purpose: a record-keeping system abandoned on paper still had to be physically disposed of, and the way it was done cost Parliament its home."
     ],
     "sources": [
@@ -771,11 +779,19 @@ const DAILY_CURIOSITIES = [
       {
         "label": "Wikipedia — Burning of Parliament",
         "url": "https://en.wikipedia.org/wiki/Burning_of_Parliament"
+      },
+      {
+        "label": "UK Parliament — The Great Fire of 1834",
+        "url": "https://www.parliament.uk/about/living-heritage/building/palace/architecture/palacestructure/great-fire/"
+      },
+      {
+        "label": "Science Museum Group — Medieval Exchequer tally sticks",
+        "url": "https://collection.sciencemuseumgroup.org.uk/objects/co60506/medieval-exchequer-tally-sticks"
       }
     ],
     "recall": {
       "prompt": "How did old wooden accounting records cause the 1834 fire at Westminster?",
-      "reveal": "Obsolete Exchequer tally sticks were burned in coal furnaces below the House of Lords. The wood’s high flames started a chimney fire that spread through the old palace."
+      "reveal": "Obsolete Exchequer tally sticks were burned in the heating furnaces below the House of Lords. A chimney fire smouldered under the floor and then spread through the old palace."
     }
   }
 ];

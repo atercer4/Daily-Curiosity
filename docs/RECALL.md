@@ -133,7 +133,7 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 
 - ID: `true-fresco`
 - Prompt: Why did a fresco painter plaster only one day’s area at a time?
-- Response: The pigment had to go onto wet lime plaster, which fixes the color as it sets. Plaster that dried before painting could only take less durable secco work.
+- Response: The pigment had to go onto wet lime plaster, which fixes the color as it sets. Only a day’s worth could be painted before it set.
 
 ## The smell waiting on the ground
 
@@ -145,4 +145,4 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 
 - ID: `exchequer-tallies`
 - Prompt: How did old wooden accounting records cause the 1834 fire at Westminster?
-- Response: Obsolete Exchequer tally sticks were burned in coal furnaces below the House of Lords. The wood’s high flames started a chimney fire that spread through the old palace.
+- Response: Obsolete Exchequer tally sticks were burned in the heating furnaces below the House of Lords. A chimney fire smouldered under the floor and then spread through the old palace.

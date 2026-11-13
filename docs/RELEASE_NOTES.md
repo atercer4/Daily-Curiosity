@@ -10,7 +10,7 @@ This is the stable, public baseline that Phase 2 content work builds on. Authori
 - **Today's Curiosity:** a card chosen by date from a fixed permutation in `SRC/daily.js`, starting at the 2026-10-22 epoch. The same date always shows the same card.
 - **Explore More:** five native category buttons (four categories plus Surprise Me). Categories cycle their cards without an immediate repeat. Explore is independent of Today.
 - **Card interaction:** Hook → Core Insight → Deep Dive & Sources → optional recall, all native `details` disclosures that start closed.
-- **Library:** 24 cards: the original 20 (five per category) plus four Phase 2 cards, one in each category (issues #17 and #19), with 45 source links and two explanatory visuals. Registers: [CONTENT.md](CONTENT.md) for content and sources, [RECALL.md](RECALL.md) for recall prompts and responses.
+- **Library:** 24 cards: the original 20 (five per category) plus four Phase 2 cards, one in each category (issues #17 and #19), with 49 source links and two explanatory visuals. Registers: [CONTENT.md](CONTENT.md) for content and sources, [RECALL.md](RECALL.md) for recall prompts and responses.
 - **Safeguards:** CI runs syntax checks, the regression suite and a secret guard on every pull request. `tests/baseline/` pins the original fields of all 20 cards and `SRC/daily.js`.
 
 ## Changes since the git import
