@@ -59,8 +59,15 @@ ChatGPT may add a second fact-check. If it reports FAIL, that also blocks the ca
 **Re-check, 13 November 2026.** The four Phase 2 cards that merged without a recorded fact-check were re-checked:
 - `gps-relativity`: PASS.
 - `petrichor`: PASS. The aerosol-to-scent link is now hedged as the researchers' hypothesis, and MIT News is added as a source.
-- `true-fresco`: FAIL. Its "drying holds the color" wording and the secco fallback in its recall response were misleading; both are fixed, and a museum source for carbonation is added.
-- `exchequer-tallies`: FAIL. Its cover tease was misleading; it is fixed, and Parliament and Science Museum sources are added so key claims don't rest on Wikipedia alone.
+- `true-fresco`: FAIL on the first check, then PASS after three rounds of fixes:
+  - "drying holds the color" became "the setting plaster locks in the color";
+  - the misleading secco fallback in the recall response was removed;
+  - Wikipedia-only claims about seams, giornate counts and secco binders were replaced with National Gallery and Britannica wording;
+  - a museum source for carbonation was added.
+- `exchequer-tallies`: FAIL on the first check, then PASS after two rounds of fixes:
+  - the misleading cover tease was fixed;
+  - Wikipedia-only key claims (willow, the 1782 Act, coal versus wood flame, the 4 pm tourists) were removed or reworded;
+  - Parliament and Science Museum sources were added.
 
 ## Fallback builder: when Claude is unavailable
 
