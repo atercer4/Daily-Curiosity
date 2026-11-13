@@ -12,6 +12,8 @@ const DAILY_CURIOSITIES = [
     "id": "venus-clocks",
     "category": "Science & Nature",
     "title": "A year before a full turn",
+    "question": "How can a planet’s {day last longer than its year?}",
+    "tease": "Venus finishes a trip around the Sun before it completes a single turn. The answer depends on what you mean by a day.",
     "hook": "Venus goes around the Sun before it finishes one rotation. How can a planet have a day longer than its year?",
     "core": [
       "A planet has two separate motions: it spins on its axis and travels around the Sun. Venus takes about 243 Earth days to turn once, but only about 225 Earth days to complete its orbit. Its rotation is unusually slow, and it spins in the opposite direction to most planets.",
@@ -64,6 +66,8 @@ const DAILY_CURIOSITIES = [
     "id": "tree-ring-calendar",
     "category": "Science & Nature",
     "title": "A history written in wood",
+    "question": "How can a wooden beam {hold a calendar?}",
+    "tease": "The calendar inside can be older than the building around it, and the clue is not simply how many rings it has.",
     "hook": "A wooden beam can hold a calendar older than the building around it. The clue is not just how many rings it has.",
     "core": [
       "Tree rings can do more than suggest a tree’s age. Their changing widths form patterns that researchers compare across different trees. Trees growing under similar conditions may record similar sequences of wider and narrower rings. Matching those sequences can help assign calendar years to wood.",
@@ -93,6 +97,8 @@ const DAILY_CURIOSITIES = [
     "id": "coral-partners",
     "category": "Science & Nature",
     "title": "The partnership inside a coral",
+    "question": "What does a coral {lose first} when it turns white?",
+    "tease": "The skeleton is still there. What disappears is a tiny partner that was living inside the coral’s tissues.",
     "hook": "A coral can lose much of its color without losing its skeleton. What disappears first is a tiny partner living inside its tissues.",
     "core": [
       "Many shallow-water reef corals share their bodies with microscopic algae. The coral provides shelter and materials the algae use. With sunlight, the algae make food through photosynthesis and share some of it with their host. Their pigments also contribute much of the coral’s color.",
@@ -122,6 +128,8 @@ const DAILY_CURIOSITIES = [
     "id": "basalt-columns",
     "category": "Science & Nature",
     "title": "Stone columns without a stonecutter",
+    "question": "Why do some lava cliffs look {carefully fitted together?}",
+    "tease": "No stonecutter shaped them. Their tidy outlines began as cracks in rock that was cooling down.",
     "hook": "The sides of some lava cliffs look carefully fitted, like a bundle of stone pencils. Their regular outlines began as cracks in cooling rock.",
     "core": [
       "As a thick body of lava cools and solidifies, it contracts. The shrinking rock develops cracks that can join into a network of polygons. As cooling continues inward, the cracks extend too, dividing the rock into long columns. Geologists call this columnar jointing.",
@@ -151,6 +159,8 @@ const DAILY_CURIOSITIES = [
     "id": "autumn-pigments",
     "category": "Science & Nature",
     "title": "Two ways a leaf changes color",
+    "question": "Were autumn colors {hidden all summer}, or made fresh?",
+    "tease": "Yellow and red do not always arrive by the same route. Some colors were already in the leaf; others are made during the change.",
     "hook": "Autumn yellow and autumn red do not always arrive by the same route. Some leaf colors were already there; others are made during the change.",
     "core": [
       "Green chlorophyll helps leaves capture light for photosynthesis. In many deciduous trees, autumn brings changes that slow its replacement and allow it to break down. Yellow and orange pigments called carotenoids, present alongside the green, become easier to see.",
@@ -180,6 +190,8 @@ const DAILY_CURIOSITIES = [
     "id": "suspension-bridge",
     "category": "Engineering & Technology",
     "title": "How can a road hang from cables?",
+    "question": "How can something {flexible} hold up something so heavy?",
+    "tease": "The Golden Gate Bridge’s road hangs from cables. The trick is that each part of the bridge does a different job.",
     "hook": "The Golden Gate Bridge carries traffic on a road that hangs from cables. How does something flexible help hold up something so heavy?",
     "core": [
       "A suspension bridge gives weight a route to the ground. Vertical steel ropes hold up the road deck and connect it to the large curved cables above. Those main cables pass over towers and are held at their ends by massive anchorages.",
@@ -209,6 +221,8 @@ const DAILY_CURIOSITIES = [
     "id": "stainless-surface",
     "category": "Engineering & Technology",
     "title": "Steel protected by its own surface",
+    "question": "How can scratched steel {protect itself again?}",
+    "tease": "Its protection is far thinner than a coat of paint, and nobody applies it. The metal can form it again when fresh surface meets oxygen.",
     "hook": "The protection on stainless steel is far thinner than a coat of paint. The metal can form it again when fresh surface meets oxygen.",
     "core": [
       "Stainless steel contains chromium, which helps form a thin, protective oxide film on its surface. This film limits further corrosion. It is part of the material’s response to its surroundings, rather than a separately applied layer of paint.",
@@ -234,6 +248,8 @@ const DAILY_CURIOSITIES = [
     "id": "heat-pump",
     "category": "Engineering & Technology",
     "title": "Moving heat instead of making it",
+    "question": "How can {cold outdoor air} warm a room?",
+    "tease": "A heat pump’s job is moving heat, not making it. And “cold” does not mean there is no heat left to move.",
     "hook": "A machine can warm a room by taking heat from colder outdoor air. “Cold” does not mean there is no heat left to move.",
     "core": [
       "An electric heat pump uses electricity to transfer heat from one place to another. In heating mode, an air-source system takes heat from outside and releases it indoors. A circulating refrigerant absorbs and releases heat as the equipment changes its pressure and temperature.",
@@ -263,6 +279,8 @@ const DAILY_CURIOSITIES = [
     "id": "qr-recovery",
     "category": "Engineering & Technology",
     "title": "Why a damaged code can still scan",
+    "question": "How can a {smudged QR code} still scan?",
+    "tease": "Part of the pattern can be hidden without hiding the message. The code carries more than the information you came to read.",
     "hook": "A smudge can hide part of a QR code without hiding its message. The printed pattern carries more than the information you came to read.",
     "core": [
       "A QR code includes error-correction data alongside its message. These extra mathematical clues can let a reader reconstruct information when some of the pattern is dirty or damaged. The design deliberately uses space for resilience, rather than packing every available square with new message content.",
@@ -292,6 +310,8 @@ const DAILY_CURIOSITIES = [
     "id": "bicycle-gears",
     "category": "Engineering & Technology",
     "title": "An easier climb costs more turns",
+    "question": "Why does a lower gear make {the same hill} feel easier?",
+    "tease": "The hill has not changed, and the climb still takes effort. What changes is what each turn of the pedals asks of you.",
     "hook": "Shifting down on a bicycle makes a hill feel easier, but the hill has not changed. The gears change what each pedal turn asks of you.",
     "core": [
       "A bicycle chain connects the front chainring to a rear sprocket. With a smaller front chainring or a larger rear sprocket, each pedal turn drives the rear wheel through fewer turns. This lower gear makes it easier to apply turning force at the wheel.",
@@ -321,6 +341,8 @@ const DAILY_CURIOSITIES = [
     "id": "woodcut-reversal",
     "category": "Arts & Culture",
     "title": "The picture that prints backward",
+    "question": "Why would a printmaker {carve letters backward?}",
+    "tease": "To print a letter facing the right way, the artist works on one surface while picturing the image that will appear on another.",
     "hook": "A printmaker wants a letter to face the right way on paper. Why might they need to carve it backward into the wood?",
     "core": [
       "A woodcut is made by carving away parts of a wooden block. The raised surface takes the ink; the cut-away areas normally stay blank on the paper. Pressing paper against the inked surface transfers the image.",
@@ -361,6 +383,8 @@ const DAILY_CURIOSITIES = [
     "id": "ultramarine",
     "category": "Arts & Culture",
     "title": "A painted blue with a long journey",
+    "question": "Where did a Renaissance painter’s {blue} begin?",
+    "tease": "Some of it started as a stone, mined far away and carried along long trade routes. The color has a journey of its own.",
     "hook": "A patch of blue in a Renaissance painting may begin with a stone mined far away. The color carries a history of materials as well as images.",
     "core": [
       "Natural ultramarine is a blue pigment made from lapis lazuli. For European painters, this stone came through long-distance trade from Afghanistan. Producing a useful pigment also required processing the stone. The resulting blue could be a costly artistic material.",
@@ -390,6 +414,8 @@ const DAILY_CURIOSITIES = [
     "id": "shadow-puppetry",
     "category": "Arts & Culture",
     "title": "A whole performance behind a screen",
+    "question": "How does a flat figure {come alive} on a screen?",
+    "tease": "In Chinese shadow puppetry, the puppet is only one part of the craft. The rest is in the hands, the voices and the music.",
     "hook": "A flat figure can turn into a lively character on a lit screen. In Chinese shadow puppetry, movement, music, and skilled hands work together.",
     "core": [
       "Chinese shadow puppetry uses figures made from leather or paper, manipulated behind an illuminated screen. Performers move them with rods while music and singing accompany the action. The audience sees a staged world built from light, silhouettes, and sound.",
@@ -419,6 +445,8 @@ const DAILY_CURIOSITIES = [
     "id": "washoku",
     "category": "Arts & Culture",
     "title": "A food tradition larger than a recipe",
+    "question": "What can’t a recipe {tell you} about food?",
+    "tease": "In washoku, Japanese food culture, much of what a community passes on lives in choosing, making and sharing food, not only in the final plate.",
     "hook": "A recipe can tell you what goes into a dish. It cannot, by itself, explain everything a community passes on through preparing and sharing food.",
     "core": [
       "Washoku is a Japanese food culture that includes knowledge and practices around producing, preparing, and eating food. UNESCO’s inscription emphasizes respect for nature and its expression in New Year celebrations. The heritage is broader than a fixed menu or one famous dish.",
@@ -444,6 +472,8 @@ const DAILY_CURIOSITIES = [
     "id": "gothic-light",
     "category": "Arts & Culture",
     "title": "Making room for colored light",
+    "question": "Why did Gothic churches {make room for colored light?}",
+    "tease": "A stained-glass window does more than fill a gap in a wall. The building’s structure helped make space for it.",
     "hook": "A Gothic church window does more than fill a gap in a wall. Its colored light belongs to a larger artistic idea about the space inside.",
     "core": [
       "Gothic builders combined pointed arches, ribbed vaults, and external supports to create interiors with larger windows. Stained glass could then occupy more of the building’s enclosing surface. Structure helped make room for a different experience of light.",
@@ -469,6 +499,8 @@ const DAILY_CURIOSITIES = [
     "id": "rosetta-scripts",
     "category": "History & Society",
     "title": "One message, three scripts",
+    "question": "How did {saying the same thing three times} help recover lost writing?",
+    "tease": "Repeating one decree might look redundant. On the Rosetta Stone, that repetition gave scholars a way into writing whose meaning had been lost.",
     "hook": "The Rosetta Stone repeats a decree in three scripts. That repetition helped scholars read writing whose meaning had been lost for many centuries.",
     "core": [
       "The Rosetta Stone carries a decree in Egyptian hieroglyphs, Egyptian Demotic, and Ancient Greek. Three scripts does not mean three unrelated languages: hieroglyphs and Demotic are two ways of writing Egyptian. Scholars could still read the Greek, giving them a way into the other inscriptions.",
@@ -498,6 +530,8 @@ const DAILY_CURIOSITIES = [
     "id": "ming-banknote",
     "category": "History & Society",
     "title": "Coins pictured on paper money",
+    "question": "Why would paper money {picture strings of coins?}",
+    "tease": "A Ming banknote shows the older kind of money it could stand for. The picture was part of how the paper made its claim.",
     "hook": "A Ming banknote pictures strings of coins on its surface. Why would a new form of money show the older kind it could stand for?",
     "core": [
       "A Ming dynasty banknote in the British Museum represents a value in strings of copper-alloy cash coins. Its printed coin imagery connects the paper to a familiar monetary unit. The sheet is light, but the value it names comes from a world of metal money.",
@@ -527,6 +561,8 @@ const DAILY_CURIOSITIES = [
     "id": "carnegie-libraries",
     "category": "History & Society",
     "title": "The library gift with an ongoing cost",
+    "question": "What did a town {owe} for its Carnegie library?",
+    "tease": "The gift paid for a building. It did not pay to keep the doors open.",
     "hook": "A town could receive money for a Carnegie library building and still need to make a lasting financial promise. The gift did not run the library.",
     "core": [
       "Andrew Carnegie’s library grants often paid for a building on condition that a community supplied a site and committed to supporting the library. The National Park Service reproduces an agreement requiring local funding for continuing operation. The arrangement separated construction from the cost of keeping a public service available.",
@@ -556,6 +592,8 @@ const DAILY_CURIOSITIES = [
     "id": "penny-black",
     "category": "History & Society",
     "title": "When receiving a letter came with a bill",
+    "question": "Why did {receiving a letter} once come with a bill?",
+    "tease": "In Britain before postal reform, the person who got the letter usually paid. A small adhesive stamp helped change that.",
     "hook": "In Britain before postal reform, a letter could arrive with postage still to pay. The familiar stamp helped move payment to the start of the journey.",
     "core": [
       "Before Britain’s postal reforms, charges commonly depended on distance and the number of sheets, and recipients usually paid. Reforms associated with Rowland Hill introduced simpler charges based on weight. In 1840, the Penny Black adhesive postage stamp made prepayment visible on the letter itself.",
@@ -585,6 +623,8 @@ const DAILY_CURIOSITIES = [
     "id": "roman-amphorae",
     "category": "History & Society",
     "title": "A shipping container made of clay",
+    "question": "What can a {broken Roman jar} still tell us?",
+    "tease": "Its wine or oil is long gone. The clay can still hold clues about a journey, and about the trade around it.",
     "hook": "A broken Roman jar can say something about a journey its contents no longer survive to tell. Ordinary packaging has become evidence of trade.",
     "core": [
       "Roman transport amphorae carried goods such as wine and olive oil. Their shapes varied, and some bore stamps or painted inscriptions. Museums study these containers as evidence of production and movement, not only as complete objects worth displaying.",
@@ -614,6 +654,8 @@ const DAILY_CURIOSITIES = [
     "id": "gps-relativity",
     "category": "Engineering & Technology",
     "title": "Clocks set slow on purpose",
+    "question": "Why would anyone launch a clock that’s {wrong on purpose?}",
+    "tease": "Before launch, the atomic clocks on GPS satellites are made to tick slightly slow. In orbit, that deliberate error disappears.",
     "hook": "Before a GPS satellite is launched, its atomic clocks are made to tick slightly slower than clocks on the ground. In orbit, that deliberate error disappears.",
     "core": [
       "GPS satellites orbit about 20,000 kilometers up, moving at roughly 14,000 kilometers per hour. Both facts affect their onboard atomic clocks. Because a satellite moves fast relative to the ground, special relativity predicts its clocks fall behind ground clocks by about 7 microseconds a day.",
@@ -643,6 +685,8 @@ const DAILY_CURIOSITIES = [
     "id": "true-fresco",
     "category": "Arts & Culture",
     "title": "Painting before the wall dries",
+    "question": "Why did fresco painters {race the drying plaster?}",
+    "tease": "Some of the most lasting wall paintings were made against a deadline. The drying that set the deadline is also what held the color.",
     "hook": "Some of the most lasting wall paintings were made against a deadline. The painter had to finish each section before the plaster dried, because drying is what held the color.",
     "core": [
       "In buon, or true, fresco, painters grind dry pigments in water and apply them to freshly laid lime plaster. The final, very smooth layer is called the intonaco. As it dries, the colors set with the plaster and become a permanent part of the wall rather than a coat of paint resting on top.",
@@ -676,6 +720,8 @@ const DAILY_CURIOSITIES = [
     "id": "petrichor",
     "category": "Science & Nature",
     "title": "The smell waiting on the ground",
+    "question": "Where does the {smell of rain} really come from?",
+    "tease": "After a dry spell, the first light rain brings an earthy scent. Most of it is not in the water at all. It was waiting on the ground.",
     "hook": "After a dry spell, the first light rain often brings a rich, earthy smell. Most of that smell is not in the falling water. It was already waiting on the ground.",
     "core": [
       "In 1964, Australian scientists gave the scent a name: petrichor, from Greek words for stone and for ichor, the fluid said to flow in the veins of the gods. It comes largely from two ingredients. During dry spells, oils and other compounds from decaying plant matter collect on rock and soil surfaces.",
@@ -705,6 +751,8 @@ const DAILY_CURIOSITIES = [
     "id": "exchequer-tallies",
     "category": "History & Society",
     "title": "The receipts that burned Parliament",
+    "question": "How did {old wooden receipts} burn down Parliament?",
+    "tease": "In 1834, most of the old Houses of Parliament burned. The fire began with records the government had kept for centuries and no longer needed.",
     "hook": "In 1834, most of the old Houses of Parliament in London burned down. The fire began with a pile of wooden receipts the government had used for centuries and no longer needed.",
     "core": [
       "Since medieval times, the Exchequer, a government office based at Westminster, had recorded payments on tally sticks: pieces of carved, notched wood, normally willow. Each stick was split in two, so that both sides of an agreement kept a matching record of what had been paid.",

@@ -441,7 +441,8 @@ test('original card fields stay byte-stable against the git-era baseline; no per
   for (const [id, sha] of Object.entries(baseline)) {
     const entry = entries.find(e => e.id === id);
     assert.ok(entry, 'baseline card still present: ' + id);
-    const { recall, ...fields } = entry;
+    // `question` and `tease` are optional cover fields added in Design 1.0 step 5 (issue #26); the pinned fields are everything else.
+    const { recall, question, tease, ...fields } = entry;
     assert.equal(createHash('sha256').update(JSON.stringify(fields)).digest('hex'), sha, 'original fields changed: ' + id);
   }
   for (const path of ['SRC/app.js','SRC/daily.js','SRC/content.js']) assert.doesNotMatch(read(path), /\b(localStorage|sessionStorage|indexedDB|fetch|XMLHttpRequest|sendBeacon|WebSocket|Notification)\b|document\.cookie/);
@@ -723,7 +724,9 @@ test('Today cover falls back to title and hook, and uses optional question (with
   const f = fixture();
   const todayEntry = f.entries.find(e => e.title === find(f.today, n => n.className === 'card-title')[0].textContent);
   const index = f.entries.indexOf(todayEntry);
-  assert.ok(f.entries.every(e => e.question === undefined && e.tease === undefined), 'no card text changes in this step');
+  const { question: _q, tease: _t, ...bare } = todayEntry;
+  f.entries[index] = bare;
+  f.context.renderCover(index, { year: 2026, month: 11, day: 11 });
   assert.equal(coverQuestion(f), todayEntry.title);
   assert.equal(keyPhrases(f).length, 0);
   assert.equal(f.cover['#today-tease'].textContent, todayEntry.hook);
@@ -739,11 +742,11 @@ test('Today cover falls back to title and hook, and uses optional question (with
   assert.equal(key[0].tag, 'span');
   assert.equal(key[0].textContent, 'wrong on purpose?');
   assert.equal(f.cover['#today-tease'].textContent, 'A short, mysterious tease.');
-  f.entries[index] = { ...todayEntry, question: 'A question with no key phrase?' };
+  f.entries[index] = { ...bare, question: 'A question with no key phrase?' };
   f.context.renderCover(index, date);
   assert.equal(coverQuestion(f), 'A question with no key phrase?');
   assert.equal(f.cover['#today-tease'].textContent, todayEntry.hook, 'tease falls back on its own');
-  f.entries[index] = { ...todayEntry, tease: 'Only a tease.' };
+  f.entries[index] = { ...bare, tease: 'Only a tease.' };
   f.context.renderCover(index, date);
   assert.equal(coverQuestion(f), todayEntry.title, 'question falls back on its own');
   assert.equal(f.cover['#today-date'].textContent, 'Wednesday, 11 November');
@@ -759,7 +762,7 @@ test('Today cover shows the same card as the unchanged daily mapping on every da
     const expected = f.entries[f.context.cardIndexForDate(fields.year, fields.month, fields.day)];
     assert.equal(expected.id, ORIGINAL_DAILY_IDS[i] ?? vm.runInContext('DAILY_CARD_IDS', f.context)[i], 'Today mapping unchanged');
     assert.equal(find(f.today, n => n.className === 'card-title')[0].textContent, expected.title);
-    assert.equal(coverQuestion(f), expected.question || expected.title);
+    assert.equal(coverQuestion(f), (expected.question || expected.title).replace(/[{}]/g, ''));
     assert.equal(f.cover['#cover-category'].textContent, expected.category);
   }
   const weekdays = [[2026, 11, 12, 'Thursday, 12 November', '2026-11-12'], [2024, 2, 29, 'Thursday, 29 February', '2024-02-29'], [2027, 1, 3, 'Sunday, 3 January', '2027-01-03']];
@@ -902,4 +905,26 @@ test('forced colors: cover drawings give way to system colours, tile icons stay 
   assert.match(block, /\.bar-fill \{[^}]*background: CanvasText;/);
   assert.match(block, /button\[aria-pressed="true"\] \{[^}]*Highlight/);
   assert.match(block, /\.cover-cta \{ border: 2px solid ButtonText; \}/);
+});
+
+// Design System 1.0 step 5 (issue #26): every card has a cover question and tease.
+test('every card has a cover question (≤ 14 words, one {key phrase}) and a tease (≤ 30 words, one or two sentences)', () => {
+  const f = fixture();
+  const plain = text => text.replace(/[{}]/g, '');
+  for (const entry of f.entries) {
+    assert.equal(typeof entry.question, 'string', 'question missing: ' + entry.id);
+    assert.equal(typeof entry.tease, 'string', 'tease missing: ' + entry.id);
+    assert.match(entry.question, /^[^{}]*\{[^{}]+\}[^{}]*$/, 'exactly one braced key phrase: ' + entry.id);
+    assert.match(plain(entry.question), /\?$/, 'question ends with a question mark: ' + entry.id);
+    assert.ok(words(plain(entry.question)) <= 14, 'question too long: ' + entry.id);
+    assert.ok(words(entry.tease) <= 30, 'tease too long: ' + entry.id);
+    assert.doesNotMatch(entry.tease, /[{}]/, 'no braces in tease: ' + entry.id);
+    assert.notEqual(entry.tease, entry.hook, 'tease is not a copy of the hook: ' + entry.id);
+    assert.notEqual(plain(entry.question), entry.title, 'question is not the title: ' + entry.id);
+  }
+  assert.equal(new Set(f.entries.map(e => plain(e.question))).size, f.entries.length, 'questions are unique');
+  const todayEntry = f.entries.find(e => e.title === find(f.today, n => n.className === 'card-title')[0].textContent);
+  assert.equal(coverQuestion(f), plain(todayEntry.question));
+  assert.equal(f.cover['#today-tease'].textContent, todayEntry.tease);
+  assert.equal(keyPhrases(f).length, 1);
 });

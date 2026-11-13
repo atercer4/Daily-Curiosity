@@ -17,7 +17,7 @@ Cards may add two optional fields for Today's cover (DESIGN_SYSTEM.md section 2)
 - `question`: the italic cover headline. Wrap its key phrase in braces, for example `"Why would anyone launch a clock that’s {wrong on purpose?}"`; the braced phrase renders in cover gold. Use at most one braced phrase.
 - `tease`: one or two sentences, more mysterious than explanatory.
 
-Without them the cover shows the card's title and hook. Both are content and go through ChatGPT's fact-check (DESIGN_SYSTEM.md rule 3). No card has them yet; step 5 adds them.
+Without them the cover shows the card's title and hook. Both are content and go through ChatGPT's fact-check (DESIGN_SYSTEM.md rule 3). Since Design 1.0 step 5 (issue #26) every card has both. Questions stay at or under 14 words with exactly one braced key phrase; teases stay at or under 30 words and add no claim beyond the card's sourced text.
 
 ## Topics, category identity, and visuals
 
