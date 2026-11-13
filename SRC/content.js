@@ -693,9 +693,9 @@ const DAILY_CURIOSITIES = [
       "That creates a deadline. Only as much plaster as can be painted in one day is spread on the wall, and each day’s patch is called a giornata, Italian for “a day’s work.” A large fresco is therefore built piece by piece, one fresh area of plaster at a time."
     ],
     "deep": [
-      "Why does wet plaster matter so much? Lime plaster sets by reacting with carbon dioxide in the air: calcium hydroxide becomes calcium carbonate. That reaction fixes the pigment particles in the plaster. The pigment grains end up held in a thin crust of calcium carbonate, so the color becomes part of the wall’s surface.",
+      "Why does wet plaster matter so much? Lime plaster sets by reacting with carbon dioxide in the air: calcium hydroxide becomes calcium carbonate. That reaction fixes the pigment particles in the plaster. The pigment grains end up held in a layer of calcium carbonate at the surface, so the color becomes part of the wall’s surface.",
       "The method also shapes how a fresco is planned. Successive coats of plaster are troweled onto the wall, and the design, called the cartoon, is drawn on the next-to-last layer, the arriccio. The smooth intonaco then goes on in day-sized patches, so the whole design has to be divided into sections that can each be finished in a single day.",
-      "Painting on dry plaster, called a secco, works differently. The paint goes on after the plaster has dried, either over finished true fresco or onto dry intonaco, so it misses the setting wall that locks in the color. Britannica calls true fresco the most durable technique, and the chemistry of the drying plaster is the reason."
+      "Painting on dry plaster, called a secco, works differently. The paint goes on after the plaster has dried, either over finished true fresco or onto dry intonaco, so it misses the setting wall that locks in the color. Britannica calls true fresco the most durable technique; as its plaster sets, the pigment is fixed in the wall itself."
     ],
     "sources": [
       {
@@ -764,7 +764,7 @@ const DAILY_CURIOSITIES = [
     "hook": "In 1834, most of the old Houses of Parliament in London burned down. The fire began with a pile of wooden receipts the government had used for centuries and no longer needed.",
     "core": [
       "Since medieval times, the Exchequer, a government office based at Westminster, had recorded payments on tally sticks: pieces of carved, notched wood. Each stick was split in two, so that both sides of an agreement kept a matching record of what had been paid. When the two halves were later matched, they showed that the accounts “tallied.”",
-      "Paper records eventually replaced them, and the Exchequer abolished tallies in 1826. That left Westminster with two large cartloads of obsolete wooden accounts, and someone had to get rid of them."
+      "Paper records eventually replaced them, and tallies were abolished in 1826. That left Westminster with two large cartloads of obsolete wooden accounts, and someone had to get rid of them."
     ],
     "deep": [
       "Treasury officials told the Clerk of Works, Richard Weobley, to clear the old tallies. He decided against giving them to parliamentary staff as firewood. Instead, on 16 October 1834, two labourers, Joshua Cross and Patrick Furlong, burned them in the two heating furnaces directly below the House of Lords.",
