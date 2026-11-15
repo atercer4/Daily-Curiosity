@@ -114,8 +114,8 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `heat-pump`; category: Engineering & Technology.
 - Subject: Energy / thermodynamics.
 - Visual: Omitted: the two-sided transfer is explained in prose; no ornamental equipment drawing.
-- [U.S. Department of Energy — Heat pump systems](https://www.energy.gov/energysaver/heat-pump-systems)
-- [Massachusetts DOER — Air-source heat pump handout (DOE-hosted PDF)](https://www.energy.gov/sites/prod/files/2017/07/f35/About%20Air%20Source%20Heat%20Pumps%20Handout.pdf)
+- [Natural Resources Canada — Heating and cooling with a heat pump](https://natural-resources.canada.ca/energy-efficiency/energy-star/heating-cooling-heat-pump)
+- [ENERGY STAR — How does a heat pump work?](https://www.energystar.gov/node/11903)
 
 ### 9. Why a damaged code can still scan
 
@@ -163,7 +163,8 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `washoku`; category: Arts & Culture.
 - Subject: Food traditions.
 - Visual: Omitted: a food photograph would narrow a social practice to one presentation.
-- [UNESCO — Washoku, notably for the celebration of New Year](https://ich.unesco.org/en/RL/washoku-traditional-dietary-culture-of-the-japanese-notably-for-the-celebration-of-new-year-00869)
+- [UNESCO — Washoku, traditional dietary cultures of the Japanese, notably for the celebration of New Year](https://ich.unesco.org/en/RL/00869)
+- [UNESCO — Intergovernmental Committee decision 8.COM 8.17 (2013): inscription of washoku](https://ich.unesco.org/en/decisions/8.COM/8.17)
 
 ### 15. Making room for colored light
 
@@ -203,8 +204,9 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `penny-black`; category: History & Society.
 - Subject: Communication / postal reform.
 - Visual: Omitted: a stamp portrait would not explain prepayment better than the text.
-- [The Postal Museum — The first ever stamp: the Penny Black](https://www.postalmuseum.org/collections/highlights/the-first-ever-stamp-the-penny-black/)
-- [Smithsonian National Postal Museum — The 1840 Penny Black](https://postalmuseum.si.edu/exhibition/the-queen%E2%80%99s-own-postal-reforms-that-transformed-the-mail-the-worlds-first-postage-stamps)
+- [The Postal Museum — Large-print gallery guide, Zone 2](https://www.postalmuseum.org/wp-content/uploads/2025/05/2025-TPM-Large-Print-Guide-Zone-2-B.pdf)
+- [Smithsonian National Postal Museum — The world’s first postage stamps](https://postalmuseum.si.edu/exhibition/the-queen%E2%80%99s-own-postal-reforms-that-transformed-the-mail/the-worlds-first-postage-stamps)
+- [Smithsonian National Postal Museum — Great Britain](https://postalmuseum.si.edu/exhibition/international-philately-europe-northern-europe/great-britain)
 
 ### 20. A shipping container made of clay
 

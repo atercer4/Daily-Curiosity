@@ -265,17 +265,17 @@ const DAILY_CURIOSITIES = [
     ],
     "deep": [
       "Think about the two ends of the job rather than just the warm air leaving the indoor unit. One side absorbs heat; the other releases it. The compressor and the rest of the refrigerant circuit make that transfer possible even when the desired direction opposes the natural flow from hot to cold.",
-      "The Department of Energy describes heat pumps as devices that can provide both heating and cooling. In a reversible system, changing the direction of operation lets the indoor space give up heat instead. The room has switched roles, from the place receiving heat to the place losing it.",
+      "Natural Resources Canada describes a heat pump as fully reversible, able to both heat and cool a home. In a reversible system, changing the direction of operation lets the indoor space give up heat instead. The room has switched roles, from the place receiving heat to the place losing it.",
       "There is no extra energy appearing from nowhere. The heat source outside the room is part of the accounting. Looking only at the electricity entering the machine leaves out the energy it collects elsewhere. That wider boundary is what makes the apparently puzzling comparison understandable."
     ],
     "sources": [
       {
-        "label": "U.S. Department of Energy — Heat pump systems",
-        "url": "https://www.energy.gov/energysaver/heat-pump-systems"
+        "label": "Natural Resources Canada — Heating and cooling with a heat pump",
+        "url": "https://natural-resources.canada.ca/energy-efficiency/energy-star/heating-cooling-heat-pump"
       },
       {
-        "label": "Massachusetts DOER — Air-source heat pump handout (DOE-hosted PDF)",
-        "url": "https://www.energy.gov/sites/prod/files/2017/07/f35/About%20Air%20Source%20Heat%20Pumps%20Handout.pdf"
+        "label": "ENERGY STAR — How does a heat pump work?",
+        "url": "https://www.energystar.gov/node/11903"
       }
     ],
     "recall": {
@@ -465,23 +465,27 @@ const DAILY_CURIOSITIES = [
     "tease": "In washoku, Japanese food culture, much of what a community passes on lives in choosing, making and sharing food, not only in the final plate.",
     "hook": "A recipe can tell you what goes into a dish. It cannot, by itself, explain everything a community passes on through preparing and sharing food.",
     "core": [
-      "Washoku is a Japanese food culture that includes knowledge and practices around producing, preparing, and eating food. UNESCO’s inscription emphasizes respect for nature and its expression in New Year celebrations. The heritage is broader than a fixed menu or one famous dish.",
-      "In the New Year practices described by UNESCO, special foods are prepared and shared, with ingredients and dishes carrying symbolic meanings. Families and communities transmit knowledge through participation. The food matters, but so do choosing it, making it, and gathering around it. A tradition can live in these relationships as much as in the final plate."
+      "Washoku is a Japanese food culture that includes knowledge and practices around producing, preparing, and eating food. UNESCO links it to respect for nature and notes that it is especially visible at New Year. The heritage is broader than a fixed menu or one famous dish.",
+      "In the New Year practices described by UNESCO, special foods are prepared and shared, with dishes carrying symbolic meanings. More broadly, UNESCO notes that knowledge is passed down at shared family mealtimes, as well as through teachers and community groups. The food matters, but so do choosing it, making it, and gathering around it. A tradition can live in these relationships as much as in the final plate."
     ],
     "deep": [
       "Consider what a written recipe preserves well: ingredients, quantities, and a sequence of actions. Now consider what may be learned by taking part in a celebration: when preparations begin, who works together, and why a dish belongs to that occasion. These are different kinds of knowledge.",
       "UNESCO describes washoku as a social practice and highlights New Year as a setting where it is especially visible. The focus is not a claim that every Japanese household cooks or celebrates in exactly the same way. It identifies a body of knowledge and customs that people pass on.",
-      "This changes the question from “Which food counts?” to “What practices are being continued?” A finished dish can be described on its own, but its cultural place may depend on season, occasion, and shared understanding. Learning about a food tradition therefore means paying attention to the activity around the food as well."
+      "This changes the question from “Which food counts?” to “What practices are being continued?” A finished dish can be described on its own, but its cultural place may depend on occasion, meaning, and shared understanding. Learning about a food tradition therefore means paying attention to the activity around the food as well."
     ],
     "sources": [
       {
-        "label": "UNESCO — Washoku, notably for the celebration of New Year",
-        "url": "https://ich.unesco.org/en/RL/washoku-traditional-dietary-culture-of-the-japanese-notably-for-the-celebration-of-new-year-00869"
+        "label": "UNESCO — Washoku, traditional dietary cultures of the Japanese, notably for the celebration of New Year",
+        "url": "https://ich.unesco.org/en/RL/00869"
+      },
+      {
+        "label": "UNESCO — Intergovernmental Committee decision 8.COM 8.17 (2013): inscription of washoku",
+        "url": "https://ich.unesco.org/en/decisions/8.COM/8.17"
       }
     ],
     "recall": {
       "prompt": "Why does preserving a recipe preserve only part of a food tradition?",
-      "reveal": "A recipe records ingredients and actions. A food tradition also includes occasions, shared preparation, meanings, and knowledge learned through participation."
+      "reveal": "A recipe records ingredients and actions. A food tradition also includes occasions, shared meals, meanings, and knowledge learned through participation."
     }
   },
   {
@@ -620,22 +624,26 @@ const DAILY_CURIOSITIES = [
     "tease": "In Britain before postal reform, the person who got the letter usually paid. A small adhesive stamp helped change that.",
     "hook": "In Britain before postal reform, a letter could arrive with postage still to pay. The familiar stamp helped move payment to the start of the journey.",
     "core": [
-      "Before Britain’s postal reforms, charges commonly depended on distance and the number of sheets, and recipients usually paid. Reforms associated with Rowland Hill introduced simpler charges based on weight. In 1840, the Penny Black adhesive postage stamp made prepayment visible on the letter itself.",
+      "Before Britain’s postal reforms, charges commonly depended on distance and the number of sheets, and recipients often paid. Reforms associated with Rowland Hill introduced simpler charges based on weight. In 1840, the Penny Black adhesive postage stamp made prepayment visible on the letter itself.",
       "The small label was part of a larger change in how the postal service worked. A sender could pay before dispatch, and the attached stamp showed that postage had been paid. Its importance was not just the printed portrait: it helped turn a payment into something that could travel with the message."
     ],
     "deep": [
       "From the recipient’s point of view, paying to receive a letter and opening one whose postage is already paid are different experiences. From the postal service’s point of view, payment made before dispatch can be represented on the item being carried. The stamp connects those two sides of the transaction.",
-      "The Postal Museum places the Penny Black within a sequence of reforms, rather than presenting it as an isolated invention. Changes to rates and the basis of charging mattered alongside the adhesive label. The Smithsonian likewise treats it as part of a transformation in the mail.",
+      "The Postal Museum’s gallery guide places the Penny Black alongside uniform penny postage, rather than presenting it as an isolated invention. Changes to rates and the basis of charging mattered alongside the adhesive label. The Smithsonian likewise treats it as part of a transformation in the mail.",
       "Following the payment reveals a less obvious history inside an everyday object. The label’s job was administrative as well as visual: it provided evidence that could move with a letter. A small addition to the envelope helped make a changed service understandable to the people sending, carrying, and receiving it."
     ],
     "sources": [
       {
-        "label": "The Postal Museum — The first ever stamp: the Penny Black",
-        "url": "https://www.postalmuseum.org/collections/highlights/the-first-ever-stamp-the-penny-black/"
+        "label": "The Postal Museum — Large-print gallery guide, Zone 2",
+        "url": "https://www.postalmuseum.org/wp-content/uploads/2025/05/2025-TPM-Large-Print-Guide-Zone-2-B.pdf"
       },
       {
-        "label": "Smithsonian National Postal Museum — The 1840 Penny Black",
-        "url": "https://postalmuseum.si.edu/exhibition/the-queen%E2%80%99s-own-postal-reforms-that-transformed-the-mail-the-worlds-first-postage-stamps"
+        "label": "Smithsonian National Postal Museum — The world’s first postage stamps",
+        "url": "https://postalmuseum.si.edu/exhibition/the-queen%E2%80%99s-own-postal-reforms-that-transformed-the-mail/the-worlds-first-postage-stamps"
+      },
+      {
+        "label": "Smithsonian National Postal Museum — Great Britain",
+        "url": "https://postalmuseum.si.edu/exhibition/international-philately-europe-northern-europe/great-britain"
       }
     ],
     "recall": {

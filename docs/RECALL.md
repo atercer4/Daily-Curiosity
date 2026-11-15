@@ -84,7 +84,7 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 
 - ID: `washoku`
 - Prompt: Why does preserving a recipe preserve only part of a food tradition?
-- Response: A recipe records ingredients and actions. A food tradition also includes occasions, shared preparation, meanings, and knowledge learned through participation.
+- Response: A recipe records ingredients and actions. A food tradition also includes occasions, shared meals, meanings, and knowledge learned through participation.
 
 ## Making room for colored light
 
