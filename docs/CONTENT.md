@@ -99,7 +99,7 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - Subject: Structural engineering.
 - Visual: Omitted: prose traces forces; a decorative bridge silhouette would not improve the load explanation.
 - [Golden Gate Bridge District — How the bridge spans the Golden Gate](https://www.goldengate.org/exhibits/how-the-bridge-spans-the-golden-gate/)
-- [Golden Gate Bridge District — Steel suspender rope exhibit](https://www.goldengate.org/exhibits/steel-suspender-rope-exhibit/)
+- [Golden Gate Bridge District — Bridge towers](https://goldengate.org/exhibits/bridge-towers)
 
 ### 7. Steel protected by its own surface
 

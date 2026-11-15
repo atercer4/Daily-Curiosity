@@ -212,8 +212,8 @@ const DAILY_CURIOSITIES = [
         "url": "https://www.goldengate.org/exhibits/how-the-bridge-spans-the-golden-gate/"
       },
       {
-        "label": "Golden Gate Bridge District — Steel suspender rope exhibit",
-        "url": "https://www.goldengate.org/exhibits/steel-suspender-rope-exhibit/"
+        "label": "Golden Gate Bridge District — Bridge towers",
+        "url": "https://goldengate.org/exhibits/bridge-towers"
       }
     ],
     "recall": {
