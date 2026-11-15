@@ -419,7 +419,7 @@ const DAILY_CURIOSITIES = [
     "hook": "A flat figure can turn into a lively character on a lit screen. In Chinese shadow puppetry, movement, music, and skilled hands work together.",
     "core": [
       "Chinese shadow puppetry uses figures made from leather or paper, manipulated behind an illuminated screen. Performers move them with rods while music and singing accompany the action. The audience sees a staged world built from light, silhouettes, and sound.",
-      "UNESCO describes it as a living performance tradition, with skills passed between practitioners. Making the figures is only one part of the craft. Moving their joints, voicing characters, and working with the music bring the figures into a story. A puppet on display shows an object; a performance reveals the coordinated artistic skills that make that object act."
+      "UNESCO lists it as intangible cultural heritage, with skills passed down in families, in troupes and from master to pupil. Making the figures is only one part of the craft. Moving their joints, voicing characters, and working with the music bring the figures into a story. A puppet on display shows an object; a performance reveals the coordinated artistic skills that make that object act."
     ],
     "deep": [
       "The screen draws a boundary between the visible story and the people producing it. On one side are figures and their movements; behind them are the hands controlling the rods. Music and voices supply things a silhouette cannot convey by itself.",
@@ -432,7 +432,7 @@ const DAILY_CURIOSITIES = [
         "url": "https://ich.unesco.org/en/RL/chinese-shadow-puppetry-00421"
       },
       {
-        "label": "UNESCO — Chinese shadow puppetry information sheet",
+        "label": "UNESCO — Representative List of the Intangible Cultural Heritage of Humanity 2010–2011 (PDF)",
         "url": "https://ich.unesco.org/doc/src/17331-EN.pdf"
       }
     ],

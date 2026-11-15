@@ -152,7 +152,7 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - Subject: Performance.
 - Visual: Omitted: a still silhouette would add atmosphere but not the timing of performance.
 - [UNESCO — Chinese shadow puppetry](https://ich.unesco.org/en/RL/chinese-shadow-puppetry-00421)
-- [UNESCO — Chinese shadow puppetry information sheet](https://ich.unesco.org/doc/src/17331-EN.pdf)
+- [UNESCO — Representative List of the Intangible Cultural Heritage of Humanity 2010–2011 (PDF)](https://ich.unesco.org/doc/src/17331-EN.pdf)
 
 ### 14. A food tradition larger than a recipe
 
