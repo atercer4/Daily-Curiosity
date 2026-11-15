@@ -975,7 +975,8 @@ const samplePlate = (extra = {}) => ({
     { el: 'circle', cx: 340, cy: 110, r: 6, tone: 'gold', fill: true },
     { el: 'path', d: 'M10 10L20 20', tone: 'accent', href: 'javascript:alert(1)', onload: 'x()', style: 'display:none' },
     { el: 'image', href: 'https://example.com/x.png' },
-    { el: 'script', d: 'x' }
+    { el: 'script', d: 'x' },
+    { el: 'constructor' }, { el: '__proto__' }, { el: 'toString' }, { el: ['circle'] }
   ],
   labels: [{ x: 340, y: 96, text: 'Point', anchor: 'middle' }, { x: 380, y: 290, text: 'about 1 unit', anchor: 'end', note: true }],
   ...extra
@@ -1011,6 +1012,11 @@ test('plate figures render from data as one labelled SVG: whitelisted shapes and
   assert.equal(descendants(descendants(idea.article, 'details')[0], 'figure').length, 1, 'placement "idea" puts it in The idea');
   assert.match(read('SRC/app.js'), /text\.textContent = label\.text;/);
   assert.doesNotMatch(read('SRC/app.js'), /innerHTML|insertAdjacentHTML|outerHTML/);
+  // Labels compensate for plate scaling so phones get the same on-screen size (Codex review, PR #48).
+  const css = read('SRC/styles.css');
+  assert.match(css, /\.plate-label \{[^}]*font: 600 calc\(15px \* var\(--plate-scale, 1\)\)/);
+  assert.match(css, /\.plate-label\.note \{[^}]*calc\(16px \* var\(--plate-scale, 1\)\)/);
+  assert.match(read('SRC/app.js'), /setProperty\('--plate-scale', \(target\.viewBox\.baseVal\.width \/ rendered\)/);
 });
 
 test('numbers strip: at most three figures, under the Today cover and inside the card on Explore', () => {

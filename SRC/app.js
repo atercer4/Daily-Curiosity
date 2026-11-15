@@ -41,8 +41,9 @@ function disclosure(label, note, paragraphs, headingTag) {
 // label is reviewed with the card text. Only these shapes and numeric/path attributes are drawn; nothing else
 // from the data reaches the DOM (no href, style, script or event attributes), and labels are set as text.
 const SVG_NS = 'http://www.w3.org/2000/svg';
-const PLATE_SHAPES = { circle: ['cx', 'cy', 'r'], ellipse: ['cx', 'cy', 'rx', 'ry'], line: ['x1', 'y1', 'x2', 'y2'],
-  rect: ['x', 'y', 'width', 'height', 'rx'], path: ['d'], polyline: ['points'] };
+// Prototype-free lookup: names like "constructor" or "__proto__" are simply not shapes.
+const PLATE_SHAPES = Object.assign(Object.create(null), { circle: ['cx', 'cy', 'r'], ellipse: ['cx', 'cy', 'rx', 'ry'], line: ['x1', 'y1', 'x2', 'y2'],
+  rect: ['x', 'y', 'width', 'height', 'rx'], path: ['d'], polyline: ['points'] });
 const PLATE_TONES = ['ink', 'accent', 'muted', 'gold'];
 
 function svg(tag, attributes, className) {
@@ -52,11 +53,21 @@ function svg(tag, attributes, className) {
   return node;
 }
 
+// Labels keep the same on-screen size however far a plate is scaled (Codex review on PR #48): the observer
+// publishes viewBox units per CSS pixel as --plate-scale, and the label font sizes multiply by it.
+const plateScale = typeof ResizeObserver === 'function' ? new ResizeObserver(entries => entries.forEach(({ target }) => {
+  if (!target.isConnected) { plateScale.unobserve(target); return; } // a replaced card's plate
+  const rendered = target.getBoundingClientRect().width;
+  if (!rendered) return; // inside a closed disclosure: measured again when it opens
+  target.style.setProperty('--plate-scale', (target.viewBox.baseVal.width / rendered).toFixed(3));
+})) : null;
+
 function plateDrawing(visual) {
   const drawing = svg('svg', { viewBox: visual.viewBox, focusable: 'false' }, 'plate');
+  if (plateScale) plateScale.observe(drawing);
   visual.shapes.forEach(shape => {
-    const allowed = PLATE_SHAPES[shape.el];
-    if (!allowed) return;
+    const allowed = typeof shape.el === 'string' ? PLATE_SHAPES[shape.el] : undefined;
+    if (!Array.isArray(allowed)) return;
     const attributes = {};
     allowed.forEach(key => { if (shape[key] !== undefined) attributes[key] = shape[key]; });
     if (shape.el === 'ellipse' && shape.rotate) attributes.transform = `rotate(${Number(shape.rotate)} ${Number(shape.cx)} ${Number(shape.cy)})`;

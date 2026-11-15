@@ -36,7 +36,7 @@ Every visual needs `alt` (over 50 characters, describing the relationships, not 
 |---|---|
 | `viewBox` | `"0 0 W H"`. Design at about 400 units wide, so labels stay readable at phone width. |
 | `shapes` | Line work. `el` is one of `circle`, `ellipse` (optional `rotate`), `line`, `rect`, `path` or `polyline`, with numeric or path attributes only. `tone` is `ink`, `accent` (the category colour), `muted` or `gold` (decoration only). Optional `dash: true` and `fill: true`. Anything else (`href`, `style`, event attributes, other elements) is ignored. |
-| `labels` | `{ x, y, text, anchor?, note? }`. Text of at most 40 characters, set as text and never as markup. `note: true` uses the italic note style for asides such as "≈ 20,000 km up". |
+| `labels` | `{ x, y, text, anchor?, note? }`. Text of at most 40 characters, set as text and never as markup. `note: true` uses the italic note style for asides such as "≈ 20,000 km up". Labels render at 15px (notes 16px) on screen at every width, so leave room around them for phone sizes. |
 | `placement` | `"idea"` puts the figure in The idea. The default is Look closer. |
 | `cover` | `true` redraws the plate on the Today cover in ivory and cover gold. The cover copy is decorative; the reading figure carries the text alternative. Use this only when the drawing is the card's central image. |
 
