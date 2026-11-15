@@ -204,8 +204,9 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `penny-black`; category: History & Society.
 - Subject: Communication / postal reform.
 - Visual: Omitted: a stamp portrait would not explain prepayment better than the text.
-- [The Postal Museum — The first ever stamp: the Penny Black](https://www.postalmuseum.org/collections/highlights/the-first-ever-stamp-the-penny-black/)
-- [Smithsonian National Postal Museum — The 1840 Penny Black](https://postalmuseum.si.edu/exhibition/the-queen%E2%80%99s-own-postal-reforms-that-transformed-the-mail-the-worlds-first-postage-stamps)
+- [The Postal Museum — Large-print gallery guide, Zone 2](https://www.postalmuseum.org/wp-content/uploads/2025/05/2025-TPM-Large-Print-Guide-Zone-2-B.pdf)
+- [Smithsonian National Postal Museum — The world’s first postage stamps](https://postalmuseum.si.edu/exhibition/the-queen%E2%80%99s-own-postal-reforms-that-transformed-the-mail/the-worlds-first-postage-stamps)
+- [Smithsonian National Postal Museum — Great Britain](https://postalmuseum.si.edu/exhibition/international-philately-europe-northern-europe/great-britain)
 
 ### 20. A shipping container made of clay
 

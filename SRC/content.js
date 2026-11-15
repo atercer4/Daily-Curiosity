@@ -624,22 +624,26 @@ const DAILY_CURIOSITIES = [
     "tease": "In Britain before postal reform, the person who got the letter usually paid. A small adhesive stamp helped change that.",
     "hook": "In Britain before postal reform, a letter could arrive with postage still to pay. The familiar stamp helped move payment to the start of the journey.",
     "core": [
-      "Before Britain’s postal reforms, charges commonly depended on distance and the number of sheets, and recipients usually paid. Reforms associated with Rowland Hill introduced simpler charges based on weight. In 1840, the Penny Black adhesive postage stamp made prepayment visible on the letter itself.",
+      "Before Britain’s postal reforms, charges commonly depended on distance and the number of sheets, and recipients often paid. Reforms associated with Rowland Hill introduced simpler charges based on weight. In 1840, the Penny Black adhesive postage stamp made prepayment visible on the letter itself.",
       "The small label was part of a larger change in how the postal service worked. A sender could pay before dispatch, and the attached stamp showed that postage had been paid. Its importance was not just the printed portrait: it helped turn a payment into something that could travel with the message."
     ],
     "deep": [
       "From the recipient’s point of view, paying to receive a letter and opening one whose postage is already paid are different experiences. From the postal service’s point of view, payment made before dispatch can be represented on the item being carried. The stamp connects those two sides of the transaction.",
-      "The Postal Museum places the Penny Black within a sequence of reforms, rather than presenting it as an isolated invention. Changes to rates and the basis of charging mattered alongside the adhesive label. The Smithsonian likewise treats it as part of a transformation in the mail.",
+      "The Postal Museum’s gallery guide places the Penny Black alongside uniform penny postage, rather than presenting it as an isolated invention. Changes to rates and the basis of charging mattered alongside the adhesive label. The Smithsonian likewise treats it as part of a transformation in the mail.",
       "Following the payment reveals a less obvious history inside an everyday object. The label’s job was administrative as well as visual: it provided evidence that could move with a letter. A small addition to the envelope helped make a changed service understandable to the people sending, carrying, and receiving it."
     ],
     "sources": [
       {
-        "label": "The Postal Museum — The first ever stamp: the Penny Black",
-        "url": "https://www.postalmuseum.org/collections/highlights/the-first-ever-stamp-the-penny-black/"
+        "label": "The Postal Museum — Large-print gallery guide, Zone 2",
+        "url": "https://www.postalmuseum.org/wp-content/uploads/2025/05/2025-TPM-Large-Print-Guide-Zone-2-B.pdf"
       },
       {
-        "label": "Smithsonian National Postal Museum — The 1840 Penny Black",
-        "url": "https://postalmuseum.si.edu/exhibition/the-queen%E2%80%99s-own-postal-reforms-that-transformed-the-mail-the-worlds-first-postage-stamps"
+        "label": "Smithsonian National Postal Museum — The world’s first postage stamps",
+        "url": "https://postalmuseum.si.edu/exhibition/the-queen%E2%80%99s-own-postal-reforms-that-transformed-the-mail/the-worlds-first-postage-stamps"
+      },
+      {
+        "label": "Smithsonian National Postal Museum — Great Britain",
+        "url": "https://postalmuseum.si.edu/exhibition/international-philately-europe-northern-europe/great-britain"
       }
     ],
     "recall": {
