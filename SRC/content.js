@@ -101,22 +101,22 @@ const DAILY_CURIOSITIES = [
     "tease": "The skeleton is still there. What disappears is a tiny partner that was living inside the coral’s tissues.",
     "hook": "A coral can lose much of its color without losing its skeleton. What disappears first is a tiny partner living inside its tissues.",
     "core": [
-      "Many shallow-water reef corals share their bodies with microscopic algae. The coral provides shelter and materials the algae use. With sunlight, the algae make food through photosynthesis and share some of it with their host. Their pigments also contribute much of the coral’s color.",
+      "Many shallow-water reef corals share their bodies with microscopic algae. The coral provides shelter and materials the algae use. With sunlight, the algae make food through photosynthesis and share some of it with their host. Much of the coral’s color comes from these algae; without them, its tissue is mostly clear.",
       "Under stress, including unusually warm water, corals can lose these algae. Their pale tissues reveal the white skeleton beneath: coral bleaching. A bleached coral is not necessarily dead, but it has lost an important food source. If conditions improve, the partnership can recover; prolonged stress makes survival harder."
     ],
     "deep": [
       "The animal and its algae remain different organisms even though they live so closely together. Coral polyps can catch food with their tentacles, while their resident algae use light. These are different ways of obtaining energy, and the relationship connects them within a small patch of living tissue.",
-      "Bleaching therefore describes more than a change in appearance. The visible loss of color can signal a breakdown in that relationship. NOAA distinguishes bleaching from death: living coral may regain algae, while a coral that dies cannot simply recover when the water cools.",
+      "Bleaching therefore describes more than a change in appearance. The visible loss of color can signal a breakdown in that relationship. NOAA distinguishes bleaching from death: if stress eases in time, a bleached coral may take on new algae and recover; if stress lasts too long, it dies, leaving only its skeleton.",
       "Color alone is an incomplete account of a reef’s condition. The useful question is what is happening to the living partnership underneath it. This also explains why treating every white coral as already dead misses a crucial interval: the animal may still be alive, but under serious strain."
     ],
     "sources": [
       {
-        "label": "NOAA — Corals and their symbiotic algae",
-        "url": "https://oceanservice.noaa.gov/education/tutorial_corals/coral02_zooxanthellae.html"
+        "label": "NOAA — Are corals animals or plants?",
+        "url": "https://oceanservice.noaa.gov/facts/coral.html"
       },
       {
-        "label": "NOAA — What is coral bleaching?",
-        "url": "https://oceanservice.noaa.gov/facts/coral_bleach.html"
+        "label": "NOAA Flower Garden Banks National Marine Sanctuary — Coral bleaching",
+        "url": "https://flowergarden.noaa.gov/education/bleaching.html"
       }
     ],
     "recall": {

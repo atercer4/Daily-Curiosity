@@ -73,8 +73,8 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `coral-partners`; category: Science & Nature.
 - Subject: Reef ecology / symbiosis.
 - Visual: Omitted: prose separates bleaching from death without implying every white coral has the same condition.
-- [NOAA — Corals and their symbiotic algae](https://oceanservice.noaa.gov/education/tutorial_corals/coral02_zooxanthellae.html)
-- [NOAA — What is coral bleaching?](https://oceanservice.noaa.gov/facts/coral_bleach.html)
+- [NOAA — Are corals animals or plants?](https://oceanservice.noaa.gov/facts/coral.html)
+- [NOAA Flower Garden Banks National Marine Sanctuary — Coral bleaching](https://flowergarden.noaa.gov/education/bleaching.html)
 
 ### 4. Stone columns without a stonecutter
 
