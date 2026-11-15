@@ -493,22 +493,26 @@ const DAILY_CURIOSITIES = [
     "hook": "A Gothic church window does more than fill a gap in a wall. Its colored light belongs to a larger artistic idea about the space inside.",
     "core": [
       "Gothic builders combined pointed arches, ribbed vaults, and external supports to create interiors with larger windows. Stained glass could then occupy more of the building’s enclosing surface. Structure helped make room for a different experience of light.",
-      "In medieval Christian churches, these windows also carried religious images and meanings. The Met describes biblical scenes, saints, and luminous color as central to the experience of the cathedral. The glass was neither a separate picture gallery nor merely a way to brighten a room. It joined architecture and imagery, shaping how the interior was seen and understood."
+      "In medieval Christian churches, these windows also carried religious images and meanings. The V&A notes that large windows showing scenes from the Bible and the lives of saints could animate a sacred space with glimmering colored light. The glass was neither a separate picture gallery nor merely a way to brighten a room. It joined architecture and imagery, shaping how the interior was seen and understood."
     ],
     "deep": [
       "Look at the window as part of the room, not just as an image held in a frame. Light passes through its colored glass into the same space occupied by the viewer. The building gives the image a scale and setting that a small independent object cannot provide.",
-      "The Met’s account connects the upward movement of Gothic interiors with Christian aspirations toward heaven. It also describes windows filled with biblical stories and figures. Height, imagery, and colored light could reinforce one another in the religious experience of the space.",
+      "Columbia’s study of Amiens shows how pointed arches, ribbed vaults, and exterior supports opened the interior to brilliant light filtering through stained glass. The V&A describes windows filled with biblical scenes and saints. Structure, imagery, and colored light could reinforce one another in the religious experience of the space.",
       "That reading does not mean every Gothic building has the same arrangement or that every visitor responds alike. It offers a historically grounded way to connect choices that might otherwise seem separate. The large opening, the stained glass, and the proportions of the room belong to a shared artistic setting, rather than three unrelated items on a checklist."
     ],
     "sources": [
       {
-        "label": "The Metropolitan Museum of Art — Gothic Art",
-        "url": "https://www.metmuseum.org/essays/gothic-art"
+        "label": "Columbia University Media Center for Art History — The Gothic structural revolution (Life of a Cathedral: Amiens)",
+        "url": "https://projects.mcah.columbia.edu/amiens-arthum/node/3597.html"
+      },
+      {
+        "label": "Victoria and Albert Museum — Stained glass: an introduction",
+        "url": "https://www.vam.ac.uk/articles/stained-glass-an-introduction"
       }
     ],
     "recall": {
       "prompt": "How do stained-glass windows work with a Gothic church’s interior?",
-      "reveal": "Colored light, religious imagery, height, and space reinforce one another. The windows belong to the experience of the building, not just its decoration."
+      "reveal": "Colored light, religious imagery, and open interior space reinforce one another. The windows belong to the experience of the building, not just its decoration."
     }
   },
   {

@@ -170,7 +170,8 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `gothic-light`; category: Arts & Culture.
 - Subject: Architecture / religious art.
 - Visual: Omitted: no stock cathedral photograph or diagram that conflates different buildings.
-- [The Metropolitan Museum of Art — Gothic Art](https://www.metmuseum.org/essays/gothic-art)
+- [Columbia University Media Center for Art History — The Gothic structural revolution (Life of a Cathedral: Amiens)](https://projects.mcah.columbia.edu/amiens-arthum/node/3597.html)
+- [Victoria and Albert Museum — Stained glass: an introduction](https://www.vam.ac.uk/articles/stained-glass-an-introduction)
 
 ### 16. One message, three scripts
 

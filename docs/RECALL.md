@@ -90,7 +90,7 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 
 - ID: `gothic-light`
 - Prompt: How do stained-glass windows work with a Gothic church’s interior?
-- Response: Colored light, religious imagery, height, and space reinforce one another. The windows belong to the experience of the building, not just its decoration.
+- Response: Colored light, religious imagery, and open interior space reinforce one another. The windows belong to the experience of the building, not just its decoration.
 
 ## One message, three scripts
 
