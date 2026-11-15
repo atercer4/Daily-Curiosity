@@ -8,24 +8,22 @@ Daily Curiosity is a static site with no backend, database or user data, so a ro
 
 | Step | Who |
 |---|---|
-| 1. Restore the last good deploy on Netlify | Owner (Netlify dashboard) |
-| 2. Open a revert pull request | Claude (build agent) or owner |
-| 3. Review and merge the revert | Codex reviews; owner taps merge |
-| 4. Document the incident | Build agent |
-| 5. Open a corrective task | Build agent |
+| 1. Open a revert pull request | Claude (build agent) or owner |
+| 2. Review and merge the revert | Codex reviews; owner taps merge |
+| 3. Document the incident | Build agent |
+| 4. Open a corrective task | Build agent |
 
-## 1. Restore the last good deploy (minutes)
+## 1. Restore the live site: revert and merge (minutes)
 
-Netlify keeps every production deploy. Restoring one is instant and does not touch git.
+The site is hosted on GitHub Pages, which publishes `main` directly (since 15 November 2026; Netlify before that). Pages keeps no older deploys to republish, so the fastest way back to the last good state is to revert the bad change on `main`. Pages republishes within a few minutes of the merge.
 
-1. Open the site in Netlify and go to **Deploys**.
-2. Find the most recent production deploy from before the bad merge. Each deploy lists the commit it was built from; compare it with the merge commit on `main`.
-3. Open that deploy and choose **Publish deploy**.
-4. Load the live site and confirm Today's Curiosity, Explore More and Surprise Me work again.
+The revert pull request goes through the normal gates (CI green, then Codex review, then the owner taps merge); both usually finish within a few minutes.
 
-The live site is now safe, but `main` still contains the bad change. Netlify may build it again on the next merge, so step 2 is still required. If Netlify shows auto publishing as locked after this step, leave it locked until the revert in step 2 is merged, then unlock it.
+After the merge, check the **Actions** tab for the "pages build and deployment" run to finish. Then load https://atercer4.github.io/Daily-Curiosity/ and confirm Today's Curiosity, Explore More and Surprise Me work again.
 
-## 2. Revert the change in git
+**Emergency only:** if the live site is harmful while the revert is still in review (for example, a privacy breach), the owner can take the site offline under Settings → Pages → **Unpublish site**, then publish again after the revert.
+
+## 2. How to open the revert
 
 Undo the change with a new commit, through a normal pull request. Never rewrite history.
 
@@ -41,7 +39,7 @@ Undo the change with a new commit, through a normal pull request. Never rewrite 
 
   Push the branch and open a pull request titled `Revert #<pr#>: <reason>`.
 
-The revert pull request follows the normal gates in [REVIEW_PROTOCOL.md](REVIEW_PROTOCOL.md): CI green, Codex review, then the owner taps merge. Reverting a content pull request removes the cards it added; that restores an earlier state and does not need a fact-check, but the revert pull request should say which cards it removes.
+The revert pull request follows the normal gates in [REVIEW_PROTOCOL.md](REVIEW_PROTOCOL.md) (CI green, Codex review, then the owner taps merge). Reverting a content pull request removes the cards it added; that restores an earlier state and does not need a fact-check, but the revert pull request should say which cards it removes.
 
 ## 3. Document the failure
 
@@ -49,7 +47,7 @@ Comment on the original pull request, and include in the revert pull request bod
 
 - what broke and how it was noticed;
 - when it went live and when it was restored;
-- the bad commit and the restored deploy;
+- the bad commit and the revert commit;
 - why the tests and review missed it.
 
 The weekly owner digest lists the incident under Quality (STANDING_DIRECTION section 11).
@@ -63,4 +61,4 @@ Open a GitHub issue labeled `auto` titled `[DC] Fix: <what broke>`. Its "Done wh
 - Don't push or commit directly to `main`.
 - Don't force-push, reset or rewrite history on `main`.
 - Don't build new work on top of the broken change while it is live.
-- Don't delete Netlify deploys; the deploy history is the safety net.
+- Don't change the GitHub Pages source branch to work around a bad change; revert it on `main`.

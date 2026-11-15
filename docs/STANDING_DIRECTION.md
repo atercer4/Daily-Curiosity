@@ -7,7 +7,7 @@ Drafted by ChatGPT (PM role), reviewed by Claude, approved by the owner. This do
 Autonomy: ordinary Daily Curiosity work no longer requires owner review or decisions. The owner's involvement is a weekly digest, genuine escalations, and a one-tap merge of pull requests that agents have already brought to "ready" (see the amendment in section 8). (Arbor keeps founder merge approval.)
 Repository: GitHub becomes the implementation source of truth, as a public repository, so GitHub branch protection can enforce the merge gates. Google Drive remains the governance and documentation source.
 Stack: plain static web app (HTML/CSS/JavaScript). No framework, backend, accounts, database or paid APIs. Current working copy lives in Dropbox (Projects\Daily Curiosity) and will move to GitHub.
-Hosting: Netlify, connected to GitHub: deploy previews for every pull request, production deploy on merge, Netlify deploy history as the rollback safety net.
+Hosting (owner decision, 15 November 2026): GitHub Pages, served directly from `main` at https://atercer4.github.io/Daily-Curiosity/. Every merge to `main` is live within minutes. Netlify hosted the site until then and was dropped when its credit allowance paused production deploys. There are no hosted pull-request previews; the rollback path is a revert pull request ([ROLLBACK.md](ROLLBACK.md)).
 ## 1. Product purpose
 Daily Curiosity is a lightweight web experience designed to make people meaningfully more curious about the world.
 Core promise: One curious idea a day. Explore only as deeply as you want.
@@ -58,7 +58,7 @@ The owner approved a visual redesign: "Direction F", a modern field journal and 
 
 ## 6. Roadmap
 ### Phase 1 — Feature freeze and public-product readiness (current, near completion)
-Finish the established web experience and create a stable baseline agents can safely improve: complete v7 final polish; fix the known accessibility/heading issue; resolve approved wording cleanup; final responsive and accessibility QA; verify static deployment; preserve all regression tests; final release notes; GitHub as source of truth; automated CI; Netlify deploy previews; production deployment workflow; rollback procedure.
+Finish the established web experience and create a stable baseline agents can safely improve: complete v7 final polish; fix the known accessibility/heading issue; resolve approved wording cleanup; final responsive and accessibility QA; verify static deployment; preserve all regression tests; final release notes; GitHub as source of truth; automated CI; static hosting from `main` (Netlify with deploy previews until 15 November 2026, then GitHub Pages); production deployment workflow; rollback procedure.
 Exit: Daily Curiosity is declared feature-complete for the current product cycle.
 ### Phase 2 — Autonomous content expansion
 Expand the library without changing the core product. Agents may research topics, propose and write cards (Hook/Core/Deep Dive/Recall), source claims, independently review accuracy, check reading difficulty and category identity, test sources, and add cards that meet the standard. Quality over volume: never publish to hit a number.
@@ -84,11 +84,11 @@ Amended 10 November 2026: the agent environment blocks agents from merging pull 
 - the builder is not the reviewer (builder ≠ reviewer: if Codex builds, Claude reviews; if Claude builds, Codex reviews);
 - the independent reviewer reports no Critical or Major issues;
 - the change is within this roadmap and the autonomy boundaries;
-- for content PRs (any new or edited card), ChatGPT's fact-check reports PASS.
+- for content PRs (any new or edited card), both independent reviewers (a Claude reviewer that did not write the card, and ChatGPT) have passed the exact draft in the Editorial Review Register, and the coded text matches that approved draft (REVIEW_PROTOCOL.md, "Fact-check gate").
 
 The builder never approves its own work. A Major or Critical finding, or a fact-check FAIL, blocks merge. Minor issues may merge only if they don't materially affect accessibility, factual accuracy, security, privacy or core functionality. On the public repository, GitHub branch protection enforces that required checks pass before any merge. The owner's tap is a lightweight confirmation, not a review; the review is done by the agents above.
 ## 9. Deployment policy
-Every pull request gets a Netlify deploy preview where practical. Production deploys only after the merge gates pass. If a production regression is detected: revert or roll back immediately; document the failure; create a corrective task; do not build on the broken state.
+GitHub Pages publishes only `main`, so pull requests have no hosted preview; CI, Codex review, the batch QA check for content, and a local browser check stand in for it. Production updates only through a merge, after the merge gates pass. If a production regression is detected: revert or roll back immediately; document the failure; create a corrective task; do not build on the broken state.
 ## 10. Agent roles
 Product manager / orchestrator: maintains roadmap, priorities, task selection, scope, status, governance and escalations, and normally selects the next highest-value task without owner approval.
 Builder: implements one bounded task at a time and never broadens scope.
@@ -116,6 +116,6 @@ Gemini research desk (owner-approved 10 November 2026). Gemini's scheduled resea
 ## 15. Setup checklist (owner's laptop session, about 1 hour)
 Copy the code from Dropbox (Projects\Daily Curiosity) into C:\Users\16263\Projects\daily-curiosity. Don't keep a git repository inside Dropbox.
 Run the secrets check, make the first commit, create the public GitHub repository atercer4/daily-curiosity, and push.
-Netlify: link the site to the GitHub repository, with no build command and the publish directory set to the folder containing index.html. Confirm deploy previews are on.
+Hosting: GitHub Pages (Settings → Pages → Deploy from a branch → `main`, `/ (root)`). No build command; `.nojekyll` makes Pages serve the files as they are. (Netlify was used until 15 November 2026.)
 Give the Claude and ChatGPT Codex Connector GitHub apps access to the new repository.
 Claude then adds this direction to the repository, along with CI and regression checks, the review protocol and branch protection, and sets up the autonomous build task and the weekly digest.

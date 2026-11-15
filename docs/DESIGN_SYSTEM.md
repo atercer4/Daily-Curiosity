@@ -109,7 +109,7 @@ Counts in copy are generated from the library size, never hard-coded ("five", "t
 
 ## 6. Build order
 
-Each step is one small PR, with tests, Codex review and a Netlify preview:
+Each step is one small PR, with tests, Codex review and a local browser check (GitHub Pages has no pull-request previews):
 
 1. Type system, tokens and texture on the current layout; stale copy fixed.
 2. The Today cover (with optional `question` and `tease` fields that fall back to title and hook) and the phone hierarchy.

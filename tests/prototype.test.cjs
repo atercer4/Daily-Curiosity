@@ -1,7 +1,7 @@
 // Dependency-free content and application-wiring checks; not browser emulation.
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { readFileSync } = require('node:fs');
+const { readFileSync, existsSync } = require('node:fs');
 const { join } = require('node:path');
 const { createHash } = require('node:crypto');
 const vm = require('node:vm');
@@ -558,11 +558,19 @@ test('approved v7 recall wording fix: autumn-pigments prompt names every color i
   assert.equal(entry.recall.reveal, 'Fading chlorophyll reveals yellow and orange pigments already present. Many leaves also make new red or purple pigments during autumn.');
 });
 
+test('GitHub Pages hosting: .nojekyll present and index.html loads every local asset by a relative path (site is served from /Daily-Curiosity/)', () => {
+  assert.ok(existsSync(join(__dirname, '..', '.nojekyll')), '.nojekyll missing');
+  const html = read('index.html');
+  const refs = [...html.matchAll(/\b(?:src|href)="([^"]+)"/g)].map(m => m[1]);
+  for (const ref of refs) assert.ok(!ref.startsWith('/'), 'root-absolute path breaks under the Pages subpath: ' + ref);
+  assert.doesNotMatch(read('SRC/styles.css'), /url\(["']?\//, 'root-absolute url() in styles.css');
+});
+
 test('docs/ROLLBACK.md documents restore, revert-by-PR, incident notes and a corrective task, and is linked from README', () => {
   const doc = read('docs/ROLLBACK.md');
   assert.match(read('README.md'), /\]\(docs\/ROLLBACK\.md\)/);
-  assert.match(doc, /Netlify/);
-  assert.match(doc, /Publish deploy/);
+  assert.match(doc, /GitHub Pages/);
+  assert.match(doc, /Unpublish site/);
   assert.match(doc, /git revert/);
   assert.match(doc, /revert pull request/i);
   assert.match(doc, /## 3\. Document the failure/);

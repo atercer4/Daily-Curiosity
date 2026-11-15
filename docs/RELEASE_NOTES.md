@@ -2,7 +2,7 @@
 
 ## Phase 1 baseline (Concept A v7), November 2026
 
-This is the stable, public baseline that Phase 2 content work builds on. Authority: [STANDING_DIRECTION.md](STANDING_DIRECTION.md) section 6, Phase 1 ("final release notes"). The source of truth is `main` on github.com/atercer4/daily-curiosity, deployed to Netlify on merge.
+This is the stable, public baseline that Phase 2 content work builds on. Authority: [STANDING_DIRECTION.md](STANDING_DIRECTION.md) section 6, Phase 1 ("final release notes"). The source of truth is `main` on github.com/atercer4/daily-curiosity, published by GitHub Pages on merge (Netlify until 15 November 2026).
 
 ## Baseline contents
 
@@ -34,6 +34,7 @@ The v7 baseline was imported from Dropbox on 10 November 2026, with the old `sna
 | #33 | #23 | Design System 1.0 step 2: the Today cover (question and tease, falling back to title and hook) and the phone first screen. |
 | #34 | #24 | Design System 1.0 step 3: Explore becomes “The cabinet of curiosities”, a grid of tiles with “All” plus category filter chips and a dark “?” Surprise Me tile; opening a tile shows the card below and moves focus to it. Category cycling is replaced by filtering. |
 | (this PR) | — | Fact-check backlog, combined batch: 13 original cards replaced with their dual-approved register drafts (one commit per card; sources replaced where the originals were unreadable or did not support the text; misattributions and unsupported claims fixed). Four cards were approved unchanged and are untouched; three are excluded pending source access. Baseline pins re-pinned for the 13. Review protocol: register-based gate, claim-by-claim evidence and source-access status required in every review, combined-PR policy. |
+| (this PR) | — | Hosting moved from Netlify to GitHub Pages (owner decision, 15 November 2026): `.nojekyll` added; STANDING_DIRECTION, README, ROLLBACK and DESIGN_SYSTEM updated; STANDING_DIRECTION section 8 now names the two-reviewer register gate. |
 
 Original card text has changed only through approved fixes: the recall wording fix in issue #5 and the 13 register-approved cards above.
 
@@ -56,7 +57,7 @@ Automated tests use a DOM stub, so these checks in real browsers are still pendi
 
 ## Rollback
 
-If a production deploy regresses, follow [ROLLBACK.md](ROLLBACK.md): restore the last good Netlify deploy, then revert through a pull request.
+If a production deploy regresses, follow [ROLLBACK.md](ROLLBACK.md): revert the change through a pull request; GitHub Pages republishes `main` within minutes of the merge.
 
 ## Next
 
