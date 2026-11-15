@@ -60,12 +60,15 @@ function find(node, predicate) {
 const title = f => find(f.article, n => n.className === 'card-title')[0].textContent;
 const headingLevels = article => find(article, n => /^h[1-6]$/.test(n.tag)).map(n => [Number(n.tag[1]), n.textContent]);
 const words = text => text.trim().split(/\s+/u).length;
-// The cabinet (issue #24): controls are the filter chips (All + categories); the first grid item is the "?" tile.
-const surpriseButton = f => f.cabinet.children[0].children[0];
-const tiles = f => f.cabinet.children.slice(1);
+// The cabinet (issue #24; Direction F order restored in issue #45): controls are the filter chips (All + categories);
+// the last grid item is the "?" tile.
+const surpriseButton = f => f.cabinet.children[f.cabinet.children.length - 1].children[0];
+const tiles = f => f.cabinet.children.slice(0, -1);
 const tileFor = (f, id) => tiles(f).find(t => find(t, n => n.className === 'tile-title')[0].id === 'tile-title-' + id);
 const tileButton = (f, id) => find(tileFor(f, id), n => n.tag === 'button')[0];
-const filterButton = (f, name) => f.controls.children.find(n => n.textContent === name);
+const filterButton = (f, name) => f.controls.children.find(n => n.filter === name);
+// A chip's accessible name: the full category (aria-label) or its visible text ("All").
+const chipName = n => n.attributes['aria-label'] || n.textContent;
 // Opens a card the way a reader does: through its tile, choosing "All" first if a filter hides it.
 function selectEntry(f, index) {
   if (!tileFor(f, f.entries[index].id)) filterButton(f, 'All').events.click();
@@ -79,11 +82,14 @@ function surpriseTo(f, index) {
   f.setRandom((slot + 0.5) / candidates.length);
   surpriseButton(f).events.click();
 }
-function assertClosed(article) {
+// Reading rows (issue #45): The idea, Look closer and Remember this? are sibling disclosures; the recall response is
+// nested in Remember this?. Explore cards start fully closed; Today opens only The idea (todayOpen = true).
+function assertClosed(article, todayOpen = false) {
   const layers = descendants(article, 'details');
-  assert.equal(layers.length, 3);
-  assert.ok(layers.every(node => !node.open));
-  assert.ok(descendants(layers[0], 'details').includes(layers[1]));
+  assert.equal(layers.length, 4);
+  assert.deepEqual(layers.slice(0, 3), article.children.filter(n => n.tag === 'details'), 'three sibling rows');
+  assert.deepEqual(layers.map(node => node.open), [todayOpen, false, false, false]);
+  assert.ok(descendants(layers[2], 'details').includes(layers[3]), 'the response sits inside Remember this?');
 }
 
 test('at least twenty sourced cards with unique IDs and titles, balanced categories, and all three beats', () => {
@@ -109,18 +115,26 @@ test('at least twenty sourced cards with unique IDs and titles, balanced categor
   });
 });
 
-test('five native filter chips expose one selected state; the "?" tile leads the grid; initial hook without a gate', () => {
+test('five native filter chips expose one selected state; the "?" tile closes the grid; initial hook without a gate', () => {
   const f = fixture();
-  assert.deepEqual(f.controls.children.map(n => n.textContent), ['All', ...categories]);
+  assert.deepEqual(f.controls.children.map(chipName), ['All', ...categories]);
+  // Chips show a short name (part of the accessible name) and a decorative category dot.
+  f.controls.children.slice(1).forEach((chip, i) => {
+    const [dot, label] = chip.children;
+    assert.equal(dot.attributes['aria-hidden'], 'true');
+    assert.ok(categories[i].startsWith(label.textContent), 'visible label is part of the accessible name');
+    assert.equal(chip.attributes['data-category'], ['science', 'engineering', 'arts', 'history'][i]);
+  });
   assert.ok(f.controls.children.every(n => n.tag === 'button' && n.type === 'button'));
   assert.equal(f.controls.children[0].attributes['aria-pressed'], 'true');
   assert.equal(f.controls.children.filter(n => n.attributes['aria-pressed'] === 'true').length, 1);
   const surprise = surpriseButton(f);
-  assert.equal(f.cabinet.children[0].className, 'tile tile-surprise');
+  assert.equal(f.cabinet.children[f.cabinet.children.length - 1].className, 'tile tile-surprise');
   assert.equal(surprise.tag, 'button'); assert.equal(surprise.type, 'button');
   assert.equal(surprise.children[0].textContent, '?');
   assert.equal(surprise.children[0].attributes['aria-hidden'], 'true');
   assert.equal(surprise.children[1].textContent, 'Take me somewhere unexpected');
+  assert.equal(surprise.children[2].textContent, `One of ${f.entries.length} ideas, chosen at random.`, 'count comes from the library');
   assert.equal(title(f), f.entries[0].title);
   assert.ok(f.article.children.some(n => n.textContent === f.entries[0].hook));
   assertClosed(f.article);
@@ -134,8 +148,10 @@ test('every tile shows category, number, title, the hook\'s first sentence and a
     const item = tiles(f)[i];
     assert.equal(item.tag, 'li');
     assert.equal(item.attributes['data-category'], { 'Science & Nature': 'science', 'Engineering & Technology': 'engineering', 'Arts & Culture': 'arts', 'History & Society': 'history' }[entry.category]);
-    const [meta, name, hook, button] = item.children;
-    assert.equal(meta.textContent, entry.category + ' · No. ' + String(i + 1).padStart(3, '0'));
+    const [head, meta, name, hook, button] = item.children;
+    assert.equal(head.className, 'tile-head');
+    assert.equal(head.children[1].textContent, 'No. ' + String(i + 1).padStart(3, '0'));
+    assert.equal(meta.textContent, entry.category);
     assert.equal(name.textContent, entry.title);
     assert.ok(entry.hook.startsWith(hook.textContent), entry.id + ' hook prefix');
     assert.match(hook.textContent, /[.!?]["”’)]*$/, entry.id + ' ends a sentence');
@@ -161,7 +177,7 @@ test('every card is reachable from the grid and from each filter; opening a tile
     assert.equal(chip.attributes['aria-pressed'], 'true');
     assert.equal(f.controls.children.filter(n => n.attributes['aria-pressed'] === 'true').length, 1);
     const expected = f.entries.filter(e => filter === 'All' || e.category === filter);
-    assert.deepEqual(tiles(f).map(t => t.children[1].textContent), Array.from(expected, e => e.title), filter);
+    assert.deepEqual(tiles(f).map(t => t.children[2].textContent), Array.from(expected, e => e.title), filter);
     assert.equal(surpriseButton(f).children[1].textContent, 'Take me somewhere unexpected', 'the "?" tile stays under every filter');
     assert.equal(f.cabinetCount.textContent, filter === 'All' ? `${f.entries.length} curiosities` : `${expected.length} of ${f.entries.length} curiosities · ${filter}`);
     expected.forEach(entry => {
@@ -255,12 +271,16 @@ test('every real selection path render complete content/sources and reset disclo
   });
 });
 
-test('closing the core resets the deep dive, while reopening it does not reveal the deep dive', () => {
+test('the three reading rows open independently; closing Remember this? also closes its response', () => {
   const { article } = fixture();
-  const [core, deep] = descendants(article, 'details');
-  core.open = true; core.events.toggle(); assert.equal(deep.open, false);
-  deep.open = true; core.open = false; core.events.toggle(); assert.equal(deep.open, false);
-  core.open = true; core.events.toggle(); assert.equal(deep.open, false);
+  const [core, deep, recall, response] = descendants(article, 'details');
+  assert.equal(core.events.toggle, undefined, 'The idea has no cascading reset');
+  assert.equal(deep.events.toggle, undefined, 'Look closer has no cascading reset');
+  deep.open = true; assert.equal(core.open, false, 'Look closer opens without The idea');
+  recall.open = true; response.open = true;
+  recall.open = false; recall.events.toggle(); assert.equal(response.open, false);
+  recall.open = true; recall.events.toggle(); assert.equal(response.open, false, 'reopening does not reveal the response');
+  assert.equal(deep.open, true);
 });
 
 test('a new page instance forgets the filter and starts on "All" with a random card', () => {
@@ -284,7 +304,7 @@ test('the two original visuals still render; optional absence is safe and text a
     const figures = descendants(f.article, 'figure');
     assert.equal(figures.length, entry.visual ? 1 : 0);
     if (!entry.visual) return;
-    assert.ok(descendants(descendants(f.article, 'details')[1], 'figure').includes(figures[0]));
+    assert.ok(descendants(descendants(f.article, 'details')[1], 'figure').includes(figures[0]), 'the figure sits in Look closer');
     const [diagram, caption] = figures[0].children;
     assert.equal(diagram.attributes.role, 'img');
     assert.equal(diagram.attributes['aria-label'], entry.visual.alt);
@@ -300,18 +320,22 @@ test('the two original visuals still render; optional absence is safe and text a
   });
 });
 
-test('premise, category prompt, and native disclosure action labels remain present', () => {
+test('cabinet subtitle and chip group label; each reading row shows a label and an italic note (Direction F)', () => {
   const html = read('index.html');
-  assert.match(html, /One curious idea a day\. Explore only as deeply as you want\./);
-  assert.match(html, /What are you curious about today\?/);
-  assert.ok(html.indexOf('class="premise"') < html.indexOf('id="categories"'));
-  assert.match(html, /role="group" aria-labelledby="selection-title"/);
+  assert.match(html, /<span data-library-count>All<\/span> small mysteries, each with a sourced answer\. Open whichever one tugs at you\./);
+  assert.match(html, /id="categories" class="categories" role="group" aria-label="Filter the cabinet by category"/);
+  assert.ok(html.indexOf('id="explore-title"') < html.indexOf('id="categories"'));
+  assert.doesNotMatch(html, /class="premise"|What are you curious about today\?|01 \/ Hook/);
   const { article } = fixture();
-  for (const summary of descendants(article, 'summary')) {
-    assert.equal(summary.children[1].textContent, 'Open');
-    assert.equal(summary.children[2].textContent, 'Close');
-    assert.equal(descendants(summary, 'button').length, 0);
+  const rows = descendants(article, 'details').slice(0, 3).map(d => d.children[0]);
+  assert.deepEqual(rows.map(s => [s.children[1].textContent, s.children[2].textContent]),
+    [['The idea', 'about a minute'], ['Look closer', 'deep dive & sources'], ['Remember this?', 'optional']]);
+  for (const summary of rows) {
+    assert.deepEqual(summary.children.map(n => n.className), ['beat-rule', 'beat-label', 'beat-note', 'beat-state']);
+    assert.equal(summary.children[0].attributes['aria-hidden'], 'true');
+    assert.equal(summary.children[3].attributes['aria-hidden'], 'true');
   }
+  for (const summary of descendants(article, 'summary')) assert.equal(descendants(summary, 'button').length, 0);
 });
 
 test('runtime scope remains static: no external assets, data collection, persistence, or extra flows', () => {
@@ -390,25 +414,22 @@ test('leap days, century rules, year boundaries, and representative DST dates ad
 test('Today nodes and open disclosures survive every filter, tile and Surprise action', () => {
   const f = fixture();
   const nodes = [...f.today.children];
-  const [core, deep] = descendants(f.today, 'details');
-  core.open = true; deep.open = true;
+  const [core, deep, recall] = descendants(f.today, 'details');
+  assert.equal(core.open, true, 'Today opens The idea by default');
+  deep.open = true; recall.open = true;
   const actions = [...f.controls.children.map(b => () => b.events.click()), () => surpriseButton(f).events.click(),
     ...f.entries.map(e => () => selectEntry(f, f.entries.indexOf(e)))];
   actions.forEach(action => {
     for (let i = 0; i < 3; i++) {
       action();
       assert.deepEqual(f.today.children, nodes);
-      assert.equal(core.open, true); assert.equal(deep.open, true);
+      assert.equal(core.open, true); assert.equal(deep.open, true); assert.equal(recall.open, true);
     }
   });
-  const [exploreCore, exploreDeep] = descendants(f.article, 'details');
-  exploreCore.open = true; exploreDeep.open = true;
-  core.open = false; core.events.toggle();
-  assert.equal(deep.open, false);
-  assert.equal(exploreCore.open, true); assert.equal(exploreDeep.open, true);
-  core.open = true; deep.open = true;
-  exploreCore.open = false; exploreCore.events.toggle();
-  assert.equal(exploreDeep.open, false); assert.equal(deep.open, true);
+  const [, , exploreRecall, exploreResponse] = descendants(f.article, 'details');
+  exploreRecall.open = true; exploreResponse.open = true;
+  recall.open = false; recall.events.toggle();
+  assert.equal(exploreRecall.open, true); assert.equal(exploreResponse.open, true, 'Today resets never reach Explore');
   assert.equal(f.today.focused, undefined);
 });
 
@@ -424,7 +445,7 @@ test('both surfaces render all cards with independent titles, sources and diagra
     assert.equal(matched.article.children[1].id, 'entry-title');
     assert.equal(matched.today.children[1].id, 'today-entry-title');
     for (const article of [matched.today, matched.article]) {
-      assertClosed(article);
+      assertClosed(article, article === matched.today);
       const entry = matched.entries[dailyIndex];
       const paragraphs = descendants(article,'p').map(p=>p.textContent);
       for (const p of [entry.hook,...entry.core,...entry.deep]) assert.ok(paragraphs.includes(p));
@@ -449,26 +470,26 @@ test('original card fields stay byte-stable against the git-era baseline; no per
   assert.match(read('index.html'), /Today’s Curiosity/); assert.match(read('index.html'), /The cabinet of curiosities/);
 });
 
-test('every recall prompt is optional, nested inside Deep Dive, and responses begin closed', () => {
+test('every recall prompt is optional, in its own Remember this? row, and responses begin closed', () => {
   const f=fixture();
   f.entries.forEach((entry,i)=>{
     assert.deepEqual(Object.keys(entry.recall).sort(),['prompt','reveal']);
     assert.ok(entry.recall.prompt.length>20 && entry.recall.reveal.length>20);
     assert.ok(words(entry.recall.reveal)<=45);
     selectEntry(f,i);
-    const [core,deep,response]=descendants(f.article,'details');
-    assert.ok(descendants(deep,'details').includes(response));
-    const sections=descendants(deep,'section').filter(n=>n.className==='recall');
+    const [,deep,recall,response]=descendants(f.article,'details');
+    assert.ok(descendants(recall,'details').includes(response));
+    assert.ok(!descendants(deep,'details').includes(response), 'recall is no longer nested in Look closer');
+    const sections=descendants(recall,'section').filter(n=>n.className==='beat recall');
     assert.equal(sections.length,1);
     assert.equal(descendants(sections[0],'p')[0].textContent,entry.recall.prompt);
     assert.equal(descendants(response,'p')[0].textContent,entry.recall.reveal);
-    assert.equal(descendants(sections[0],'h6')[0].textContent,'Remember this?');
+    assert.equal(descendants(sections[0],'h4')[0].textContent,'Remember this?');
     assert.equal(response.children[0].tag,'summary');
     assert.equal(response.open,false);
-    core.open=true; deep.open=true; response.open=true;
-    deep.open=false; deep.events.toggle(); assert.equal(response.open,false);
-    deep.open=true; assert.equal(response.open,false);
-    response.open=true; core.open=false; core.events.toggle(); assert.equal(response.open,false);
+    recall.open=true; response.open=true;
+    recall.open=false; recall.events.toggle(); assert.equal(response.open,false);
+    recall.open=true; assert.equal(response.open,false);
   });
 });
 
@@ -477,13 +498,13 @@ test('same-card Today and Explore recall is independent and Explore changes rese
   assert.equal(title(f),title({article:f.today}));
   const today=descendants(f.today,'details'), explore=descendants(f.article,'details');
   today.forEach(n=>n.open=true);
-  assert.equal(explore[2].open,false);
+  assert.equal(explore[3].open,false);
   explore.forEach(n=>n.open=true);
-  today[2].open=false; assert.equal(explore[2].open,true);
-  today[2].open=true;
+  today[3].open=false; assert.equal(explore[3].open,true);
+  today[3].open=true;
   selectEntry(f, (f.entries.findIndex(e=>e.title===title(f))+1)%f.entries.length);
-  assert.equal(descendants(f.article,'details')[2].open,false);
-  assert.equal(today[2].open,true);
+  assert.equal(descendants(f.article,'details')[3].open,false);
+  assert.equal(today[3].open,true);
   assert.equal(f.today.focused,undefined);
 });
 
@@ -514,9 +535,9 @@ test('heading outline nests each card below its surface heading on Today and Exp
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.match(html, /<h1 id="today-question"[^>]*>Today’s Curiosity<\/h1>/);
   assert.match(html, /<h2 id="explore-title"[^>]*>The cabinet of curiosities<\/h2>/);
-  assert.match(html, /<h3 id="selection-title"[^>]*>What are you curious about today\?<\/h3>/);
-  assert.doesNotMatch(html, /<h[4-6]/);
-  const outline = base => [[base, null], [base + 1, 'The idea'], [base + 2, 'Look closer'], [base + 3, 'Sources'], [base + 3, 'Remember this?']];
+  assert.doesNotMatch(html, /<h[3-6]/);
+  // Sibling rows (issue #45): each row heading is one level below the title; Sources nests in Look closer.
+  const outline = base => [[base, null], [base + 1, 'The idea'], [base + 1, 'Look closer'], [base + 2, 'Sources'], [base + 1, 'Remember this?']];
   const f = fixture();
   f.entries.forEach((entry, i) => {
     selectEntry(f, i);
@@ -650,9 +671,9 @@ test('the app and daily rotation generalize to N cards: two synthetic cards appe
   });
   assert.equal(fixture(0, undefined, extra).cabinetCount.textContent, n + ' curiosities');
   categories.forEach(c => assert.equal(f.entries.filter(e => e.category === c).length, baseCount(c) + extra.filter(e => e.category === c).length, c));
-  // Appended cards render the same nested outline as the originals.
+  // Appended cards render the same outline as the originals.
   selectEntry(f, n - 1);
-  assert.deepEqual(headingLevels(f.article).map(([level]) => level), [3, 4, 5, 6, 6]);
+  assert.deepEqual(headingLevels(f.article).map(([level]) => level), [3, 4, 4, 5, 4]);
   assertClosed(f.article);
 });
 
@@ -696,7 +717,7 @@ test('Design 1.0 tokens: section 3 colours are defined, gold is decoration only,
   for (const [name, value] of Object.entries(tokens)) assert.match(css, new RegExp(`--${name}: ${value};`), name);
   // Gold may only colour the ✳ mark and list markers on light surfaces, never text.
   for (const rule of css.matchAll(/([^{}]+)\{([^}]*)\}/g)) {
-    if (/(^|[^-])color: var\(--gold\)/.test(rule[2])) assert.match(rule[1].trim(), /^(\.brand span|\.sources li::marker)$/, rule[1]);
+    if (/(^|[^-])color: var\(--gold\)/.test(rule[2])) assert.match(rule[1].trim(), /^(\.brand span|\.footer-mark|\.sources li::marker)$/, rule[1]);
   }
   const lum = hex => { const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(v => v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
   const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
@@ -719,8 +740,9 @@ test('Design 1.0 copy: section labels, invitation wording, and no hard-coded car
   assert.match(html, /a modern field journal for how the world works/);
   const f = fixture();
   assert.equal(f.count.textContent, String(f.entries.length), 'footer count comes from the library size');
-  const labels = descendants(f.article, 'summary').map(s => s.children[0].textContent);
-  assert.deepEqual(labels, ['The idea', 'Look closer', 'Reveal response']);
+  const labels = descendants(f.article, 'summary').map(s => (s.children.find(n => n.className === 'beat-label') || s.children[0]).textContent);
+  assert.deepEqual(labels, ['The idea', 'Look closer', 'Remember this?', 'Reveal response']);
+  assert.match(read('index.html'), /<span data-library-count>All<\/span> ideas, every one sourced\./);
   assert.equal(surpriseButton(f).children[1].textContent, 'Take me somewhere unexpected');
   assert.doesNotMatch(read('SRC/app.js'), /Core Insight|Deep Dive &|Pause and recall/);
 });
@@ -895,7 +917,7 @@ test('tile icons: one original inline-SVG line icon per category, decorative (ar
   }
   const f = fixture();
   tiles(f).forEach((item, i) => {
-    const icon = item.children[item.children.length - 1];
+    const icon = item.children[0].children[0];
     assert.equal(icon.tag, 'span');
     assert.equal(icon.className, 'tile-icon');
     assert.equal(icon.attributes['aria-hidden'], 'true');

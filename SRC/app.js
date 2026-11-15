@@ -19,13 +19,19 @@ function element(tag, text, className) {
   return node;
 }
 
-function disclosure(label, heading, paragraphs, headingTag) {
-  const details = element('details');
+// One reading row (DESIGN_SYSTEM.md section 2.3): a native disclosure whose summary carries the label and a short
+// italic note. The beat keeps its own heading for the outline; it is visually hidden because the summary shows the label.
+function disclosure(label, note, paragraphs, headingTag) {
+  const details = element('details', null, 'beat-row');
   const summary = element('summary');
-  summary.append(element('span', label), element('span', 'Open', 'when-closed'), element('span', 'Close', 'when-open'));
+  const rule = element('span', null, 'beat-rule');
+  rule.setAttribute('aria-hidden', 'true');
+  const state = element('span', null, 'beat-state');
+  state.setAttribute('aria-hidden', 'true');
+  summary.append(rule, element('span', label, 'beat-label'), element('span', note, 'beat-note'), state);
   details.append(summary);
   const body = element('section', null, 'beat');
-  body.append(element(headingTag, heading, 'beat-title'));
+  body.append(element(headingTag, label, 'beat-title visually-hidden'));
   paragraphs.forEach(text => body.append(element('p', text)));
   details.append(body);
   return { details, body };
@@ -55,8 +61,9 @@ function explanatoryVisual(visual) {
   return figure;
 }
 
-// level is the card title's heading level; deeper beats follow it so each surface keeps a nested outline.
-function renderCard(article, index, titleId, level, moveFocus = false) {
+// level is the card title's heading level; each beat is one level deeper, so each surface keeps a nested outline.
+// openIdea: Today opens The idea by default (DESIGN_SYSTEM.md section 2.3); Explore cards start fully closed.
+function renderCard(article, index, titleId, level, moveFocus = false, openIdea = false) {
   const entry = DAILY_CURIOSITIES[index];
   const heading = offset => 'h' + (level + offset);
   article.replaceChildren();
@@ -65,11 +72,11 @@ function renderCard(article, index, titleId, level, moveFocus = false) {
   const title = element(heading(0), entry.title);
   title.id = titleId;
   title.className = 'card-title';
-  article.append(title, element('p', '01 / Hook', 'beat-label'), element('p', entry.hook, 'hook'));
-  const core = disclosure('The idea', 'The idea', entry.core, heading(1));
-  const deep = disclosure('Look closer', 'Look closer', entry.deep, heading(2));
+  article.append(title, element('p', entry.hook, 'hook'));
+  const core = disclosure('The idea', 'about a minute', entry.core, heading(1));
+  const deep = disclosure('Look closer', 'deep dive & sources', entry.deep, heading(1));
   if (entry.visual) deep.body.append(explanatoryVisual(entry.visual));
-  deep.body.append(element(heading(3), 'Sources', 'sources-title'));
+  deep.body.append(element(heading(2), 'Sources', 'sources-title'));
   const sources = element('ul', null, 'sources');
   entry.sources.forEach(source => {
     const item = element('li');
@@ -79,23 +86,19 @@ function renderCard(article, index, titleId, level, moveFocus = false) {
     sources.append(item);
   });
   deep.body.append(sources);
-  const recall = element('section', null, 'recall');
-  recall.append(element(heading(3), 'Remember this?', 'sources-title'), element('p', entry.recall.prompt));
+  const recall = disclosure('Remember this?', 'optional', [entry.recall.prompt], heading(1));
+  recall.body.className = 'beat recall';
   const response = element('details', null, 'recall-response');
   const revealControl = element('summary');
-  revealControl.append(element('span', 'Reveal response'), element('span', 'Open', 'when-closed'), element('span', 'Close', 'when-open'));
+  revealControl.append(element('span', 'Reveal response'));
   response.append(revealControl, element('p', entry.recall.reveal));
-  recall.append(response);
-  deep.body.append(recall);
-  deep.details.addEventListener('toggle', () => {
-    if (!deep.details.open) response.open = false;
+  recall.body.append(response);
+  // Closing Remember this? also closes its response, including keyboard use; the three rows are otherwise independent.
+  recall.details.addEventListener('toggle', () => {
+    if (!recall.details.open) response.open = false;
   });
-  core.body.append(deep.details);
-  // Closing a shallower beat resets deeper disclosure, including keyboard use.
-  core.details.addEventListener('toggle', () => {
-    if (!core.details.open) { deep.details.open = false; response.open = false; }
-  });
-  article.append(core.details, element('p', 'A little discovery is enough. You can stop here.', 'closing'));
+  core.details.open = openIdea;
+  article.append(core.details, deep.details, recall.details);
   if (moveFocus) article.focus();
 }
 
@@ -153,13 +156,14 @@ function surprise(moveFocus = true) {
   showCard(candidates[Math.floor(Math.random() * candidates.length)], moveFocus);
 }
 
-// The dark "?" tile always leads the grid, whatever the filter.
+// The dark "?" tile closes the grid, whatever the filter.
 const surpriseTile = element('li', null, 'tile tile-surprise');
 const surpriseButton = element('button', null, 'tile-surprise-button');
 surpriseButton.type = 'button';
 const mark = element('span', '?', 'tile-mark');
 mark.setAttribute('aria-hidden', 'true');
-surpriseButton.append(mark, element('span', 'Take me somewhere unexpected', 'tile-surprise-label'));
+const surpriseCount = element('span', null, 'tile-surprise-note');
+surpriseButton.append(mark, element('span', 'Take me somewhere unexpected', 'tile-surprise-label'), surpriseCount);
 surpriseButton.addEventListener('click', () => surprise());
 surpriseTile.append(surpriseButton);
 
@@ -178,21 +182,24 @@ function tile(index) {
   // Every tile has the same visible action, so its accessible name adds the title: "Look inside <title>".
   open.setAttribute('aria-labelledby', open.id + ' ' + name.id);
   open.addEventListener('click', () => showCard(index, true));
-  // The category's line icon is drawn in CSS (inline SVG mask) and is decorative: the category is also written out.
+  // Tile head: the category's line icon (CSS inline-SVG mask, decorative: the category is also written out) and the number.
   const icon = element('span', null, 'tile-icon');
   icon.setAttribute('aria-hidden', 'true');
-  item.append(element('p', entry.category + ' · ' + cardNumber(index), 'tile-meta'), name, element('p', firstSentence(entry.hook), 'tile-hook'), open, icon);
+  const head = element('div', null, 'tile-head');
+  head.append(icon, element('span', cardNumber(index), 'tile-number'));
+  item.append(head, element('p', entry.category, 'tile-meta'), name, element('p', firstSentence(entry.hook), 'tile-hook'), open);
   return item;
 }
 
 function renderCabinet() {
   const shown = DAILY_CURIOSITIES.map((entry, i) => selectedFilter === 'All' || entry.category === selectedFilter ? i : -1).filter(i => i !== -1);
   cabinet.replaceChildren();
-  cabinet.append(surpriseTile, ...shown.map(tile));
+  cabinet.append(...shown.map(tile), surpriseTile);
   const total = DAILY_CURIOSITIES.length;
+  surpriseCount.textContent = `One of ${total} ideas, chosen at random.`;
   cabinetCount.textContent = selectedFilter === 'All' ? `${total} curiosities` : `${shown.length} of ${total} curiosities · ${selectedFilter}`;
   [...categoryNavigation.children].forEach((button, i) => {
-    button.setAttribute('aria-pressed', String(filters[i] === selectedFilter));
+    button.setAttribute('aria-pressed', String(button.filter === selectedFilter));
   });
 }
 
@@ -202,9 +209,20 @@ function selectFilter(filter) {
   renderCabinet();
 }
 
+// Chips show a short name and the category's dot; the accessible name keeps the full category.
+const shortNames = { 'Science & Nature': 'Science', 'Engineering & Technology': 'Engineering', 'Arts & Culture': 'Arts', 'History & Society': 'History' };
 filters.forEach(filter => {
-  const button = element('button', filter);
+  const button = element('button', null, 'chip');
   button.type = 'button';
+  if (filter === 'All') button.textContent = 'All';
+  else {
+    const dot = element('span', null, 'chip-dot');
+    dot.setAttribute('aria-hidden', 'true');
+    button.append(dot, element('span', shortNames[filter]));
+    button.setAttribute('aria-label', filter);
+    button.setAttribute('data-category', categoryKeys[filter]);
+  }
+  button.filter = filter;
   button.addEventListener('click', () => selectFilter(filter));
   categoryNavigation.append(button);
 });
@@ -213,6 +231,6 @@ document.querySelectorAll('[data-library-count]').forEach(node => { node.textCon
 const localDate = readLocalCalendarDate();
 const todayIndex = cardIndexForDate(localDate.year, localDate.month, localDate.day);
 renderCover(todayIndex, localDate);
-renderCard(todayArticle, todayIndex, 'today-entry-title', 2);
+renderCard(todayArticle, todayIndex, 'today-entry-title', 2, false, true);
 renderCabinet();
 surprise(false);

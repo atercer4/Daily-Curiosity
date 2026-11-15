@@ -53,3 +53,15 @@ Ephemeral recall state, no response input/evaluation, fixed 20-day content cycle
 - Automated: every card is reachable from the grid under "All" and under its category filter; the "?" tile never repeats the open card and stays under every filter; opening a tile moves focus to the card with three closed layers; filters change only the grid; counts come from the library size; Today is untouched by every Explore action.
 - Headless Chromium at 320, 390 and 1280 px ([320](design/qa/dc-24-320.jpg), [390](design/qa/dc-24-390.jpg), [1280](design/qa/dc-24-1280.jpg)): no horizontal overflow, every chip and tile button at least 44px tall, no console errors. Pressing Enter on a "Look inside" button opened that card and focused it. Each tile button's accessible name is "Look inside <title>" via `aria-labelledby`.
 - [ ] Pending in real browsers: screen-reader pass of the tile list and filter chips, 200%/400% zoom, Windows High Contrast (tiles keep a CanvasText border; the selected chip keeps Highlight).
+
+## Issue #45: Direction F reading rows (15 November 2026)
+
+This supersedes C–E/L and G–I above. The idea, Look closer and Remember this? are now three sibling native disclosures, and the recall prompt and its reveal live in Remember this?. Closing Remember this? closes only its own response; the rows no longer reset each other. Today opens The idea on load and Explore cards start closed. Heading outline: Today h2 title → h3 rows (Sources h4); Explore h3 title → h4 rows (Sources h5). The row headings are visually hidden because each summary shows the same label.
+
+Headless Chromium at 320, 390 and 1280 px:
+- no horizontal overflow;
+- no console errors;
+- every button, summary and the cover link is at least 44 px tall;
+- Enter on a focused summary opens it.
+
+Before/after screenshots: [1280](design/qa/dc-45-1280.jpg), [390](design/qa/dc-45-390.jpg), [320](design/qa/dc-45-320.jpg). A real screen-reader pass is still pending.
