@@ -60,4 +60,4 @@ If a production deploy regresses, follow [ROLLBACK.md](ROLLBACK.md): restore the
 
 ## Next
 
-Phase 2: generalize the code and tests from exactly 20 cards to any number, then add sourced cards toward 40, each fact-checked by ChatGPT before merge.
+Phase 2: generalize the code and tests from exactly 20 cards to any number, then add sourced cards toward 40, each approved by two independent reviewers in the Editorial Review Register before it is coded.

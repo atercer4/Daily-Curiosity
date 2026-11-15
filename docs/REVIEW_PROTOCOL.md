@@ -29,7 +29,7 @@ Daily Curiosity runs autonomously. The founder gets a weekly digest and escalati
    It also includes any change to this protocol, the standing direction or `.github/`.
 6. **Content PRs** (label `content`, any new or edited card text, including cover questions, teases, figure labels and numbers) may code only text that the register shows as `APPROVED` for its exact Draft Hash (see [fact-check gate](#fact-check-gate)). A content PR whose coded hashes don't match is never ready.
 7. Never commit secrets, `.env` files, keys, or the old `snapshots/` folders. Git history is the archive.
-8. `tests/baseline/` pins the original 20 cards and `SRC/daily.js`. A pin may change only when the PR says why (for example, to make room for new cards) and the reviewer confirms that existing card text is unchanged.
+8. `tests/baseline/` pins the original 20 cards and `SRC/daily.js`. A pin may change only when the PR says why and the reviewer confirms that no other card's text and no daily-mapping behavior changed. Two reasons qualify: making room for new cards (existing card text unchanged), or coding a register-`APPROVED` correction to an original card, where the coded entry must hash to its approved Draft Hash.
 
 ## Fact-check gate
 

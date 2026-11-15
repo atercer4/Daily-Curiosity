@@ -77,7 +77,7 @@ All of it is CSS or inline SVG, never image files.
    - Drawings are original line art: no AI-generated images and no copied artwork.
    - Real public-domain plates may be used later only as a separate, owner-approved step (licence, hosting, alt text, size budget).
 2. **Interactive only when interaction teaches something materially better than prose or a static visual.** Most cards get none. An interactive's numbers must come from the card's sources.
-3. **Every new line is content.** Questions, teases, numbers strips, figure labels and interactive copy go through ChatGPT's fact-check like card text (STANDING_DIRECTION sections 8 and 14).
+3. **Every new line is content.** Questions, teases, numbers strips, figure labels and interactive copy go through the same two-reviewer fact-check gate as card text (REVIEW_PROTOCOL.md, "Fact-check gate") (STANDING_DIRECTION sections 8 and 14).
 4. **Density discipline on phones.** At 390px the first screen shows only:
    - masthead;
    - one metadata line;
