@@ -10,7 +10,7 @@ This is the stable, public baseline that Phase 2 content work builds on. Authori
 - **Today's Curiosity:** a card chosen by date from a fixed permutation in `SRC/daily.js`, starting at the 2026-10-22 epoch. The same date always shows the same card.
 - **Explore More:** five native category buttons (four categories plus Surprise Me). Categories cycle their cards without an immediate repeat. Explore is independent of Today.
 - **Card interaction:** Hook → Core Insight → Deep Dive & Sources → optional recall, all native `details` disclosures that start closed.
-- **Library:** 24 cards: the original 20 (five per category) plus four Phase 2 cards, one in each category (issues #17 and #19), with 57 source links and two explanatory visuals. Registers: [CONTENT.md](CONTENT.md) for content and sources, [RECALL.md](RECALL.md) for recall prompts and responses.
+- **Library:** 24 cards: the original 20 (five per category) plus four Phase 2 cards, one in each category (issues #17 and #19), with 55 source links and two explanatory visuals. Registers: [CONTENT.md](CONTENT.md) for content and sources, [RECALL.md](RECALL.md) for recall prompts and responses.
 - **Safeguards:** CI runs syntax checks, the regression suite and a secret guard on every pull request. `tests/baseline/` pins the original fields of all 20 cards and `SRC/daily.js`.
 
 ## Changes since the git import
@@ -41,6 +41,7 @@ The v7 baseline was imported from Dropbox on 10 November 2026, with the old `sna
 | #51 | #49 | Render check follow-up: it measures the drawing itself rather than the figure around it, and requires the cover drawing and numbers strip a card declares (Codex finding on #50). |
 | #53 | #52 | Workflow: every card gets a visual assessment (format or none, with a reason), with Gemini naming the possible visual evidence. Every label, number, caption, alt text and geometric claim is fact-checked by both reviewers as part of the hashed draft. A "not to scale" rule applies, and PRs with visuals need screenshots and the render check. [REVIEW_PROTOCOL.md](REVIEW_PROTOCOL.md#visual-assessment). |
 | #55 | #54 | Page metadata: a meta description (the core promise and the four categories) so search results and link previews say what Daily Curiosity is. No external assets or tracking; Open Graph stays in Phase 4. |
+| #57 | #56 | Fact-check backlog: `exchequer-tallies` replaced with its dual-approved register draft (v3). Wikipedia-only details removed; sources narrowed to the History of Parliament and the Science Museum Group (source links 57 → 55). |
 
 Original card text has changed only through approved fixes: the recall wording fix in issue #5 and the 13 register-approved cards above.
 

@@ -795,26 +795,18 @@ const DAILY_CURIOSITIES = [
     "tease": "In 1834, most of the old Houses of Parliament burned. The fire began with wooden records from an accounting system the government had used for centuries.",
     "hook": "In 1834, most of the old Houses of Parliament in London burned down. The fire began with a pile of wooden receipts the government had used for centuries and no longer needed.",
     "core": [
-      "Since medieval times, the Exchequer, a government office based at Westminster, had recorded payments on tally sticks: pieces of carved, notched wood. Each stick was split in two, so that both sides of an agreement kept a matching record of what had been paid. When the two halves were later matched, they showed that the accounts “tallied.”",
-      "Paper records eventually replaced them, and tallies were abolished in 1826. That left Westminster with two large cartloads of obsolete wooden accounts, and someone had to get rid of them."
+      "Since medieval times, the Exchequer, a government office based at Westminster, had recorded payments on tally sticks: pieces of notched wood. Each stick was split in two, so that both sides of an agreement kept a matching record of what had been paid. When the two halves were later matched, they showed that the accounts “tallied.”",
+      "The use of tallies was finally abolished in 1826, centuries after it began. That left Westminster with a large amount of obsolete wooden accounts, and someone had to get rid of them."
     ],
     "deep": [
-      "Treasury officials told the Clerk of Works, Richard Weobley, to clear the old tallies. He decided against giving them to parliamentary staff as firewood. Instead, on 16 October 1834, two labourers, Joshua Cross and Patrick Furlong, burned them in the two heating furnaces directly below the House of Lords.",
-      "Burning so much wood there proved disastrous. A chimney fire smouldered under the floor of the Lords chamber. During the afternoon, a party of visitors being shown around noticed heat and smoke coming up through the floor. At about six, a doorkeeper’s wife spotted the flames.",
-      "The fire destroyed most of the medieval buildings, though Westminster Hall survived. The Prime Minister called it “one of the greatest instances of stupidity upon record.” The episode shows how an institution’s habits can outlive their purpose: a record-keeping system abandoned on paper still had to be physically disposed of, and the way it was done cost Parliament its home."
+      "On 16 October 1834, two large cartloads of the old tallies were burned, unsupervised, in the heating furnaces below the House of Lords chamber. The History of Parliament calls the burning “ill-advised.”",
+      "Burning so much wood there proved disastrous. Throughout the day, a chimney fire smouldered under the floor of the Lords chamber. Warning signs were persistently ignored. A few minutes after six in the evening, a doorkeeper’s wife returning from an errand finally spotted the flames, and the fire spread through the old palace.",
+      "The fire destroyed most of the medieval buildings. The Prime Minister later called it “one of the greatest instances of stupidity upon record.” The episode is a reminder that ending a system is not the same as clearing it away: an accounting method that had already been abolished still had to be disposed of, and the careless way it was done cost Parliament most of its medieval home."
     ],
     "sources": [
       {
         "label": "The History of Parliament — Burning the House down: the fire of 1834",
         "url": "https://historyofparliament.com/2013/10/16/the-fire-of-1834/"
-      },
-      {
-        "label": "Wikipedia — Burning of Parliament",
-        "url": "https://en.wikipedia.org/wiki/Burning_of_Parliament"
-      },
-      {
-        "label": "UK Parliament — The Great Fire of 1834",
-        "url": "https://www.parliament.uk/about/living-heritage/building/palace/architecture/palacestructure/great-fire/"
       },
       {
         "label": "Science Museum Group — Medieval Exchequer tally sticks",
