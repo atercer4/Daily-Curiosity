@@ -178,8 +178,8 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `rosetta-scripts`; category: History & Society.
 - Subject: Writing / decipherment.
 - Visual: Omitted: text distinguishes three scripts from two languages without a decorative stone image.
-- [British Museum — The Rosetta Stone: everything you need to know](https://www.britishmuseum.org/blog/everything-you-ever-wanted-know-about-rosetta-stone)
-- [British Museum — Rosetta Stone collection record](https://www.britishmuseum.org/collection/object/Y_EA24)
+- [British Museum on Google Arts & Culture — The Rosetta Stone (object)](https://artsandculture.google.com/asset/the-rosetta-stone/DgH6pMM1guUUPA)
+- [British Museum on Google Arts & Culture — The Rosetta Stone (story)](https://artsandculture.google.com/story/the-rosetta-stone-the-british-museum/OQVRt6m8dEG4rw?hl=en)
 
 ### 17. Coins pictured on paper money
 

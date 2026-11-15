@@ -533,12 +533,12 @@ const DAILY_CURIOSITIES = [
     ],
     "sources": [
       {
-        "label": "British Museum — The Rosetta Stone: everything you need to know",
-        "url": "https://www.britishmuseum.org/blog/everything-you-ever-wanted-know-about-rosetta-stone"
+        "label": "British Museum on Google Arts & Culture — The Rosetta Stone (object)",
+        "url": "https://artsandculture.google.com/asset/the-rosetta-stone/DgH6pMM1guUUPA"
       },
       {
-        "label": "British Museum — Rosetta Stone collection record",
-        "url": "https://www.britishmuseum.org/collection/object/Y_EA24"
+        "label": "British Museum on Google Arts & Culture — The Rosetta Stone (story)",
+        "url": "https://artsandculture.google.com/story/the-rosetta-stone-the-british-museum/OQVRt6m8dEG4rw?hl=en"
       }
     ],
     "recall": {
