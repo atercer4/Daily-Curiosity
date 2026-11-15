@@ -40,6 +40,7 @@ The v7 baseline was imported from Dropbox on 10 November 2026, with the old `sna
 | #50 | #49 | Render check in CI: every card on Today and in Explore at 320, 390 and 1280px in headless Chromium, plus a synthetic plate fixture. It fails on horizontal overflow, page errors, broken or unlabelled figures, plate labels under 13px, or controls under 44px, and uploads screenshots of failures. Playwright is pinned (1.63.0) and installed in CI only. See [QA.md](QA.md). |
 | #51 | #49 | Render check follow-up: it measures the drawing itself rather than the figure around it, and requires the cover drawing and numbers strip a card declares (Codex finding on #50). |
 | #53 | #52 | Workflow: every card gets a visual assessment (format or none, with a reason), with Gemini naming the possible visual evidence. Every label, number, caption, alt text and geometric claim is fact-checked by both reviewers as part of the hashed draft. A "not to scale" rule applies, and PRs with visuals need screenshots and the render check. [REVIEW_PROTOCOL.md](REVIEW_PROTOCOL.md#visual-assessment). |
+| #55 | #54 | Page metadata: a meta description (the core promise and the four categories) so search results and link previews say what Daily Curiosity is. No external assets or tracking; Open Graph stays in Phase 4. |
 
 Original card text has changed only through approved fixes: the recall wording fix in issue #5 and the 13 register-approved cards above.
 
