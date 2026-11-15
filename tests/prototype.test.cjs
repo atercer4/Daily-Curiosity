@@ -12,6 +12,7 @@ class NodeStub {
   append(...nodes) { this.children.push(...nodes); }
   replaceChildren() { this.children = []; }
   setAttribute(key, value) { this.attributes[key] = value; }
+  getAttribute(key) { return this.attributes[key]; }
   addEventListener(type, callback) { this.events[type] = callback; }
   focus() { this.focused = true; }
 }
@@ -22,7 +23,7 @@ const ORIGINAL_DAILY_IDS = ['venus-clocks', 'suspension-bridge', 'woodcut-revers
 // extra: synthetic cards appended (in the test only) to content and to the end of the daily order.
 function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, extra = []) {
   const controls = new NodeStub('div'), cabinet = new NodeStub('ul'), cabinetCount = new NodeStub('p'), article = new NodeStub('article'), today = new NodeStub('article'), count = new NodeStub('span');
-  const cover = Object.fromEntries(['#today-question', '#today-tease', '#cover-category', '#cover-number', '#today-date', '#today-cover', '.masthead'].map(id => [id, new NodeStub({ '#today-date': 'time', '#today-cover': 'section', '.masthead': 'header' }[id] || 'p')]));
+  const cover = Object.fromEntries(['#today-question', '#today-tease', '#cover-category', '#cover-number', '#today-date', '#today-cover', '.masthead', '#cover-drawing-slot', '#today-numbers'].map(id => [id, new NodeStub({ '#today-date': 'time', '#today-cover': 'section', '.masthead': 'header', '#cover-drawing-slot': 'div', '#today-numbers': 'div' }[id] || 'p')]));
   let random = initialRandom;
   const math = Object.create(Math);
   math.random = () => random;
@@ -40,7 +41,8 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
       if (selector === '[data-library-count]') return [count];
       throw Error('Unexpected selector ' + selector);
     },
-    createElement: tag => new NodeStub(tag)
+    createElement: tag => new NodeStub(tag),
+    createElementNS: (ns, tag) => Object.assign(new NodeStub(tag), { namespace: ns })
   }});
   vm.runInContext(read('SRC/content.js') + (extra.length ? '\nDAILY_CURIOSITIES.push(...' + JSON.stringify(extra) + ');' : ''), context);
   const entries = vm.runInContext('DAILY_CURIOSITIES', context);
@@ -298,13 +300,14 @@ test('a new page instance forgets the filter and starts on "All" with a random c
 test('the two original visuals still render; optional absence is safe and text alternatives exist', () => {
   const f = fixture();
   for (const id of ['venus-clocks', 'woodcut-reversal']) assert.ok(f.entries.find(e => e.id === id).visual, id + ' keeps its visual');
-  assert.ok(f.entries.every(e => !e.visual || ['bars', 'mirror'].includes(e.visual.type)), 'only renderer-supported visual types');
+  assert.ok(f.entries.every(e => !e.visual || ['bars', 'mirror', 'plate'].includes(e.visual.type)), 'only renderer-supported visual types');
   f.entries.forEach((entry, i) => {
     selectEntry(f, i);
     const figures = descendants(f.article, 'figure');
     assert.equal(figures.length, entry.visual ? 1 : 0);
     if (!entry.visual) return;
     assert.ok(descendants(descendants(f.article, 'details')[1], 'figure').includes(figures[0]), 'the figure sits in Look closer');
+    if (entry.visual.type === 'plate') return; // plates are covered by the issue #47 tests below
     const [diagram, caption] = figures[0].children;
     assert.equal(diagram.attributes.role, 'img');
     assert.equal(diagram.attributes['aria-label'], entry.visual.alt);
@@ -344,7 +347,8 @@ test('runtime scope remains static: no external assets, data collection, persist
     const url = match[1];
     if (!url.startsWith('#') && !url.startsWith('data:')) assert.ok(read(url).length > 0);
   }
-  assert.doesNotMatch(app, /\b(fetch|XMLHttpRequest|WebSocket|localStorage|sessionStorage|indexedDB|sendBeacon|Notification|geolocation|setInterval)\b|document\.cookie|https?:\/\//);
+  // The SVG namespace identifier (issue #47) is a name, not a request; it is the only URL-shaped string allowed.
+  assert.doesNotMatch(app.replace("const SVG_NS = 'http://www.w3.org/2000/svg';", ''), /\b(fetch|XMLHttpRequest|WebSocket|localStorage|sessionStorage|indexedDB|sendBeacon|Notification|geolocation|setInterval)\b|document\.cookie|https?:\/\//);
   assert.doesNotMatch(html, /<(form|input|textarea|audio|video|iframe)\b/);
   // Inline data: URIs (the SVG paper grain) contain the SVG namespace string but make no request.
   assert.doesNotMatch(css.replace(/url\("data:[^"]*"\)/g, ''), /@import|https?:/);
@@ -705,7 +709,7 @@ test('Design 1.0 makes no http(s) requests from CSS or HTML: only card source li
   assert.doesNotMatch(cssWithoutData, /https?:|@import|\/\//);
   for (const match of css.matchAll(/url\("([^"]+)"\)/g)) assert.match(match[1], /^(data:|fonts\/)/);
   assert.doesNotMatch(html, /https?:|\/\//);
-  assert.doesNotMatch(read('SRC/app.js'), /https?:\/\//);
+  assert.doesNotMatch(read('SRC/app.js').replace("const SVG_NS = 'http://www.w3.org/2000/svg';", ''), /https?:\/\//);
   // Card sources are the only absolute URLs, and they are rendered as plain links.
   for (const entry of fixture().entries) for (const source of entry.sources) assert.equal(new URL(source.url).protocol, 'https:');
 });
@@ -957,4 +961,129 @@ test('every card has a cover question (≤ 14 words, one {key phrase}) and a tea
   assert.equal(coverQuestion(f), plain(todayEntry.question));
   assert.equal(f.cover['#today-tease'].textContent, todayEntry.tease);
   assert.equal(keyPhrases(f).length, 1);
+});
+
+// Illustration components (issue #47): plate figures, numbers strip and a card's cover drawing, all inside `visual`.
+const CANONICAL_KEYS = ['id', 'category', 'title', 'question', 'tease', 'hook', 'core', 'deep', 'sources', 'visual', 'recall'];
+const synthetic = (base, visual) => ({ ...JSON.parse(JSON.stringify(base)), id: 'synthetic-plate', title: 'Synthetic plate card', visual });
+const samplePlate = (extra = {}) => ({
+  type: 'plate', viewBox: '0 0 400 300', alt: 'A synthetic test drawing: a circle inside a dashed orbit with one labelled point, used only by the tests.',
+  caption: 'Synthetic caption.',
+  shapes: [
+    { el: 'circle', cx: 200, cy: 150, r: 60, tone: 'ink' },
+    { el: 'ellipse', cx: 200, cy: 150, rx: 150, ry: 60, rotate: -20, tone: 'muted', dash: true },
+    { el: 'circle', cx: 340, cy: 110, r: 6, tone: 'gold', fill: true },
+    { el: 'path', d: 'M10 10L20 20', tone: 'accent', href: 'javascript:alert(1)', onload: 'x()', style: 'display:none' },
+    { el: 'image', href: 'https://example.com/x.png' },
+    { el: 'script', d: 'x' },
+    { el: 'constructor' }, { el: '__proto__' }, { el: 'toString' }, { el: ['circle'] }
+  ],
+  labels: [{ x: 340, y: 96, text: 'Point', anchor: 'middle' }, { x: 380, y: 290, text: 'about 1 unit', anchor: 'end', note: true }],
+  ...extra
+});
+const svgs = node => find(node, n => n.tag === 'svg');
+
+test('plate figures render from data as one labelled SVG: whitelisted shapes and attributes only, labels as text', () => {
+  const base = fixture().entries[0];
+  const f = fixture(0, undefined, [synthetic(base, samplePlate())]);
+  selectEntry(f, f.entries.length - 1);
+  const [, deep] = descendants(f.article, 'details');
+  const figure = descendants(deep, 'figure');
+  assert.equal(figure.length, 1, 'default placement is Look closer');
+  const [drawing, caption] = figure[0].children;
+  assert.equal(drawing.tag, 'svg');
+  assert.equal(drawing.namespace, 'http://www.w3.org/2000/svg');
+  assert.equal(drawing.attributes.role, 'img');
+  assert.equal(drawing.attributes['aria-label'], samplePlate().alt);
+  assert.equal(drawing.attributes.viewBox, '0 0 400 300');
+  assert.equal(caption.textContent, 'Synthetic caption.');
+  const shapes = drawing.children.filter(n => n.tag !== 'text');
+  assert.deepEqual(shapes.map(n => n.tag), ['circle', 'ellipse', 'circle', 'path'], 'unknown elements are dropped');
+  for (const shape of shapes) for (const key of Object.keys(shape.attributes))
+    assert.ok(['cx', 'cy', 'r', 'rx', 'ry', 'x1', 'y1', 'x2', 'y2', 'x', 'y', 'width', 'height', 'd', 'points', 'transform', 'class'].includes(key), 'attribute allowed: ' + key);
+  assert.equal(shapes[1].attributes.transform, 'rotate(-20 200 150)');
+  assert.equal(shapes[1].attributes.class, 'tone-muted dashed');
+  assert.equal(shapes[2].attributes.class, 'tone-gold filled');
+  const labels = drawing.children.filter(n => n.tag === 'text');
+  assert.deepEqual(labels.map(n => [n.textContent, n.attributes['text-anchor'], n.attributes.class]),
+    [['Point', 'middle', 'plate-label'], ['about 1 unit', 'end', 'plate-label note']]);
+  const idea = fixture(0, undefined, [synthetic(base, samplePlate({ placement: 'idea' }))]);
+  selectEntry(idea, idea.entries.length - 1);
+  assert.equal(descendants(descendants(idea.article, 'details')[0], 'figure').length, 1, 'placement "idea" puts it in The idea');
+  assert.match(read('SRC/app.js'), /text\.textContent = label\.text;/);
+  assert.doesNotMatch(read('SRC/app.js'), /innerHTML|insertAdjacentHTML|outerHTML/);
+  // Labels compensate for plate scaling so phones get the same on-screen size (Codex review, PR #48).
+  const css = read('SRC/styles.css');
+  assert.match(css, /\.plate-label \{[^}]*font: 600 calc\(15px \* var\(--plate-scale, 1\)\)/);
+  assert.match(css, /\.plate-label\.note \{[^}]*calc\(16px \* var\(--plate-scale, 1\)\)/);
+  assert.match(read('SRC/app.js'), /setProperty\('--plate-scale', \(target\.viewBox\.baseVal\.width \/ rendered\)/);
+});
+
+test('numbers strip: at most three figures, under the Today cover and inside the card on Explore', () => {
+  const base = fixture().entries[0];
+  const numbers = [1, 2, 3, 4].map(i => ({ value: '+' + i, unit: 'units', label: 'Label ' + i }));
+  const card = synthetic(base, samplePlate({ numbers }));
+  const f = fixture(0, undefined, [card]);
+  selectEntry(f, f.entries.length - 1);
+  const strip = find(f.article, n => n.className === 'numbers-strip');
+  assert.equal(strip.length, 1);
+  assert.equal(strip[0].tag, 'ul');
+  assert.equal(strip[0].attributes['aria-label'], 'In numbers');
+  assert.equal(strip[0].children.length, 3, 'never more than three');
+  assert.deepEqual(strip[0].children[0].children.map(n => n.className), ['number-value', 'number-label']);
+  assert.deepEqual(strip[0].children[0].children[0].children.map(n => n.textContent), ['+1', 'units']);
+  assert.ok(f.article.children.indexOf(strip[0]) < f.article.children.findIndex(n => n.tag === 'details'), 'strip comes before the reading rows');
+  // Today: the strip goes to the slot after the cover, not into the card.
+  f.context.renderCover(f.entries.length - 1, { year: 2026, month: 11, day: 15 });
+  f.context.renderCard(f.today, f.entries.length - 1, 'today-entry-title', 2, false, true);
+  assert.equal(find(f.cover['#today-numbers'], n => n.className === 'numbers-strip').length, 1);
+  assert.equal(find(f.today, n => n.className === 'numbers-strip').length, 0);
+  // Absence is safe: a card without numbers empties the slot.
+  f.context.renderCover(0, { year: 2026, month: 11, day: 15 });
+  assert.equal(f.cover['#today-numbers'].children.length, 0);
+});
+
+test('a plate with cover: true is redrawn on the Today cover as a decorative copy; otherwise the category drawing stays', () => {
+  const base = fixture().entries[0];
+  const f = fixture(0, undefined, [synthetic(base, samplePlate({ cover: true }))]);
+  const n = f.entries.length;
+  f.context.renderCover(n - 1, { year: 2026, month: 11, day: 15 });
+  const slot = f.cover['#cover-drawing-slot'];
+  assert.equal(slot.children.length, 1);
+  assert.equal(slot.children[0].className, 'cover-drawing');
+  assert.equal(slot.children[0].attributes['aria-hidden'], 'true');
+  assert.equal(svgs(slot).length, 1);
+  assert.equal(svgs(slot)[0].attributes.role, undefined, 'the cover copy has no second text alternative');
+  assert.equal(f.cover['#today-cover'].attributes['data-drawing'], 'card');
+  f.context.renderCover(0, { year: 2026, month: 11, day: 15 });
+  assert.equal(slot.children.length, 0);
+  assert.equal(f.cover['#today-cover'].attributes['data-drawing'], 'category');
+  const plain = fixture(0, undefined, [synthetic(base, samplePlate())]);
+  plain.context.renderCover(n - 1, { year: 2026, month: 11, day: 15 });
+  assert.equal(plain.cover['#cover-drawing-slot'].children.length, 0, 'cover drawings are opt-in');
+  const html = read('index.html');
+  assert.ok(html.indexOf('id="cover-drawing-slot"') > html.indexOf('class="cover-cta"'), 'the drawing follows the button (phone rule 4)');
+  assert.ok(html.indexOf('id="today-numbers"') > html.indexOf('</section>', html.indexOf('<section class="cover"')), 'the strip follows the cover');
+  const css = read('SRC/styles.css');
+  assert.match(css, /\.cover\[data-drawing="card"\] \{ --cover-drawing: none; \}/);
+  assert.match(css, /@media \(forced-colors: active\)[\s\S]*\.plate :is\(circle, ellipse, line, rect, path, polyline\) \{ stroke: CanvasText !important; \}/);
+  assert.doesNotMatch(css.match(/\.plate-label \{[^}]*\}/)[0], /gold/, 'labels are never gold');
+});
+
+test('the review gate covers every visual: cards use only canonical Draft Hash fields; real visuals are well formed', () => {
+  for (const entry of fixture().entries) {
+    for (const key of Object.keys(entry)) assert.ok(CANONICAL_KEYS.includes(key), `${entry.id}: field "${key}" is outside the canonical hash, so reviewers would not cover it`);
+    const v = entry.visual;
+    if (!v) continue;
+    assert.ok(typeof v.alt === 'string' && v.alt.length > 50, entry.id + ' alt text');
+    assert.ok(typeof v.caption === 'string' && v.caption.length > 0, entry.id + ' caption');
+    if (v.numbers) {
+      assert.ok(v.numbers.length >= 1 && v.numbers.length <= 3, entry.id + ' 1–3 numbers');
+      for (const n of v.numbers) assert.ok(n.value && n.unit !== undefined && n.label, entry.id + ' number fields');
+    }
+    if (v.type !== 'plate') { assert.equal(v.cover, undefined, entry.id + ': only plates can be cover drawings'); continue; }
+    assert.match(v.viewBox, /^0 0 \d+ \d+$/);
+    for (const s of v.shapes) assert.ok(['circle', 'ellipse', 'line', 'rect', 'path', 'polyline'].includes(s.el), entry.id + ' shape ' + s.el);
+    for (const l of v.labels || []) assert.ok(typeof l.text === 'string' && l.text.length <= 40, entry.id + ' short label');
+  }
 });

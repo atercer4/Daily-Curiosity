@@ -19,6 +19,45 @@ Cards may add two optional fields for Today's cover (DESIGN_SYSTEM.md section 2)
 
 Without them the cover shows the card's title and hook. Both are content and go through the two-reviewer fact-check gate (DESIGN_SYSTEM.md rule 3; REVIEW_PROTOCOL.md). Since Design 1.0 step 5 (issue #26) every card has both. Questions stay at or under 14 words with exactly one braced key phrase; teases stay at or under 30 words and add no claim beyond the card's sourced text.
 
+## Visuals: plates, numbers strip and cover drawings (Design System 1.0 step 6, issue #47)
+
+A card has at most one `visual`. Everything a reader can see in it (labels, numbers, units, alt text, caption) lives inside that field. `visual` is already part of the canonical Draft Hash, so every visual goes through the two-reviewer register gate with the card text (DESIGN_SYSTEM.md rule 3; REVIEW_PROTOCOL.md). A test fails if a card uses any field outside the canonical hash.
+
+`type` is one of:
+- `bars`: compare a few quantities on one scale (venus-clocks);
+- `mirror`: a before/after pair (woodcut-reversal);
+- `plate`: an original line drawing, described below.
+
+Every visual needs `alt` (over 50 characters, describing the relationships, not just the parts) and a `caption`.
+
+### Plate fields
+
+| Field | Meaning |
+|---|---|
+| `viewBox` | `"0 0 W H"`. Design at about 400 units wide, so labels stay readable at phone width. |
+| `shapes` | Line work. `el` is one of `circle`, `ellipse` (optional `rotate`), `line`, `rect`, `path` or `polyline`, with numeric or path attributes only. `tone` is `ink`, `accent` (the category colour), `muted` or `gold` (decoration only). Optional `dash: true` and `fill: true`. Anything else (`href`, `style`, event attributes, other elements) is ignored. |
+| `labels` | `{ x, y, text, anchor?, note? }`. Text of at most 40 characters, set as text and never as markup. `note: true` uses the italic note style for asides such as "≈ 20,000 km up". Labels render at 15px (notes 16px) on screen at every width, so leave room around them for phone sizes. |
+| `placement` | `"idea"` puts the figure in The idea. The default is Look closer. |
+| `cover` | `true` redraws the plate on the Today cover in ivory and cover gold. The cover copy is decorative; the reading figure carries the text alternative. Use this only when the drawing is the card's central image. |
+
+### Numbers strip
+
+`numbers` holds at most three entries of the form `{ value, unit, label }`, for example `{ "value": "−7", "unit": "µs/day", "label": "Speed: the satellite's clock falls behind." }`. On Today the strip sits between the cover and the reading column. On Explore it sits in the card, above The idea. Every value must appear in, or follow directly from, the card's sourced text.
+
+### Choosing a format (visual assessment)
+
+Every new or revised card records one choice in its draft:
+
+| Choice | Use it for |
+|---|---|
+| Diagram or technical illustration | mechanisms, forces, cycles |
+| Historical object, document or timeline | sequences, inscriptions, layouts |
+| Scientific or natural-history plate | structures, specimens, scales |
+| Cultural or artistic process | steps, materials, reversals |
+| None | when prose already does the job |
+
+A visual must explain something the prose cannot do as well (rule 1). Reuse a plate pattern when the subject fits, but draw custom geometry when the subject needs it, so cards do not all look alike.
+
 ## Topics, category identity, and visuals
 
 | # | Category | Topic / card title | Subdomain | Editorial approach |

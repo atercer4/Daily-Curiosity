@@ -37,8 +37,86 @@ function disclosure(label, note, paragraphs, headingTag) {
   return { details, body };
 }
 
+// Plate figures (issue #47): an original line drawing described as data in the card's `visual` field, so every
+// label is reviewed with the card text. Only these shapes and numeric/path attributes are drawn; nothing else
+// from the data reaches the DOM (no href, style, script or event attributes), and labels are set as text.
+const SVG_NS = 'http://www.w3.org/2000/svg';
+// Prototype-free lookup: names like "constructor" or "__proto__" are simply not shapes.
+const PLATE_SHAPES = Object.assign(Object.create(null), { circle: ['cx', 'cy', 'r'], ellipse: ['cx', 'cy', 'rx', 'ry'], line: ['x1', 'y1', 'x2', 'y2'],
+  rect: ['x', 'y', 'width', 'height', 'rx'], path: ['d'], polyline: ['points'] });
+const PLATE_TONES = ['ink', 'accent', 'muted', 'gold'];
+
+function svg(tag, attributes, className) {
+  const node = document.createElementNS(SVG_NS, tag);
+  for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, String(value));
+  if (className) node.setAttribute('class', className);
+  return node;
+}
+
+// Labels keep the same on-screen size however far a plate is scaled (Codex review on PR #48): the observer
+// publishes viewBox units per CSS pixel as --plate-scale, and the label font sizes multiply by it.
+const plateScale = typeof ResizeObserver === 'function' ? new ResizeObserver(entries => entries.forEach(({ target }) => {
+  if (!target.isConnected) { plateScale.unobserve(target); return; } // a replaced card's plate
+  const rendered = target.getBoundingClientRect().width;
+  if (!rendered) return; // inside a closed disclosure: measured again when it opens
+  target.style.setProperty('--plate-scale', (target.viewBox.baseVal.width / rendered).toFixed(3));
+})) : null;
+
+function plateDrawing(visual) {
+  const drawing = svg('svg', { viewBox: visual.viewBox, focusable: 'false' }, 'plate');
+  if (plateScale) plateScale.observe(drawing);
+  visual.shapes.forEach(shape => {
+    const allowed = typeof shape.el === 'string' ? PLATE_SHAPES[shape.el] : undefined;
+    if (!Array.isArray(allowed)) return;
+    const attributes = {};
+    allowed.forEach(key => { if (shape[key] !== undefined) attributes[key] = shape[key]; });
+    if (shape.el === 'ellipse' && shape.rotate) attributes.transform = `rotate(${Number(shape.rotate)} ${Number(shape.cx)} ${Number(shape.cy)})`;
+    const tone = PLATE_TONES.includes(shape.tone) ? shape.tone : 'ink';
+    drawing.append(svg(shape.el, attributes, `tone-${tone}${shape.fill ? ' filled' : ''}${shape.dash ? ' dashed' : ''}`));
+  });
+  (visual.labels || []).forEach(label => {
+    const text = svg('text', { x: label.x, y: label.y, 'text-anchor': ['start', 'middle', 'end'].includes(label.anchor) ? label.anchor : 'start' },
+      `plate-label${label.note ? ' note' : ''}`);
+    text.textContent = label.text;
+    drawing.append(text);
+  });
+  return drawing;
+}
+
+// The cover copy of a plate (visual.cover): the same drawing in the cover's language. The reading figure
+// carries the text alternative, so this copy is decorative.
+function coverDrawing(visual) {
+  const holder = element('div', null, 'cover-drawing');
+  holder.setAttribute('aria-hidden', 'true');
+  holder.append(plateDrawing(visual));
+  return holder;
+}
+
+// Numbers strip (DESIGN_SYSTEM.md section 2.2): at most three figures, each from the card's sourced text.
+function numbersStrip(numbers) {
+  const list = element('ul', null, 'numbers-strip');
+  list.setAttribute('aria-label', 'In numbers');
+  numbers.slice(0, 3).forEach(item => {
+    const entry = element('li', null, 'number');
+    const value = element('p', null, 'number-value');
+    value.append(element('span', item.value, 'number-figure'), element('span', item.unit, 'number-unit'));
+    entry.append(value, element('p', item.label, 'number-label'));
+    list.append(entry);
+  });
+  return list;
+}
+
 function explanatoryVisual(visual) {
   const figure = element('figure', null, 'explanatory-visual');
+  if (visual.type === 'plate') {
+    figure.className = 'explanatory-visual plate-figure';
+    const drawing = plateDrawing(visual);
+    // A single text alternative explains the whole drawing, including relationships; labels are inside it.
+    drawing.setAttribute('role', 'img');
+    drawing.setAttribute('aria-label', visual.alt);
+    figure.append(drawing, element('figcaption', visual.caption));
+    return figure;
+  }
   const diagram = element('div', null, `diagram ${visual.type}`);
   // A single text alternative explains the whole schematic, including relationships.
   diagram.setAttribute('role', 'img');
@@ -62,8 +140,9 @@ function explanatoryVisual(visual) {
 }
 
 // level is the card title's heading level; each beat is one level deeper, so each surface keeps a nested outline.
-// openIdea: Today opens The idea by default (DESIGN_SYSTEM.md section 2.3); Explore cards start fully closed.
-function renderCard(article, index, titleId, level, moveFocus = false, openIdea = false) {
+// today: Today opens The idea by default (DESIGN_SYSTEM.md section 2.3) and shows its numbers strip under the cover;
+// Explore cards start fully closed and show the strip inside the card.
+function renderCard(article, index, titleId, level, moveFocus = false, today = false) {
   const entry = DAILY_CURIOSITIES[index];
   const heading = offset => 'h' + (level + offset);
   article.replaceChildren();
@@ -73,9 +152,12 @@ function renderCard(article, index, titleId, level, moveFocus = false, openIdea 
   title.id = titleId;
   title.className = 'card-title';
   article.append(title, element('p', entry.hook, 'hook'));
+  // Explore shows the numbers strip inside the card; Today shows it between the cover and the reading column.
+  if (entry.visual && entry.visual.numbers && !today) article.append(numbersStrip(entry.visual.numbers));
   const core = disclosure('The idea', 'about a minute', entry.core, heading(1));
   const deep = disclosure('Look closer', 'deep dive & sources', entry.deep, heading(1));
-  if (entry.visual) deep.body.append(explanatoryVisual(entry.visual));
+  // A visual sits in Look closer unless its data asks for The idea (placement: "idea").
+  if (entry.visual) (entry.visual.placement === 'idea' ? core : deep).body.append(explanatoryVisual(entry.visual));
   deep.body.append(element(heading(2), 'Sources', 'sources-title'));
   const sources = element('ul', null, 'sources');
   entry.sources.forEach(source => {
@@ -97,7 +179,7 @@ function renderCard(article, index, titleId, level, moveFocus = false, openIdea 
   recall.details.addEventListener('toggle', () => {
     if (!recall.details.open) response.open = false;
   });
-  core.details.open = openIdea;
+  core.details.open = today;
   article.append(core.details, deep.details, recall.details);
   if (moveFocus) article.focus();
 }
@@ -130,6 +212,16 @@ function renderCover(index, date) {
   // One cover component, four themes (DESIGN_SYSTEM.md section 1): the category picks the cover's
   // background and drawing language in CSS; the masthead shares the cover's base colour.
   ['#today-cover', '.masthead'].forEach(selector => document.querySelector(selector).setAttribute('data-category', categoryKeys[entry.category]));
+  // Card-specific drawing and numbers (issue #47). Without them the cover keeps its category drawing.
+  const visual = entry.visual || {};
+  const drawingSlot = document.querySelector('#cover-drawing-slot');
+  drawingSlot.replaceChildren();
+  const cardDrawing = visual.type === 'plate' && visual.cover === true;
+  if (cardDrawing) drawingSlot.append(coverDrawing(visual));
+  document.querySelector('#today-cover').setAttribute('data-drawing', cardDrawing ? 'card' : 'category');
+  const numbersSlot = document.querySelector('#today-numbers');
+  numbersSlot.replaceChildren();
+  if (visual.numbers) numbersSlot.append(numbersStrip(visual.numbers));
   // Calendar fields were read locally; UTC is only used to find the weekday of that calendar date.
   const weekday = weekdays[new Date(Date.UTC(date.year, date.month - 1, date.day)).getUTCDay()];
   const time = document.querySelector('#today-date');
