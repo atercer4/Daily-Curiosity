@@ -130,8 +130,9 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `bicycle-gears`; category: Engineering & Technology.
 - Subject: Machines / transportation.
 - Visual: Omitted: the example explains the ratio directly without adding a second quantitative graphic.
-- [Exploratorium — The science of cycling: Gears](https://annex.exploratorium.edu/cycling/gears1.html)
-- [Exploratorium — Gears and mechanical advantage](https://annex.exploratorium.edu/cycling/gears3.html)
+- [Exploratorium — Science of Cycling: Drives & Gears](https://annex.exploratorium.edu/cycling/gears1.html)
+- [Exploratorium — Science of Cycling: Pedaling & Cadence](https://annex.exploratorium.edu/cycling/gears3.html)
+- [Explain that Stuff — Gears](https://www.explainthatstuff.com/gears.html)
 
 ### 11. The picture that prints backward
 

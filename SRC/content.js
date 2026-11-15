@@ -322,27 +322,31 @@ const DAILY_CURIOSITIES = [
     "tease": "The hill has not changed, and the climb still takes effort. What changes is what each turn of the pedals asks of you.",
     "hook": "Shifting down on a bicycle makes a hill feel easier, but the hill has not changed. The gears change what each pedal turn asks of you.",
     "core": [
-      "A bicycle chain connects the front chainring to a rear sprocket. With a smaller front chainring or a larger rear sprocket, each pedal turn drives the rear wheel through fewer turns. This lower gear makes it easier to apply turning force at the wheel.",
+      "A bicycle chain connects the front chainring to a rear sprocket. With a smaller front chainring or a larger rear sprocket, each pedal turn drives the rear wheel through fewer turns. This lower gear turns the same pedal push into more turning force (torque) at the rear wheel.",
       "The tradeoff is distance. You need more pedal revolutions to cover the same ground. A higher gear reverses that exchange, carrying you farther per turn while demanding more pedal force under comparable conditions. Gears let the rider choose a useful balance between force and pedaling speed; they do not remove the effort of climbing."
     ],
     "deep": [
       "Count the teeth engaged over one complete turn of the front chainring. That many links pass the rear sprocket. If the front has twice as many teeth as the rear, the rear sprocket turns twice for one pedal revolution. This example assumes the usual chain drive with the rear sprocket driving the wheel.",
       "Now make the rear sprocket larger while keeping the front one unchanged. The same length of moving chain takes it through fewer turns. The wheel therefore travels less far per pedal revolution, which is the distance side of the low-gear tradeoff.",
-      "The Exploratorium describes gearing as a choice between speed and force. This is why a useful gear for a steep climb can feel frustrating on level ground: the rider may be turning the pedals quickly while advancing only a short distance. The mechanism has not changed; the demands of the journey have."
+      "Gears trade force for speed: more force comes with less speed, and the reverse. This is why a useful gear for a steep climb can feel frustrating on level ground: the rider may be turning the pedals quickly while advancing only a short distance. The mechanism has not changed; the demands of the journey have."
     ],
     "sources": [
       {
-        "label": "Exploratorium — The science of cycling: Gears",
+        "label": "Exploratorium — Science of Cycling: Drives & Gears",
         "url": "https://annex.exploratorium.edu/cycling/gears1.html"
       },
       {
-        "label": "Exploratorium — Gears and mechanical advantage",
+        "label": "Exploratorium — Science of Cycling: Pedaling & Cadence",
         "url": "https://annex.exploratorium.edu/cycling/gears3.html"
+      },
+      {
+        "label": "Explain that Stuff — Gears",
+        "url": "https://www.explainthatstuff.com/gears.html"
       }
     ],
     "recall": {
       "prompt": "What do you give up when a lower bicycle gear makes pedaling easier?",
-      "reveal": "The wheel travels less far per pedal turn. You gain turning force but need more pedal revolutions to cover the same ground."
+      "reveal": "The wheel travels less far per pedal turn. Each pedal push needs less force, but you need more pedal revolutions to cover the same ground."
     }
   },
   {

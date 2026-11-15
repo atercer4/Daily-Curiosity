@@ -60,7 +60,7 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 
 - ID: `bicycle-gears`
 - Prompt: What do you give up when a lower bicycle gear makes pedaling easier?
-- Response: The wheel travels less far per pedal turn. You gain turning force but need more pedal revolutions to cover the same ground.
+- Response: The wheel travels less far per pedal turn. Each pedal push needs less force, but you need more pedal revolutions to cover the same ground.
 
 ## The picture that prints backward
 
