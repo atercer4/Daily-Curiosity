@@ -570,7 +570,7 @@ test('docs/ROLLBACK.md documents restore, revert-by-PR, incident notes and a cor
   const doc = read('docs/ROLLBACK.md');
   assert.match(read('README.md'), /\]\(docs\/ROLLBACK\.md\)/);
   assert.match(doc, /GitHub Pages/);
-  assert.match(doc, /Fast path for a live regression/);
+  assert.match(doc, /Unpublish site/);
   assert.match(doc, /git revert/);
   assert.match(doc, /revert pull request/i);
   assert.match(doc, /## 3\. Document the failure/);

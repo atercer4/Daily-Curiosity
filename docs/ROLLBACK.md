@@ -9,7 +9,7 @@ Daily Curiosity is a static site with no backend, database or user data, so a ro
 | Step | Who |
 |---|---|
 | 1. Open a revert pull request | Claude (build agent) or owner |
-| 2. Merge the revert | Owner taps merge (see the fast path below) |
+| 2. Review and merge the revert | Codex reviews; owner taps merge |
 | 3. Document the incident | Build agent |
 | 4. Open a corrective task | Build agent |
 
@@ -17,11 +17,11 @@ Daily Curiosity is a static site with no backend, database or user data, so a ro
 
 The site is hosted on GitHub Pages, which publishes `main` directly (since 15 November 2026; Netlify before that). Pages keeps no older deploys to republish, so the fastest way back to the last good state is to revert the bad change on `main`. Pages republishes within a few minutes of the merge.
 
-**Fast path for a live regression.** The owner may merge the revert pull request as soon as the `tests` check is green, without waiting for Codex. Codex still reviews the revert afterwards, and any finding becomes a follow-up task. This applies only to a pure revert of a merged pull request, never to a new fix.
+The revert pull request goes through the normal gates (CI green, then Codex review, then the owner taps merge); both usually finish within a few minutes.
 
 After the merge, check the **Actions** tab for the "pages build and deployment" run to finish. Then load https://atercer4.github.io/Daily-Curiosity/ and confirm Today's Curiosity, Explore More and Surprise Me work again.
 
-**Emergency only:** if even a revert can't be merged quickly and the live site is harmful (for example, a privacy breach), the owner can take the site offline under Settings → Pages → **Unpublish site**, then publish again after the revert.
+**Emergency only:** if the live site is harmful while the revert is still in review (for example, a privacy breach), the owner can take the site offline under Settings → Pages → **Unpublish site**, then publish again after the revert.
 
 ## 2. How to open the revert
 
@@ -39,7 +39,7 @@ Undo the change with a new commit, through a normal pull request. Never rewrite 
 
   Push the branch and open a pull request titled `Revert #<pr#>: <reason>`.
 
-The revert pull request follows the normal gates in [REVIEW_PROTOCOL.md](REVIEW_PROTOCOL.md) (CI green, Codex review, then the owner taps merge), except for the live-regression fast path in step 1. Reverting a content pull request removes the cards it added; that restores an earlier state and does not need a fact-check, but the revert pull request should say which cards it removes.
+The revert pull request follows the normal gates in [REVIEW_PROTOCOL.md](REVIEW_PROTOCOL.md) (CI green, Codex review, then the owner taps merge). Reverting a content pull request removes the cards it added; that restores an earlier state and does not need a fact-check, but the revert pull request should say which cards it removes.
 
 ## 3. Document the failure
 
