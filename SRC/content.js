@@ -465,23 +465,27 @@ const DAILY_CURIOSITIES = [
     "tease": "In washoku, Japanese food culture, much of what a community passes on lives in choosing, making and sharing food, not only in the final plate.",
     "hook": "A recipe can tell you what goes into a dish. It cannot, by itself, explain everything a community passes on through preparing and sharing food.",
     "core": [
-      "Washoku is a Japanese food culture that includes knowledge and practices around producing, preparing, and eating food. UNESCO’s inscription emphasizes respect for nature and its expression in New Year celebrations. The heritage is broader than a fixed menu or one famous dish.",
-      "In the New Year practices described by UNESCO, special foods are prepared and shared, with ingredients and dishes carrying symbolic meanings. Families and communities transmit knowledge through participation. The food matters, but so do choosing it, making it, and gathering around it. A tradition can live in these relationships as much as in the final plate."
+      "Washoku is a Japanese food culture that includes knowledge and practices around producing, preparing, and eating food. UNESCO links it to respect for nature and notes that it is especially visible at New Year. The heritage is broader than a fixed menu or one famous dish.",
+      "In the New Year practices described by UNESCO, special foods are prepared and shared, with dishes carrying symbolic meanings. More broadly, UNESCO notes that knowledge is passed down at shared family mealtimes, as well as through teachers and community groups. The food matters, but so do choosing it, making it, and gathering around it. A tradition can live in these relationships as much as in the final plate."
     ],
     "deep": [
       "Consider what a written recipe preserves well: ingredients, quantities, and a sequence of actions. Now consider what may be learned by taking part in a celebration: when preparations begin, who works together, and why a dish belongs to that occasion. These are different kinds of knowledge.",
       "UNESCO describes washoku as a social practice and highlights New Year as a setting where it is especially visible. The focus is not a claim that every Japanese household cooks or celebrates in exactly the same way. It identifies a body of knowledge and customs that people pass on.",
-      "This changes the question from “Which food counts?” to “What practices are being continued?” A finished dish can be described on its own, but its cultural place may depend on season, occasion, and shared understanding. Learning about a food tradition therefore means paying attention to the activity around the food as well."
+      "This changes the question from “Which food counts?” to “What practices are being continued?” A finished dish can be described on its own, but its cultural place may depend on occasion, meaning, and shared understanding. Learning about a food tradition therefore means paying attention to the activity around the food as well."
     ],
     "sources": [
       {
-        "label": "UNESCO — Washoku, notably for the celebration of New Year",
-        "url": "https://ich.unesco.org/en/RL/washoku-traditional-dietary-culture-of-the-japanese-notably-for-the-celebration-of-new-year-00869"
+        "label": "UNESCO — Washoku, traditional dietary cultures of the Japanese, notably for the celebration of New Year",
+        "url": "https://ich.unesco.org/en/RL/00869"
+      },
+      {
+        "label": "UNESCO — Intergovernmental Committee decision 8.COM 8.17 (2013): inscription of washoku",
+        "url": "https://ich.unesco.org/en/decisions/8.COM/8.17"
       }
     ],
     "recall": {
       "prompt": "Why does preserving a recipe preserve only part of a food tradition?",
-      "reveal": "A recipe records ingredients and actions. A food tradition also includes occasions, shared preparation, meanings, and knowledge learned through participation."
+      "reveal": "A recipe records ingredients and actions. A food tradition also includes occasions, shared meals, meanings, and knowledge learned through participation."
     }
   },
   {

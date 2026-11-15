@@ -163,7 +163,8 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `washoku`; category: Arts & Culture.
 - Subject: Food traditions.
 - Visual: Omitted: a food photograph would narrow a social practice to one presentation.
-- [UNESCO — Washoku, notably for the celebration of New Year](https://ich.unesco.org/en/RL/washoku-traditional-dietary-culture-of-the-japanese-notably-for-the-celebration-of-new-year-00869)
+- [UNESCO — Washoku, traditional dietary cultures of the Japanese, notably for the celebration of New Year](https://ich.unesco.org/en/RL/00869)
+- [UNESCO — Intergovernmental Committee decision 8.COM 8.17 (2013): inscription of washoku](https://ich.unesco.org/en/decisions/8.COM/8.17)
 
 ### 15. Making room for colored light
 
