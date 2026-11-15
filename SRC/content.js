@@ -362,7 +362,7 @@ const DAILY_CURIOSITIES = [
     ],
     "deep": [
       "A stamp makes the reversal easy to test. Give it an arrow pointing left on its inked face. After you press it onto paper and lift it away, the printed arrow points right. The print faces you from the opposite surface. The same reversal happens when a woodcut transfers its image.",
-      "The Met explains that the printmaker removes the areas that should not receive ink. A roller or ink ball coats the remaining raised surface. Paper is then pressed against it. Two choices matter at once: which parts are left high enough to print, and which way the finished image should face.",
+      "The Met explains that the areas that will not receive ink are cut away. A roller or ink ball coats the remaining raised surface. Paper is then pressed against it. Two choices matter at once: which parts are left high enough to print, and which way the finished image should face.",
       "The paired letters below make the second choice visible. The reversed letter represents the inked face of the block; the normal letter represents the finished print viewed face-on. This is a simple example, not a reproduction of an artwork. It shows why lettering can reveal a reversal that a more balanced shape might conceal."
     ],
     "visual": {
@@ -384,6 +384,10 @@ const DAILY_CURIOSITIES = [
       {
         "label": "The Metropolitan Museum of Art — Woodcut: materials and techniques",
         "url": "https://www.metmuseum.org/perspectives/materials-and-techniques-printmaking-woodcut"
+      },
+      {
+        "label": "Guggenheim Museum Bilbao — Woodcut",
+        "url": "https://pro.guggenheim-bilbao.eus/en/did-you-know/woodcut"
       }
     ],
     "recall": {

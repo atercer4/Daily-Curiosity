@@ -140,6 +140,7 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - Subject: Printmaking.
 - Visual: Face-on block/print R comparison makes actual horizontal reversal visible.
 - [The Metropolitan Museum of Art — Woodcut: materials and techniques](https://www.metmuseum.org/perspectives/materials-and-techniques-printmaking-woodcut)
+- [Guggenheim Museum Bilbao — Woodcut](https://pro.guggenheim-bilbao.eus/en/did-you-know/woodcut)
 
 ### 12. A painted blue with a long journey
 
