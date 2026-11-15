@@ -265,17 +265,17 @@ const DAILY_CURIOSITIES = [
     ],
     "deep": [
       "Think about the two ends of the job rather than just the warm air leaving the indoor unit. One side absorbs heat; the other releases it. The compressor and the rest of the refrigerant circuit make that transfer possible even when the desired direction opposes the natural flow from hot to cold.",
-      "The Department of Energy describes heat pumps as devices that can provide both heating and cooling. In a reversible system, changing the direction of operation lets the indoor space give up heat instead. The room has switched roles, from the place receiving heat to the place losing it.",
+      "Natural Resources Canada describes a heat pump as fully reversible, able to both heat and cool a home. In a reversible system, changing the direction of operation lets the indoor space give up heat instead. The room has switched roles, from the place receiving heat to the place losing it.",
       "There is no extra energy appearing from nowhere. The heat source outside the room is part of the accounting. Looking only at the electricity entering the machine leaves out the energy it collects elsewhere. That wider boundary is what makes the apparently puzzling comparison understandable."
     ],
     "sources": [
       {
-        "label": "U.S. Department of Energy — Heat pump systems",
-        "url": "https://www.energy.gov/energysaver/heat-pump-systems"
+        "label": "Natural Resources Canada — Heating and cooling with a heat pump",
+        "url": "https://natural-resources.canada.ca/energy-efficiency/energy-star/heating-cooling-heat-pump"
       },
       {
-        "label": "Massachusetts DOER — Air-source heat pump handout (DOE-hosted PDF)",
-        "url": "https://www.energy.gov/sites/prod/files/2017/07/f35/About%20Air%20Source%20Heat%20Pumps%20Handout.pdf"
+        "label": "ENERGY STAR — How does a heat pump work?",
+        "url": "https://www.energystar.gov/node/11903"
       }
     ],
     "recall": {

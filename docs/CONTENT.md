@@ -114,8 +114,8 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `heat-pump`; category: Engineering & Technology.
 - Subject: Energy / thermodynamics.
 - Visual: Omitted: the two-sided transfer is explained in prose; no ornamental equipment drawing.
-- [U.S. Department of Energy — Heat pump systems](https://www.energy.gov/energysaver/heat-pump-systems)
-- [Massachusetts DOER — Air-source heat pump handout (DOE-hosted PDF)](https://www.energy.gov/sites/prod/files/2017/07/f35/About%20Air%20Source%20Heat%20Pumps%20Handout.pdf)
+- [Natural Resources Canada — Heating and cooling with a heat pump](https://natural-resources.canada.ca/energy-efficiency/energy-star/heating-cooling-heat-pump)
+- [ENERGY STAR — How does a heat pump work?](https://www.energystar.gov/node/11903)
 
 ### 9. Why a damaged code can still scan
 
