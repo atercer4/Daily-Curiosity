@@ -26,12 +26,12 @@ const DAILY_CURIOSITIES = [
     ],
     "sources": [
       {
-        "label": "NASA Science — Venus facts (rotation, orbit, and solar day)",
+        "label": "NASA Science — Venus facts (rotation, orbit, backward spin)",
         "url": "https://science.nasa.gov/venus/venus-facts/"
       },
       {
-        "label": "NASA StarChild — The planet Venus",
-        "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/solar_system_level2/venus.html"
+        "label": "NASA NSSDCA — Venus fact sheet (sidereal rotation, length of solar day, orbit)",
+        "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/venusfact.html"
       }
     ],
     "visual": {
@@ -101,22 +101,22 @@ const DAILY_CURIOSITIES = [
     "tease": "The skeleton is still there. What disappears is a tiny partner that was living inside the coral’s tissues.",
     "hook": "A coral can lose much of its color without losing its skeleton. What disappears first is a tiny partner living inside its tissues.",
     "core": [
-      "Many shallow-water reef corals share their bodies with microscopic algae. The coral provides shelter and materials the algae use. With sunlight, the algae make food through photosynthesis and share some of it with their host. Their pigments also contribute much of the coral’s color.",
+      "Many shallow-water reef corals share their bodies with microscopic algae. The coral provides shelter and materials the algae use. With sunlight, the algae make food through photosynthesis and share some of it with their host. Much of the coral’s color comes from these algae; without them, its tissue is mostly clear.",
       "Under stress, including unusually warm water, corals can lose these algae. Their pale tissues reveal the white skeleton beneath: coral bleaching. A bleached coral is not necessarily dead, but it has lost an important food source. If conditions improve, the partnership can recover; prolonged stress makes survival harder."
     ],
     "deep": [
       "The animal and its algae remain different organisms even though they live so closely together. Coral polyps can catch food with their tentacles, while their resident algae use light. These are different ways of obtaining energy, and the relationship connects them within a small patch of living tissue.",
-      "Bleaching therefore describes more than a change in appearance. The visible loss of color can signal a breakdown in that relationship. NOAA distinguishes bleaching from death: living coral may regain algae, while a coral that dies cannot simply recover when the water cools.",
+      "Bleaching therefore describes more than a change in appearance. The visible loss of color can signal a breakdown in that relationship. NOAA distinguishes bleaching from death: if stress eases in time, a bleached coral may take on new algae and recover; if stress lasts too long, it dies, leaving only its skeleton.",
       "Color alone is an incomplete account of a reef’s condition. The useful question is what is happening to the living partnership underneath it. This also explains why treating every white coral as already dead misses a crucial interval: the animal may still be alive, but under serious strain."
     ],
     "sources": [
       {
-        "label": "NOAA — Corals and their symbiotic algae",
-        "url": "https://oceanservice.noaa.gov/education/tutorial_corals/coral02_zooxanthellae.html"
+        "label": "NOAA — Are corals animals or plants?",
+        "url": "https://oceanservice.noaa.gov/facts/coral.html"
       },
       {
-        "label": "NOAA — What is coral bleaching?",
-        "url": "https://oceanservice.noaa.gov/facts/coral_bleach.html"
+        "label": "NOAA Flower Garden Banks National Marine Sanctuary — Coral bleaching",
+        "url": "https://flowergarden.noaa.gov/education/bleaching.html"
       }
     ],
     "recall": {
@@ -179,6 +179,10 @@ const DAILY_CURIOSITIES = [
       {
         "label": "Smithsonian Science Education Center — Autumn splendor",
         "url": "https://ssec.si.edu/stemvisions-blog/autumn-splendor-why-do-leaves-change-color-fall"
+      },
+      {
+        "label": "Clemson Cooperative Extension (HGIC) — Color changes in autumn leaves",
+        "url": "https://hgic.clemson.edu/factsheet/color-changes-in-autumn-leaves/"
       }
     ],
     "recall": {
@@ -208,8 +212,8 @@ const DAILY_CURIOSITIES = [
         "url": "https://www.goldengate.org/exhibits/how-the-bridge-spans-the-golden-gate/"
       },
       {
-        "label": "Golden Gate Bridge District — Steel suspender rope exhibit",
-        "url": "https://www.goldengate.org/exhibits/steel-suspender-rope-exhibit/"
+        "label": "Golden Gate Bridge District — Bridge towers",
+        "url": "https://goldengate.org/exhibits/bridge-towers"
       }
     ],
     "recall": {
@@ -235,8 +239,12 @@ const DAILY_CURIOSITIES = [
     ],
     "sources": [
       {
-        "label": "worldstainless — Corrosion properties and the passive layer",
-        "url": "https://worldstainless.org/about-stainless/properties/corrosion-properties/"
+        "label": "worldstainless — Corrosion resistance of stainless steels (training module PDF)",
+        "url": "https://worldstainless.org/wp-content/uploads/2025/02/Module_05_Corrosion_Resistance_of_Stainless_Steels_en.pdf"
+      },
+      {
+        "label": "Live Science — Why doesn’t stainless steel rust?",
+        "url": "https://livescience.com/chemistry/why-doesn-t-stainless-steel-rust"
       }
     ],
     "recall": {
@@ -314,27 +322,31 @@ const DAILY_CURIOSITIES = [
     "tease": "The hill has not changed, and the climb still takes effort. What changes is what each turn of the pedals asks of you.",
     "hook": "Shifting down on a bicycle makes a hill feel easier, but the hill has not changed. The gears change what each pedal turn asks of you.",
     "core": [
-      "A bicycle chain connects the front chainring to a rear sprocket. With a smaller front chainring or a larger rear sprocket, each pedal turn drives the rear wheel through fewer turns. This lower gear makes it easier to apply turning force at the wheel.",
+      "A bicycle chain connects the front chainring to a rear sprocket. With a smaller front chainring or a larger rear sprocket, each pedal turn drives the rear wheel through fewer turns. This lower gear turns the same pedal push into more turning force (torque) at the rear wheel.",
       "The tradeoff is distance. You need more pedal revolutions to cover the same ground. A higher gear reverses that exchange, carrying you farther per turn while demanding more pedal force under comparable conditions. Gears let the rider choose a useful balance between force and pedaling speed; they do not remove the effort of climbing."
     ],
     "deep": [
       "Count the teeth engaged over one complete turn of the front chainring. That many links pass the rear sprocket. If the front has twice as many teeth as the rear, the rear sprocket turns twice for one pedal revolution. This example assumes the usual chain drive with the rear sprocket driving the wheel.",
       "Now make the rear sprocket larger while keeping the front one unchanged. The same length of moving chain takes it through fewer turns. The wheel therefore travels less far per pedal revolution, which is the distance side of the low-gear tradeoff.",
-      "The Exploratorium describes gearing as a choice between speed and force. This is why a useful gear for a steep climb can feel frustrating on level ground: the rider may be turning the pedals quickly while advancing only a short distance. The mechanism has not changed; the demands of the journey have."
+      "Gears trade force for speed: more force comes with less speed, and the reverse. This is why a useful gear for a steep climb can feel frustrating on level ground: the rider may be turning the pedals quickly while advancing only a short distance. The mechanism has not changed; the demands of the journey have."
     ],
     "sources": [
       {
-        "label": "Exploratorium — The science of cycling: Gears",
+        "label": "Exploratorium — Science of Cycling: Drives & Gears",
         "url": "https://annex.exploratorium.edu/cycling/gears1.html"
       },
       {
-        "label": "Exploratorium — Gears and mechanical advantage",
+        "label": "Exploratorium — Science of Cycling: Pedaling & Cadence",
         "url": "https://annex.exploratorium.edu/cycling/gears3.html"
+      },
+      {
+        "label": "Explain that Stuff — Gears",
+        "url": "https://www.explainthatstuff.com/gears.html"
       }
     ],
     "recall": {
       "prompt": "What do you give up when a lower bicycle gear makes pedaling easier?",
-      "reveal": "The wheel travels less far per pedal turn. You gain turning force but need more pedal revolutions to cover the same ground."
+      "reveal": "The wheel travels less far per pedal turn. Each pedal push needs less force, but you need more pedal revolutions to cover the same ground."
     }
   },
   {
@@ -350,7 +362,7 @@ const DAILY_CURIOSITIES = [
     ],
     "deep": [
       "A stamp makes the reversal easy to test. Give it an arrow pointing left on its inked face. After you press it onto paper and lift it away, the printed arrow points right. The print faces you from the opposite surface. The same reversal happens when a woodcut transfers its image.",
-      "The Met explains that the printmaker removes the areas that should not receive ink. A roller or ink ball coats the remaining raised surface. Paper is then pressed against it. Two choices matter at once: which parts are left high enough to print, and which way the finished image should face.",
+      "The Met explains that the areas that will not receive ink are cut away. A roller or ink ball coats the remaining raised surface. Paper is then pressed against it. Two choices matter at once: which parts are left high enough to print, and which way the finished image should face.",
       "The paired letters below make the second choice visible. The reversed letter represents the inked face of the block; the normal letter represents the finished print viewed face-on. This is a simple example, not a reproduction of an artwork. It shows why lettering can reveal a reversal that a more balanced shape might conceal."
     ],
     "visual": {
@@ -372,6 +384,10 @@ const DAILY_CURIOSITIES = [
       {
         "label": "The Metropolitan Museum of Art — Woodcut: materials and techniques",
         "url": "https://www.metmuseum.org/perspectives/materials-and-techniques-printmaking-woodcut"
+      },
+      {
+        "label": "Guggenheim Museum Bilbao — Woodcut",
+        "url": "https://pro.guggenheim-bilbao.eus/en/did-you-know/woodcut"
       }
     ],
     "recall": {
@@ -387,8 +403,8 @@ const DAILY_CURIOSITIES = [
     "tease": "Some of it started as a stone, mined far away and carried along long trade routes. The color has a journey of its own.",
     "hook": "A patch of blue in a Renaissance painting may begin with a stone mined far away. The color carries a history of materials as well as images.",
     "core": [
-      "Natural ultramarine is a blue pigment made from lapis lazuli. For European painters, this stone came through long-distance trade from Afghanistan. Producing a useful pigment also required processing the stone. The resulting blue could be a costly artistic material.",
-      "The National Gallery describes how painters used ultramarine and how material choices shaped their work. A blue passage was not simply a selection from an unlimited color menu. Its appearance depended on the pigment available, its preparation, and how the artist applied it. Looking at color can therefore open a second story about the making of a painting."
+      "Natural ultramarine is a blue pigment made from lapis lazuli. For European painters, this stone came through long-distance trade from Afghanistan. Pigments of this kind also varied widely in quality. The resulting blue could be a costly artistic material.",
+      "The National Gallery shows the range of blues available to artists and how Raphael used ultramarine as a final glaze. A blue passage was not simply a selection from an unlimited color menu. Its appearance depended on the pigment available, its quality, and how the artist applied it. Looking at color can therefore open a second story about the making of a painting."
     ],
     "deep": [
       "On a finished canvas or panel, color looks like a property of the image. In the workshop, it was also a substance that had to be obtained and handled. Natural ultramarine makes that difference especially tangible: a mineral source stands behind an apparently weightless area of blue.",
@@ -407,7 +423,7 @@ const DAILY_CURIOSITIES = [
     ],
     "recall": {
       "prompt": "What can a painted blue reveal beyond the image it forms?",
-      "reveal": "Natural ultramarine points to the stone, trade, preparation, and paint layers behind the color. Materials and workshop choices help shape what the viewer sees."
+      "reveal": "Natural ultramarine points to the stone, trade, cost, and paint layers behind the color. Materials and workshop choices help shape what the viewer sees."
     }
   },
   {
@@ -419,7 +435,7 @@ const DAILY_CURIOSITIES = [
     "hook": "A flat figure can turn into a lively character on a lit screen. In Chinese shadow puppetry, movement, music, and skilled hands work together.",
     "core": [
       "Chinese shadow puppetry uses figures made from leather or paper, manipulated behind an illuminated screen. Performers move them with rods while music and singing accompany the action. The audience sees a staged world built from light, silhouettes, and sound.",
-      "UNESCO describes it as a living performance tradition, with skills passed between practitioners. Making the figures is only one part of the craft. Moving their joints, voicing characters, and working with the music bring the figures into a story. A puppet on display shows an object; a performance reveals the coordinated artistic skills that make that object act."
+      "UNESCO lists it as intangible cultural heritage, with skills passed down in families, in troupes and from master to pupil. Making the figures is only one part of the craft. Moving their joints, voicing characters, and working with the music bring the figures into a story. A puppet on display shows an object; a performance reveals the coordinated artistic skills that make that object act."
     ],
     "deep": [
       "The screen draws a boundary between the visible story and the people producing it. On one side are figures and their movements; behind them are the hands controlling the rods. Music and voices supply things a silhouette cannot convey by itself.",
@@ -432,7 +448,7 @@ const DAILY_CURIOSITIES = [
         "url": "https://ich.unesco.org/en/RL/chinese-shadow-puppetry-00421"
       },
       {
-        "label": "UNESCO — Chinese shadow puppetry information sheet",
+        "label": "UNESCO — Representative List of the Intangible Cultural Heritage of Humanity 2010–2011 (PDF)",
         "url": "https://ich.unesco.org/doc/src/17331-EN.pdf"
       }
     ],
@@ -477,22 +493,26 @@ const DAILY_CURIOSITIES = [
     "hook": "A Gothic church window does more than fill a gap in a wall. Its colored light belongs to a larger artistic idea about the space inside.",
     "core": [
       "Gothic builders combined pointed arches, ribbed vaults, and external supports to create interiors with larger windows. Stained glass could then occupy more of the building’s enclosing surface. Structure helped make room for a different experience of light.",
-      "In medieval Christian churches, these windows also carried religious images and meanings. The Met describes biblical scenes, saints, and luminous color as central to the experience of the cathedral. The glass was neither a separate picture gallery nor merely a way to brighten a room. It joined architecture and imagery, shaping how the interior was seen and understood."
+      "In medieval Christian churches, these windows also carried religious images and meanings. The V&A notes that large windows showing scenes from the Bible and the lives of saints could animate a sacred space with glimmering colored light. The glass was neither a separate picture gallery nor merely a way to brighten a room. It joined architecture and imagery, shaping how the interior was seen and understood."
     ],
     "deep": [
       "Look at the window as part of the room, not just as an image held in a frame. Light passes through its colored glass into the same space occupied by the viewer. The building gives the image a scale and setting that a small independent object cannot provide.",
-      "The Met’s account connects the upward movement of Gothic interiors with Christian aspirations toward heaven. It also describes windows filled with biblical stories and figures. Height, imagery, and colored light could reinforce one another in the religious experience of the space.",
+      "Columbia’s study of Amiens shows how pointed arches, ribbed vaults, and exterior supports opened the interior to brilliant light filtering through stained glass. The V&A describes windows filled with biblical scenes and saints. Structure, imagery, and colored light could reinforce one another in the religious experience of the space.",
       "That reading does not mean every Gothic building has the same arrangement or that every visitor responds alike. It offers a historically grounded way to connect choices that might otherwise seem separate. The large opening, the stained glass, and the proportions of the room belong to a shared artistic setting, rather than three unrelated items on a checklist."
     ],
     "sources": [
       {
-        "label": "The Metropolitan Museum of Art — Gothic Art",
-        "url": "https://www.metmuseum.org/essays/gothic-art"
+        "label": "Columbia University Media Center for Art History — The Gothic structural revolution (Life of a Cathedral: Amiens)",
+        "url": "https://projects.mcah.columbia.edu/amiens-arthum/node/3597.html"
+      },
+      {
+        "label": "Victoria and Albert Museum — Stained glass: an introduction",
+        "url": "https://www.vam.ac.uk/articles/stained-glass-an-introduction"
       }
     ],
     "recall": {
       "prompt": "How do stained-glass windows work with a Gothic church’s interior?",
-      "reveal": "Colored light, religious imagery, height, and space reinforce one another. The windows belong to the experience of the building, not just its decoration."
+      "reveal": "Colored light, religious imagery, and open interior space reinforce one another. The windows belong to the experience of the building, not just its decoration."
     }
   },
   {
@@ -513,12 +533,12 @@ const DAILY_CURIOSITIES = [
     ],
     "sources": [
       {
-        "label": "British Museum — The Rosetta Stone: everything you need to know",
-        "url": "https://www.britishmuseum.org/blog/everything-you-ever-wanted-know-about-rosetta-stone"
+        "label": "British Museum on Google Arts & Culture — The Rosetta Stone (object)",
+        "url": "https://artsandculture.google.com/asset/the-rosetta-stone/DgH6pMM1guUUPA"
       },
       {
-        "label": "British Museum — Rosetta Stone collection record",
-        "url": "https://www.britishmuseum.org/collection/object/Y_EA24"
+        "label": "British Museum on Google Arts & Culture — The Rosetta Stone (story)",
+        "url": "https://artsandculture.google.com/story/the-rosetta-stone-the-british-museum/OQVRt6m8dEG4rw?hl=en"
       }
     ],
     "recall": {
@@ -530,26 +550,30 @@ const DAILY_CURIOSITIES = [
     "id": "ming-banknote",
     "category": "History & Society",
     "title": "Coins pictured on paper money",
-    "question": "Why would paper money {picture strings of coins?}",
+    "question": "Why would paper money {picture a string of coins?}",
     "tease": "A Ming banknote shows the older kind of money it could stand for. The picture was part of how the paper made its claim.",
-    "hook": "A Ming banknote pictures strings of coins on its surface. Why would a new form of money show the older kind it could stand for?",
+    "hook": "A Ming banknote pictures a string of 1,000 coins on its surface. Why would paper money show the metal money it could stand for?",
     "core": [
-      "A Ming dynasty banknote in the British Museum represents a value in strings of copper-alloy cash coins. Its printed coin imagery connects the paper to a familiar monetary unit. The sheet is light, but the value it names comes from a world of metal money.",
+      "A Ming dynasty banknote in the British Museum gives its value as one string (guan) of 1,000 bronze cash coins. Its printed coin imagery connects the paper to a familiar monetary unit. The sheet is light, but the value it names comes from a world of metal money.",
       "This was not the beginning of paper money in China; earlier dynasties had already used it. The Ming note is a surviving example of how an issued document could express monetary value. Its printed words and images show an authority presenting a claim, rather than the paper itself containing an equivalent quantity of valuable metal."
     ],
     "deep": [
       "The picture of coins makes an abstract relationship visible. Someone looking at the note encounters a familiar form of money, even though the object in their hands is paper. The image helps explain the denomination without turning the sheet into the metal it depicts.",
-      "The British Museum’s account also describes the decline in value of Ming paper currency. A denomination printed on a note and what people will actually exchange for it need not remain the same. The surviving object records an official claim; it does not, by itself, prove how well that claim held up in daily transactions.",
+      "The British Museum’s description also describes the decline in value of Ming paper currency. A denomination printed on a note and what people will actually exchange for it need not remain the same. The surviving object records an official claim; it does not, by itself, prove how well that claim held up in daily transactions.",
       "Those two ways of reading the note belong together. One asks what its design says. The other asks how the currency worked in society. An object can be carefully made to express authority while its practical acceptance depends on circumstances beyond the printed border."
     ],
     "sources": [
       {
-        "label": "British Museum — Ming banknote, published by Smarthistory",
-        "url": "https://smarthistory.org/ming-banknote/"
+        "label": "Smarthistory — Ming banknote (British Museum)",
+        "url": "https://smarthistory.org/?p=56036"
       },
       {
-        "label": "British Museum — Ming banknote collection record",
-        "url": "https://www.britishmuseum.org/collection/object/C_1913-1011-30"
+        "label": "British Museum — Great Ming Circulating Treasure Note (Google Arts & Culture)",
+        "url": "https://artsandculture.google.com/asset/great-ming-circulating-treasure-note/iAFKr9bi4LqIRA"
+      },
+      {
+        "label": "Columbia University, Asia for Educators — Song dynasty paper money",
+        "url": "https://afe.easia.columbia.edu/songdynasty-module/econ-rev-money.html"
       }
     ],
     "recall": {
@@ -627,12 +651,12 @@ const DAILY_CURIOSITIES = [
     "tease": "Its wine or oil is long gone. The clay can still hold clues about a journey, and about the trade around it.",
     "hook": "A broken Roman jar can say something about a journey its contents no longer survive to tell. Ordinary packaging has become evidence of trade.",
     "core": [
-      "Roman transport amphorae carried goods such as wine and olive oil. Their shapes varied, and some bore stamps or painted inscriptions. Museums study these containers as evidence of production and movement, not only as complete objects worth displaying.",
+      "Roman transport amphorae carried goods such as wine and olive oil. Their shapes varied, and some bore stamps or painted inscriptions. Their markings make them evidence of production and movement, not only objects worth displaying.",
       "At the Roman villa of Loupian in southern France, workshops made amphorae for wine. The French Ministry of Culture describes painted labels that could record information such as the wine, capacity, or owner. A container could therefore carry information as well as a product. Once the contents were gone, the ceramic could still preserve clues about the commercial world around it."
     ],
     "deep": [
-      "An amphora’s shape alone does not tell every part of its story. The British Museum records a Roman wine transport jar with a stamp on its neck and identifies the vessel by type. Such details give researchers things to compare across finds.",
-      "The Loupian examples add another kind of evidence: painted words about a traded product. Shape, markings, and the place where an object was found answer different questions. A useful account draws on them together rather than assuming one broken jar supplies a complete shipping itinerary.",
+      "An amphora’s shape alone does not tell every part of its story. Amphorae often carried a maker’s stamp and painted notes naming shippers, origin, date or contents, though paint survives only in favourable conditions. Such details give researchers things to compare across finds.",
+      "Loupian adds another kind of evidence: about a hundred stamps reading “MAF”, with identical marks found at Ostia, the port of Rome. Shape, markings, and the place where an object was found answer different questions. A useful account draws on them together rather than assuming one broken jar supplies a complete shipping itinerary.",
       "This is a reason to pay attention to ordinary objects in a museum. A prestigious sculpture may tell us about artistic choices and patronage; a transport jar can point toward goods being packed and moved. Its value as evidence comes partly from a practical job that was finished long before anyone placed it in a collection."
     ],
     "sources": [
@@ -641,8 +665,8 @@ const DAILY_CURIOSITIES = [
         "url": "https://archeologie.culture.gouv.fr/villa/en/amphorae-wine-trade"
       },
       {
-        "label": "British Museum — Roman wine transport amphora",
-        "url": "https://www.britishmuseum.org/collection/object/G_1816-0610-344"
+        "label": "Roman Inscriptions of Britain — Amphorae: painted inscriptions",
+        "url": "https://romaninscriptionsofbritain.org/instrumentum/2492"
       }
     ],
     "recall": {

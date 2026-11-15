@@ -57,8 +57,8 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `venus-clocks`; category: Science & Nature.
 - Subject: Astronomy.
 - Visual: Shared-scale duration bars clarify three meanings.
-- [NASA Science — Venus facts (rotation, orbit, and solar day)](https://science.nasa.gov/venus/venus-facts/)
-- [NASA StarChild — The planet Venus](https://starchild.gsfc.nasa.gov/docs/StarChild/solar_system_level2/venus.html)
+- [NASA Science — Venus facts (rotation, orbit, backward spin)](https://science.nasa.gov/venus/venus-facts/)
+- [NASA NSSDCA — Venus fact sheet (sidereal rotation, length of solar day, orbit)](https://nssdc.gsfc.nasa.gov/planetary/factsheet/venusfact.html)
 
 ### 2. A history written in wood
 
@@ -73,8 +73,8 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `coral-partners`; category: Science & Nature.
 - Subject: Reef ecology / symbiosis.
 - Visual: Omitted: prose separates bleaching from death without implying every white coral has the same condition.
-- [NOAA — Corals and their symbiotic algae](https://oceanservice.noaa.gov/education/tutorial_corals/coral02_zooxanthellae.html)
-- [NOAA — What is coral bleaching?](https://oceanservice.noaa.gov/facts/coral_bleach.html)
+- [NOAA — Are corals animals or plants?](https://oceanservice.noaa.gov/facts/coral.html)
+- [NOAA Flower Garden Banks National Marine Sanctuary — Coral bleaching](https://flowergarden.noaa.gov/education/bleaching.html)
 
 ### 4. Stone columns without a stonecutter
 
@@ -91,6 +91,7 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - Visual: Omitted: color swatches would illustrate hues but not explain pigment loss versus production.
 - [NOAA NESDIS — Why do leaves change color?](https://www.nesdis.noaa.gov/about/k-12-education/understanding-our-planet/why-do-leaves-change-color)
 - [Smithsonian Science Education Center — Autumn splendor](https://ssec.si.edu/stemvisions-blog/autumn-splendor-why-do-leaves-change-color-fall)
+- [Clemson Cooperative Extension (HGIC) — Color changes in autumn leaves](https://hgic.clemson.edu/factsheet/color-changes-in-autumn-leaves/)
 
 ### 6. How can a road hang from cables?
 
@@ -98,14 +99,15 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - Subject: Structural engineering.
 - Visual: Omitted: prose traces forces; a decorative bridge silhouette would not improve the load explanation.
 - [Golden Gate Bridge District — How the bridge spans the Golden Gate](https://www.goldengate.org/exhibits/how-the-bridge-spans-the-golden-gate/)
-- [Golden Gate Bridge District — Steel suspender rope exhibit](https://www.goldengate.org/exhibits/steel-suspender-rope-exhibit/)
+- [Golden Gate Bridge District — Bridge towers](https://goldengate.org/exhibits/bridge-towers)
 
 ### 7. Steel protected by its own surface
 
 - ID: `stainless-surface`; category: Engineering & Technology.
 - Subject: Materials.
 - Visual: Omitted: an unscaled film illustration could misrepresent the very thin protective layer.
-- [worldstainless — Corrosion properties and the passive layer](https://worldstainless.org/about-stainless/properties/corrosion-properties/)
+- [worldstainless — Corrosion resistance of stainless steels (training module PDF)](https://worldstainless.org/wp-content/uploads/2025/02/Module_05_Corrosion_Resistance_of_Stainless_Steels_en.pdf)
+- [Live Science — Why doesn’t stainless steel rust?](https://livescience.com/chemistry/why-doesn-t-stainless-steel-rust)
 
 ### 8. Moving heat instead of making it
 
@@ -128,8 +130,9 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `bicycle-gears`; category: Engineering & Technology.
 - Subject: Machines / transportation.
 - Visual: Omitted: the example explains the ratio directly without adding a second quantitative graphic.
-- [Exploratorium — The science of cycling: Gears](https://annex.exploratorium.edu/cycling/gears1.html)
-- [Exploratorium — Gears and mechanical advantage](https://annex.exploratorium.edu/cycling/gears3.html)
+- [Exploratorium — Science of Cycling: Drives & Gears](https://annex.exploratorium.edu/cycling/gears1.html)
+- [Exploratorium — Science of Cycling: Pedaling & Cadence](https://annex.exploratorium.edu/cycling/gears3.html)
+- [Explain that Stuff — Gears](https://www.explainthatstuff.com/gears.html)
 
 ### 11. The picture that prints backward
 
@@ -137,6 +140,7 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - Subject: Printmaking.
 - Visual: Face-on block/print R comparison makes actual horizontal reversal visible.
 - [The Metropolitan Museum of Art — Woodcut: materials and techniques](https://www.metmuseum.org/perspectives/materials-and-techniques-printmaking-woodcut)
+- [Guggenheim Museum Bilbao — Woodcut](https://pro.guggenheim-bilbao.eus/en/did-you-know/woodcut)
 
 ### 12. A painted blue with a long journey
 
@@ -152,7 +156,7 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - Subject: Performance.
 - Visual: Omitted: a still silhouette would add atmosphere but not the timing of performance.
 - [UNESCO — Chinese shadow puppetry](https://ich.unesco.org/en/RL/chinese-shadow-puppetry-00421)
-- [UNESCO — Chinese shadow puppetry information sheet](https://ich.unesco.org/doc/src/17331-EN.pdf)
+- [UNESCO — Representative List of the Intangible Cultural Heritage of Humanity 2010–2011 (PDF)](https://ich.unesco.org/doc/src/17331-EN.pdf)
 
 ### 14. A food tradition larger than a recipe
 
@@ -166,23 +170,25 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `gothic-light`; category: Arts & Culture.
 - Subject: Architecture / religious art.
 - Visual: Omitted: no stock cathedral photograph or diagram that conflates different buildings.
-- [The Metropolitan Museum of Art — Gothic Art](https://www.metmuseum.org/essays/gothic-art)
+- [Columbia University Media Center for Art History — The Gothic structural revolution (Life of a Cathedral: Amiens)](https://projects.mcah.columbia.edu/amiens-arthum/node/3597.html)
+- [Victoria and Albert Museum — Stained glass: an introduction](https://www.vam.ac.uk/articles/stained-glass-an-introduction)
 
 ### 16. One message, three scripts
 
 - ID: `rosetta-scripts`; category: History & Society.
 - Subject: Writing / decipherment.
 - Visual: Omitted: text distinguishes three scripts from two languages without a decorative stone image.
-- [British Museum — The Rosetta Stone: everything you need to know](https://www.britishmuseum.org/blog/everything-you-ever-wanted-know-about-rosetta-stone)
-- [British Museum — Rosetta Stone collection record](https://www.britishmuseum.org/collection/object/Y_EA24)
+- [British Museum on Google Arts & Culture — The Rosetta Stone (object)](https://artsandculture.google.com/asset/the-rosetta-stone/DgH6pMM1guUUPA)
+- [British Museum on Google Arts & Culture — The Rosetta Stone (story)](https://artsandculture.google.com/story/the-rosetta-stone-the-british-museum/OQVRt6m8dEG4rw?hl=en)
 
 ### 17. Coins pictured on paper money
 
 - ID: `ming-banknote`; category: History & Society.
 - Subject: Monetary history.
 - Visual: Omitted: no invented reproduction of the historic note; original record is linked.
-- [British Museum — Ming banknote, published by Smarthistory](https://smarthistory.org/ming-banknote/)
-- [British Museum — Ming banknote collection record](https://www.britishmuseum.org/collection/object/C_1913-1011-30)
+- [Smarthistory — Ming banknote (British Museum)](https://smarthistory.org/?p=56036)
+- [British Museum — Great Ming Circulating Treasure Note (Google Arts & Culture)](https://artsandculture.google.com/asset/great-ming-circulating-treasure-note/iAFKr9bi4LqIRA)
+- [Columbia University, Asia for Educators — Song dynasty paper money](https://afe.easia.columbia.edu/songdynasty-module/econ-rev-money.html)
 
 ### 18. The library gift with an ongoing cost
 
@@ -206,7 +212,7 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - Subject: Trade / archaeology.
 - Visual: Omitted: a generic amphora could imply one shape for all transport jars.
 - [French Ministry of Culture — Amphorae for the wine trade](https://archeologie.culture.gouv.fr/villa/en/amphorae-wine-trade)
-- [British Museum — Roman wine transport amphora](https://www.britishmuseum.org/collection/object/G_1816-0610-344)
+- [Roman Inscriptions of Britain — Amphorae: painted inscriptions](https://romaninscriptionsofbritain.org/instrumentum/2492)
 
 ### Phase 2 additions (issue #17, November 2026)
 

@@ -60,7 +60,7 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 
 - ID: `bicycle-gears`
 - Prompt: What do you give up when a lower bicycle gear makes pedaling easier?
-- Response: The wheel travels less far per pedal turn. You gain turning force but need more pedal revolutions to cover the same ground.
+- Response: The wheel travels less far per pedal turn. Each pedal push needs less force, but you need more pedal revolutions to cover the same ground.
 
 ## The picture that prints backward
 
@@ -72,7 +72,7 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 
 - ID: `ultramarine`
 - Prompt: What can a painted blue reveal beyond the image it forms?
-- Response: Natural ultramarine points to the stone, trade, preparation, and paint layers behind the color. Materials and workshop choices help shape what the viewer sees.
+- Response: Natural ultramarine points to the stone, trade, cost, and paint layers behind the color. Materials and workshop choices help shape what the viewer sees.
 
 ## A whole performance behind a screen
 
@@ -90,7 +90,7 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 
 - ID: `gothic-light`
 - Prompt: How do stained-glass windows work with a Gothic church’s interior?
-- Response: Colored light, religious imagery, height, and space reinforce one another. The windows belong to the experience of the building, not just its decoration.
+- Response: Colored light, religious imagery, and open interior space reinforce one another. The windows belong to the experience of the building, not just its decoration.
 
 ## One message, three scripts
 

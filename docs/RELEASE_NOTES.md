@@ -10,7 +10,7 @@ This is the stable, public baseline that Phase 2 content work builds on. Authori
 - **Today's Curiosity:** a card chosen by date from a fixed permutation in `SRC/daily.js`, starting at the 2026-10-22 epoch. The same date always shows the same card.
 - **Explore More:** five native category buttons (four categories plus Surprise Me). Categories cycle their cards without an immediate repeat. Explore is independent of Today.
 - **Card interaction:** Hook → Core Insight → Deep Dive & Sources → optional recall, all native `details` disclosures that start closed.
-- **Library:** 24 cards: the original 20 (five per category) plus four Phase 2 cards, one in each category (issues #17 and #19), with 49 source links and two explanatory visuals. Registers: [CONTENT.md](CONTENT.md) for content and sources, [RECALL.md](RECALL.md) for recall prompts and responses.
+- **Library:** 24 cards: the original 20 (five per category) plus four Phase 2 cards, one in each category (issues #17 and #19), with 55 source links and two explanatory visuals. Registers: [CONTENT.md](CONTENT.md) for content and sources, [RECALL.md](RECALL.md) for recall prompts and responses.
 - **Safeguards:** CI runs syntax checks, the regression suite and a secret guard on every pull request. `tests/baseline/` pins the original fields of all 20 cards and `SRC/daily.js`.
 
 ## Changes since the git import
@@ -32,9 +32,10 @@ The v7 baseline was imported from Dropbox on 10 November 2026, with the old `sna
 | #31 | #30 | Fallback builder documented for when Claude is unavailable. |
 | #32 | #22 | Design System 1.0 step 1: self-hosted Playfair Display and Source Sans 3 (OFL), section 3 tokens and paper grain, labels The idea / Look closer / Remember this?, Surprise Me reads “Take me somewhere unexpected”, no hard-coded counts or “v6” badge. |
 | #33 | #23 | Design System 1.0 step 2: the Today cover (question and tease, falling back to title and hook) and the phone first screen. |
-| (this PR) | #24 | Design System 1.0 step 3: Explore becomes “The cabinet of curiosities”, a grid of tiles with “All” plus category filter chips and a dark “?” Surprise Me tile; opening a tile shows the card below and moves focus to it. Category cycling is replaced by filtering. |
+| #34 | #24 | Design System 1.0 step 3: Explore becomes “The cabinet of curiosities”, a grid of tiles with “All” plus category filter chips and a dark “?” Surprise Me tile; opening a tile shows the card below and moves focus to it. Category cycling is replaced by filtering. |
+| (this PR) | — | Fact-check backlog, combined batch: 13 original cards replaced with their dual-approved register drafts (one commit per card; sources replaced where the originals were unreadable or did not support the text; misattributions and unsupported claims fixed). Four cards were approved unchanged and are untouched; three are excluded pending source access. Baseline pins re-pinned for the 13. Review protocol: register-based gate, claim-by-claim evidence and source-access status required in every review, combined-PR policy. |
 
-No original card text changed other than the approved recall wording fix in issue #5.
+Original card text has changed only through approved fixes: the recall wording fix in issue #5 and the 13 register-approved cards above.
 
 ## Known limitations
 
