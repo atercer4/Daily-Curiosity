@@ -16,6 +16,21 @@ jobs:
         run: for f in SRC/*.js; do node --check "$f"; done
       - name: Test suite
         run: node --test tests/prototype.test.cjs
+      # Render check (issue #49): every card on Today and in Explore at 320, 390 and 1280px in headless Chromium.
+      # Playwright is pinned and installed only here; the site itself gains no dependency.
+      - name: Install headless Chromium for the render check
+        run: |
+          npm install --no-save --no-package-lock playwright@1.63.0
+          npx playwright install --with-deps chromium
+      - name: Render check
+        run: node tests/render-check.cjs render-check
+      - name: Upload screenshots of failing renders
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: render-check-failures
+          path: render-check/
+          if-no-files-found: ignore
       - name: Secret and binary guard
         run: |
           if git ls-files | grep -Ei '\.(env|jks|keystore|pem|key|apk|aab)$|(^|/)snapshots/'; then

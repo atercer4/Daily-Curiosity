@@ -65,3 +65,18 @@ Headless Chromium at 320, 390 and 1280 px:
 - Enter on a focused summary opens it.
 
 Before/after screenshots: [1280](design/qa/dc-45-1280.jpg), [390](design/qa/dc-45-390.jpg), [320](design/qa/dc-45-320.jpg). A real screen-reader pass is still pending.
+
+## Render check in CI (issue #49)
+
+`tests/render-check.cjs` runs in the required `tests` job after the regression suite. It serves the site locally and, in headless Chromium at 320, 390 and 1280px, renders every card on Today and in Explore with every disclosure open. It also renders one synthetic plate, numbers strip and cover drawing (injected in the browser, never card content), so the illustration path is covered before real plates exist.
+
+A render fails when any of these happens:
+- the page scrolls horizontally;
+- a page or console error occurs;
+- a figure is under 40px, extends past its reading column, or lacks a text alternative of at least 50 characters;
+- a plate label renders under 13px on screen or is cut off by the screen edge;
+- a button, summary or the cover link is under 44px tall.
+
+Screenshots of failing renders are uploaded as the `render-check-failures` artifact. To run it locally: `npm install --no-save playwright@1.63.0 && npx playwright install chromium && node tests/render-check.cjs`. Playwright is installed only in CI and adds nothing to the site.
+
+The suite was checked against deliberately broken styles: a too-small tile action, a 600px-wide diagram and 9px plate labels each failed the run.
