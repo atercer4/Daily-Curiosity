@@ -403,8 +403,8 @@ const DAILY_CURIOSITIES = [
     "tease": "Some of it started as a stone, mined far away and carried along long trade routes. The color has a journey of its own.",
     "hook": "A patch of blue in a Renaissance painting may begin with a stone mined far away. The color carries a history of materials as well as images.",
     "core": [
-      "Natural ultramarine is a blue pigment made from lapis lazuli. For European painters, this stone came through long-distance trade from Afghanistan. Producing a useful pigment also required processing the stone. The resulting blue could be a costly artistic material.",
-      "The National Gallery describes how painters used ultramarine and how material choices shaped their work. A blue passage was not simply a selection from an unlimited color menu. Its appearance depended on the pigment available, its preparation, and how the artist applied it. Looking at color can therefore open a second story about the making of a painting."
+      "Natural ultramarine is a blue pigment made from lapis lazuli. For European painters, this stone came through long-distance trade from Afghanistan. Pigments of this kind also varied widely in quality. The resulting blue could be a costly artistic material.",
+      "The National Gallery shows the range of blues available to artists and how Raphael used ultramarine as a final glaze. A blue passage was not simply a selection from an unlimited color menu. Its appearance depended on the pigment available, its quality, and how the artist applied it. Looking at color can therefore open a second story about the making of a painting."
     ],
     "deep": [
       "On a finished canvas or panel, color looks like a property of the image. In the workshop, it was also a substance that had to be obtained and handled. Natural ultramarine makes that difference especially tangible: a mineral source stands behind an apparently weightless area of blue.",
@@ -423,7 +423,7 @@ const DAILY_CURIOSITIES = [
     ],
     "recall": {
       "prompt": "What can a painted blue reveal beyond the image it forms?",
-      "reveal": "Natural ultramarine points to the stone, trade, preparation, and paint layers behind the color. Materials and workshop choices help shape what the viewer sees."
+      "reveal": "Natural ultramarine points to the stone, trade, cost, and paint layers behind the color. Materials and workshop choices help shape what the viewer sees."
     }
   },
   {

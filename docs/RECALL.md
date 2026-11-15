@@ -72,7 +72,7 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 
 - ID: `ultramarine`
 - Prompt: What can a painted blue reveal beyond the image it forms?
-- Response: Natural ultramarine points to the stone, trade, preparation, and paint layers behind the color. Materials and workshop choices help shape what the viewer sees.
+- Response: Natural ultramarine points to the stone, trade, cost, and paint layers behind the color. Materials and workshop choices help shape what the viewer sees.
 
 ## A whole performance behind a screen
 
