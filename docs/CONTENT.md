@@ -57,8 +57,8 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `venus-clocks`; category: Science & Nature.
 - Subject: Astronomy.
 - Visual: Shared-scale duration bars clarify three meanings.
-- [NASA Science — Venus facts (rotation, orbit, and solar day)](https://science.nasa.gov/venus/venus-facts/)
-- [NASA StarChild — The planet Venus](https://starchild.gsfc.nasa.gov/docs/StarChild/solar_system_level2/venus.html)
+- [NASA Science — Venus facts (rotation, orbit, backward spin)](https://science.nasa.gov/venus/venus-facts/)
+- [NASA NSSDCA — Venus fact sheet (sidereal rotation, length of solar day, orbit)](https://nssdc.gsfc.nasa.gov/planetary/factsheet/venusfact.html)
 
 ### 2. A history written in wood
 

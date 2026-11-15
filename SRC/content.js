@@ -26,12 +26,12 @@ const DAILY_CURIOSITIES = [
     ],
     "sources": [
       {
-        "label": "NASA Science — Venus facts (rotation, orbit, and solar day)",
+        "label": "NASA Science — Venus facts (rotation, orbit, backward spin)",
         "url": "https://science.nasa.gov/venus/venus-facts/"
       },
       {
-        "label": "NASA StarChild — The planet Venus",
-        "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/solar_system_level2/venus.html"
+        "label": "NASA NSSDCA — Venus fact sheet (sidereal rotation, length of solar day, orbit)",
+        "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/venusfact.html"
       }
     ],
     "visual": {
