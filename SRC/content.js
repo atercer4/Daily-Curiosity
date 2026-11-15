@@ -179,6 +179,10 @@ const DAILY_CURIOSITIES = [
       {
         "label": "Smithsonian Science Education Center — Autumn splendor",
         "url": "https://ssec.si.edu/stemvisions-blog/autumn-splendor-why-do-leaves-change-color-fall"
+      },
+      {
+        "label": "Clemson Cooperative Extension (HGIC) — Color changes in autumn leaves",
+        "url": "https://hgic.clemson.edu/factsheet/color-changes-in-autumn-leaves/"
       }
     ],
     "recall": {

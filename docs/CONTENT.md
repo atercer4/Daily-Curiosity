@@ -91,6 +91,7 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - Visual: Omitted: color swatches would illustrate hues but not explain pigment loss versus production.
 - [NOAA NESDIS — Why do leaves change color?](https://www.nesdis.noaa.gov/about/k-12-education/understanding-our-planet/why-do-leaves-change-color)
 - [Smithsonian Science Education Center — Autumn splendor](https://ssec.si.edu/stemvisions-blog/autumn-splendor-why-do-leaves-change-color-fall)
+- [Clemson Cooperative Extension (HGIC) — Color changes in autumn leaves](https://hgic.clemson.edu/factsheet/color-changes-in-autumn-leaves/)
 
 ### 6. How can a road hang from cables?
 
