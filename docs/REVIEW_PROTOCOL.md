@@ -8,8 +8,8 @@ Daily Curiosity runs autonomously. The founder gets a weekly digest and escalati
 | Gemini | Scouts topics into Drive `02_Research_Inbox` (Mon/Wed/Fri) |
 | Claude | Picks topics, builds cards and code, opens PRs |
 | Codex | Reviews every PR (`@codex review`) |
-| Fact-checker (independent Claude agent) | Fact-checks every content PR before it can be ready (see [Fact-check gate](#fact-check-gate)) |
-| ChatGPT | Optional second fact-check; writes the weekly digest |
+| Fact-checker (independent Claude subagent) | Reviews every card draft before it is coded (see [Fact-check gate](#fact-check-gate)) |
+| ChatGPT | Second required reviewer of every card draft; writes the weekly digest |
 
 ## Rules
 1. Every change goes through a pull request. Nothing is pushed straight to `main`.
@@ -27,47 +27,85 @@ Daily Curiosity runs autonomously. The founder gets a weekly digest and escalati
    - social features or personalization;
    - removing cards or major features.
    It also includes any change to this protocol, the standing direction or `.github/`.
-6. **Content PRs** (label `content`, any new or edited card text, including cover questions, teases, figure labels and numbers) must pass the [fact-check gate](#fact-check-gate) on their exact head commit before they get `ready-to-merge`. A content PR with no recorded PASS is never ready.
+6. **Content PRs** (label `content`, any new or edited card text, including cover questions, teases, figure labels and numbers) may code only text that the register shows as `APPROVED` for its exact Draft Hash (see [fact-check gate](#fact-check-gate)). A content PR whose coded hashes don't match is never ready.
 7. Never commit secrets, `.env` files, keys, or the old `snapshots/` folders. Git history is the archive.
 8. `tests/baseline/` pins the original 20 cards and `SRC/daily.js`. A pin may change only when the PR says why (for example, to make room for new cards) and the reviewer confirms that existing card text is unchanged.
 
 ## Fact-check gate
 
-Owner decision, 13 November 2026: fact-checking is a required gate, not an optional step. It happens twice.
+Owner decisions, 13 and 15 November 2026: card text is fact-checked **before** it is coded, by two independent reviewers, and every review must show its evidence claim by claim. A summary verdict alone is not a review.
 
-**1. Before writing (topic check).** Before drafting a card or any new line of copy, the builder:
-- opens every source it plans to cite and confirms it loads, isn't paywalled and is reputable;
-- writes an evidence list: each planned claim, the source that supports it, and a short quote;
-- drops the topic, or changes the claim, if a key claim has no support or rests only on Wikipedia.
+### Flow
 
-The evidence list goes in the PR body as the "Fact-check list".
+1. **Draft.** Claude writes the card as a code-ready JSON file plus a reviewer Doc in Drive `03_Card_Drafts`, and computes the canonical Draft Hash from the JSON (only Claude computes it; reviewers copy it).
+2. **Register.** The draft goes on the *Editorial Review Register* Google Sheet (Card Pipeline tab, columns A–F). Any change to any field is a new version with a new hash, and earlier reviews stop counting.
+3. **Two independent reviews of the exact hash**, each appended to the Review Log tab with a link to its full report:
+   - a fresh Claude subagent that did not write the card and never sees the other review;
+   - ChatGPT, on its own schedule.
+4. **Approval.** The register's Build Authorization reads `APPROVED` only when both reviewers passed the current hash. Nothing else authorizes coding.
+5. **Code.** Claude copies the approved JSON into `SRC/content.js` verbatim and confirms the coded entry hashes to the approved value. A card whose text is approved unchanged needs no PR; its Build Status is set to `VERIFIED`.
 
-**2. Before ready (independent check).** After the PR is opened, a fact-checker that did not write the text checks it:
-- A fresh Claude agent (a subagent with no access to the builder's reasoning) is given only the card text and its sources.
-- It opens every source and checks every claim in every field. It reports claim | verdict | quote in a PR comment headed `## Fact-check: PASS — <sha>` or `## Fact-check: FAIL — <sha>`.
-- A FAIL lists the exact fixes. The builder fixes them on the same branch, and the new head commit is checked again.
-- Each check covers one head commit. Any new push needs a new PASS.
+The older in-PR `## Fact-check: PASS — <sha>` comment is retired; the register approval replaces it.
 
-**What blocks a card:**
-- a wrong or misleading claim;
+### What every review report must contain
+
+A report that lacks either table below is **non-conforming**: it does not count as a PASS, even if the Review Log row says PASS.
+
+**1. Source-access table.** One row per cited source URL, plus any owner-supplied copy used:
+
+| Source URL | Access status | What was read |
+|---|---|---|
+
+Access status is exactly one of:
+- `OPENED` — the full page or document loaded and was read;
+- `OPENED-PARTIAL` — loaded but truncated, or only part was readable (say which part);
+- `OWNER-COPY` — the live page was blocked, so an owner-saved copy in Drive `04_Fact_Check_Sources` was used (give its file name);
+- `BOT-CHECK` — a human-verification or anti-bot challenge;
+- `PAYWALL`;
+- `HTTP-403`, `HTTP-404`, `TIMEOUT` or another stated error;
+- `NOT ATTEMPTED`.
+
+**2. Claim table.** Every sentence of every field is broken into individual claims: title, cover question, tease, hook, core, deep dive, recall prompt and response, visual labels and alt text, source labels.
+
+| # | Field | Claim | Verdict | Source | Supporting quote |
+|---|---|---|---|---|---|
+
+- Verdict is exactly one of `SUPPORTED`, `UNSUPPORTED`, `WRONG/MISLEADING` (including inferences beyond the source and misattribution to a source), or `UNVERIFIED-ACCESS` (the only source for it could not be opened).
+- `SUPPORTED` needs a short verbatim quote from a source whose status is `OPENED`, `OPENED-PARTIAL` (from the readable part) or `OWNER-COPY`.
+- Framing sentences that make no factual claim may be marked `SUPPORTED` with "framing; no factual claim" in the quote column.
+
+**Verdict rules:**
+- PASS only if every claim is `SUPPORTED`.
+- Any `UNSUPPORTED` or `WRONG/MISLEADING` claim is a FAIL with the exact fix.
+- Any `UNVERIFIED-ACCESS` claim is a FAIL whose correction names the blocked source, so the owner can save a copy or the builder can find a readable replacement. Access blockers are recorded as FAILs, never skipped.
+- A key claim (numbers, dates, names, mechanisms, causes) that rests only on Wikipedia fails.
+- A source that is blocked but not relied on by any claim is acceptable if the report says so.
+
+**Before coding**, the builder opens both linked reports and confirms each has both tables and covers the exact hash. If a report is non-conforming, the card is not coded: the builder notifies the owner which report is missing what, and moves on to other work. The builder never edits or adds rows for the other reviewer. Reviews logged before this rule (15 November 2026) are grandfathered.
+
+### Combined content PRs (owner decision, 15 November 2026)
+
+When several approved cards are waiting to be coded, Claude codes them together in **one** content PR rather than one PR per card. The safeguards:
+
+1. **One commit per card**, so any card can be reverted on its own.
+2. **Hash check before and after.** Before applying a card, Claude confirms the approved JSON hashes to the register's Draft Hash and that both reviewer hashes match it; after applying it, Claude confirms the coded entry hashes to the same value. Any mismatch stops that card.
+3. **Whole-batch checks.** CI and Codex review the complete PR, and a fresh QA subagent independently checks every card in the batch against the register and the approved Drive JSON, and checks that no other card changed.
+4. `VERIFIED` cards (approved with no text change) are not touched.
+5. `BLOCKED`, `PENDING` or FAIL cards are excluded until both reviewers pass their exact hash.
+6. **Isolate failures.** If one card fails QA, Claude fixes it (a code or docs mistake) or drops it with a revert commit, and the rest of the batch continues. Any fix that would change card text goes back to a new draft version and review, never into the PR.
+7. **The owner merges.** Routine corrections (sync errors, test failures, Codex code findings) are handled without asking. The owner taps merge once for the whole batch.
+
+### What blocks a card
+
+- a wrong or misleading claim, or a claim attributed to a source that doesn't say it;
 - a claim no opened source supports;
-- a dead source, or one paywalled without a summary;
-- a key claim supported only by Wikipedia.
+- a dead source, or one paywalled or blocked without an owner copy, when a claim relies on it;
+- a key claim supported only by Wikipedia;
+- a non-conforming review report.
 
-ChatGPT may add a second fact-check. If it reports FAIL, that also blocks the card. Its PASS is not required.
+### History
 
-**Re-check, 13 November 2026.** The four Phase 2 cards that merged without a recorded fact-check were re-checked:
-- `gps-relativity`: PASS.
-- `petrichor`: PASS. The aerosol-to-scent link is now hedged as the researchers' hypothesis, and MIT News is added as a source.
-- `true-fresco`: FAIL on the first check, then PASS after three rounds of fixes:
-  - "drying holds the color" became "the setting plaster locks in the color";
-  - the misleading secco fallback in the recall response was removed;
-  - Wikipedia-only claims about seams, giornate counts and secco binders were replaced with National Gallery and Britannica wording;
-  - a museum source for carbonation was added.
-- `exchequer-tallies`: FAIL on the first check, then PASS after two rounds of fixes:
-  - the misleading cover tease was fixed;
-  - Wikipedia-only key claims (willow, the 1782 Act, coal versus wood flame, the 4 pm tourists) were removed or reworded;
-  - Parliament and Science Museum sources were added.
+On 13 November 2026 the four Phase 2 cards that had merged without a recorded fact-check were re-checked in-PR (PR #37). `gps-relativity` and `petrichor` passed; `true-fresco` and `exchequer-tallies` passed after several rounds of fixes. On 14–15 November all 20 original cards went through the register: 17 were approved (13 with fixes, 4 unchanged) and 3 were blocked on source access.
 
 ## Fallback builder: when Claude is unavailable
 
@@ -84,7 +122,7 @@ This applies when Claude can't run, for example because the owner hit a usage li
 **When Claude returns**, the scheduled build agent first checks for open PRs whose body says `Builder: Codex`. Before taking any new issue, it reviews the oldest such PR at its head commit:
 - It runs the tests and checks the issue's "Done when" list, `DESIGN_SYSTEM.md` and the standing direction.
 - It posts a review that cites `file:line` and ends with one verdict.
-- If the verdict is RECOMMEND MERGE and CI is green, it posts the usual "Ready" comment (content PRs need a fact-check PASS on the head commit first), adds `ready-to-merge` and notifies the owner.
+- If the verdict is RECOMMEND MERGE and CI is green, it posts the usual "Ready" comment (content PRs may code only register-approved text), adds `ready-to-merge` and notifies the owner.
 - Otherwise it leaves the findings for Codex. The owner can comment `@codex address that feedback`.
 
 While a Codex-built PR is open, Claude does not open a PR that touches the same files.
