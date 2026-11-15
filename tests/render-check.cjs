@@ -52,16 +52,39 @@ function inspect({ index, fixture, minLabel, minTarget }) {
     const entry = DAILY_CURIOSITIES[index];
     const figures = [...document.querySelectorAll('#today-curiosity figure, #curiosity figure')];
     if (entry.visual && figures.length !== 2) problems.push(`expected the visual on both surfaces, found ${figures.length}`);
+    // Measure the drawing itself, not the figure around it: padding and the caption keep a figure tall even when
+    // the drawing inside has vanished (Codex review on PR #50).
+    const visible = node => {
+      for (let n = node; n && n.nodeType === 1; n = n.parentElement) {
+        const s = getComputedStyle(n);
+        if (s.display === 'none' || s.visibility === 'hidden' || Number(s.opacity) === 0) return false;
+      }
+      return true;
+    };
+    const drawn = (node, what) => {
+      const r = node.getBoundingClientRect();
+      if (!visible(node) || r.width < 40 || r.height < 40) problems.push(`${what} is not drawn: ${Math.round(r.width)}×${Math.round(r.height)}${visible(node) ? '' : ', hidden'}`);
+      return r;
+    };
     for (const figure of figures) {
-      const box = figure.getBoundingClientRect(), column = figure.closest('article').getBoundingClientRect();
-      if (box.width < 40 || box.height < 40) problems.push(`figure too small: ${Math.round(box.width)}×${Math.round(box.height)}`);
-      if (box.left < column.left - 1 || box.right > column.right + 1) problems.push('figure extends past its reading column');
+      const column = figure.closest('article').getBoundingClientRect();
       const labelled = figure.querySelector('[role="img"]');
-      if (!labelled || (labelled.getAttribute('aria-label') || '').length < 50) problems.push('figure lacks a text alternative');
+      if (!labelled || (labelled.getAttribute('aria-label') || '').length < 50) { problems.push('figure lacks a text alternative'); continue; }
+      const box = drawn(labelled, 'figure drawing');
+      if (box.left < column.left - 1 || box.right > column.right + 1) problems.push('figure extends past its reading column');
+      for (const part of labelled.querySelectorAll('.diagram-item, circle, ellipse, line, rect, path, polyline'))
+        if (!visible(part)) { problems.push('part of a figure is hidden'); break; }
+    }
+    if (entry.visual && entry.visual.cover) {
+      const cover = document.querySelector('#cover-drawing-slot svg.plate');
+      if (!cover) problems.push('cover drawing is missing'); else drawn(cover, 'cover drawing');
+    }
+    if (entry.visual && entry.visual.numbers) {
+      const strip = document.querySelector('#today-numbers .numbers-strip');
+      if (!strip) problems.push('numbers strip is missing'); else drawn(strip, 'numbers strip');
     }
     for (const plate of document.querySelectorAll('svg.plate')) {
       const r = plate.getBoundingClientRect();
-      if (!r.width) continue;
       const scale = r.width / plate.viewBox.baseVal.width;
       for (const label of plate.querySelectorAll('text')) {
         const px = parseFloat(getComputedStyle(label).fontSize) * scale;
