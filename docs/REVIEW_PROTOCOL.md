@@ -5,9 +5,9 @@ Daily Curiosity runs autonomously. The founder gets a weekly digest and escalati
 ## Roles
 | Who | Does |
 |---|---|
-| Gemini | Scouts topics into Drive `02_Research_Inbox` (Mon/Wed/Fri) |
-| Claude | Picks topics, builds cards and code, opens PRs |
-| Codex | Reviews every PR (`@codex review`) |
+| Gemini | Scouts topics into Drive `02_Research_Inbox` (Mon/Wed/Fri), including the possible visual evidence for each topic (see [Visual assessment](#visual-assessment)) |
+| Claude | Picks topics, writes cards, plans and draws their visuals, builds code, opens PRs |
+| Codex | Reviews every PR (`@codex review`), including the visual quality of figures from the PR's screenshots |
 | Fact-checker (independent Claude subagent) | Reviews every card draft before it is coded (see [Fact-check gate](#fact-check-gate)) |
 | ChatGPT | Second required reviewer of every card draft; writes the weekly digest |
 
@@ -37,7 +37,7 @@ Owner decisions, 13 and 15 November 2026: card text is fact-checked **before** i
 
 ### Flow
 
-1. **Draft.** Claude writes the card as a code-ready JSON file plus a reviewer Doc in Drive `03_Card_Drafts`, and computes the canonical Draft Hash from the JSON (only Claude computes it; reviewers copy it).
+1. **Draft.** Claude writes the card as a code-ready JSON file plus a reviewer Doc in Drive `03_Card_Drafts`, and computes the canonical Draft Hash from the JSON (only Claude computes it; reviewers copy it). Every draft includes a **visual assessment** (see [Visual assessment](#visual-assessment)); a chosen visual is part of the JSON's `visual` field, so it is inside the hash.
 2. **Register.** The draft goes on the *Editorial Review Register* Google Sheet (Card Pipeline tab, columns A–F). Any change to any field is a new version with a new hash, and earlier reviews stop counting.
 3. **Two independent reviews of the exact hash**, each appended to the Review Log tab with a link to its full report:
    - a fresh Claude subagent that did not write the card and never sees the other review;
@@ -65,7 +65,10 @@ Access status is exactly one of:
 - `HTTP-403`, `HTTP-404`, `TIMEOUT` or another stated error;
 - `NOT ATTEMPTED`.
 
-**2. Claim table.** Every sentence of every field is broken into individual claims: title, cover question, tease, hook, core, deep dive, recall prompt and response, visual labels and alt text, source labels.
+**2. Claim table.** Every sentence of every field is broken into individual claims: title, cover question, tease, hook, core, deep dive, recall prompt and response, source labels, and every part of the visual:
+- each figure label, caption and the alt text;
+- each numbers-strip value, unit and label;
+- what the drawing itself asserts, such as relative sizes, distances, order, direction of flow or force, and which part is which.
 
 | # | Field | Claim | Verdict | Source | Supporting quote |
 |---|---|---|---|---|---|
@@ -79,9 +82,32 @@ Access status is exactly one of:
 - Any `UNSUPPORTED` or `WRONG/MISLEADING` claim is a FAIL with the exact fix.
 - Any `UNVERIFIED-ACCESS` claim is a FAIL whose correction names the blocked source, so the owner can save a copy or the builder can find a readable replacement. Access blockers are recorded as FAILs, never skipped.
 - A key claim (numbers, dates, names, mechanisms, causes) that rests only on Wikipedia fails.
+- A drawing that shows quantities out of proportion fails unless its caption says "not to scale".
 - A source that is blocked but not relied on by any claim is acceptable if the report says so.
 
 **Before coding**, the builder opens both linked reports and confirms each has both tables and covers the exact hash. If a report is non-conforming, the card is not coded: the builder notifies the owner which report is missing what, and moves on to other work. The builder never edits or adds rows for the other reviewer. Reviews logged before this rule (15 November 2026) are grandfathered.
+
+### Visual assessment
+
+Owner decision, 15 November 2026: every card gets a visual assessment during production, so illustrations are considered automatically rather than on request. Visual work never bypasses the gate above.
+
+1. **Research.** Gemini's topic candidates name the possible visual evidence for each topic: a mechanism to diagram, an object or document to draw, a sequence or timeline, a measurement worth a numbers strip. Each comes with the source that supports it.
+2. **Assessment.** In every new or revised draft, Claude records one choice and a one-line reason in the reviewer Doc:
+
+   | Choice | Use it for |
+   |---|---|
+   | Diagram or technical illustration | mechanisms, forces, cycles |
+   | Historical object, document or timeline | sequences, inscriptions, layouts |
+   | Scientific or natural-history plate | structures, specimens, scales |
+   | Cultural or artistic process | steps, materials, reversals |
+   | None | prose already does the job |
+
+   "None" is a valid answer: a visual must explain something the prose cannot do as well (DESIGN_SYSTEM.md rule 1). Reuse a plate pattern when the subject fits, and draw custom geometry when it doesn't, so cards do not all look alike.
+3. **Drawing.** Claude draws the visual as data in the card's `visual` field (schema in [CONTENT.md](CONTENT.md)): a plate, bars or mirror, an optional numbers strip (at most three figures), and an optional cover drawing. The reviewer Doc shows a rendered preview of the visual, plus every label, number and the alt text as text.
+4. **Fact-check.** Both reviewers check the visual claim by claim with the rest of the card (claim table above). Changing any part of the visual is a new version with a new hash.
+5. **Build.** CI's render check draws every card at 320, 390 and 1280px and fails on overflow, hidden or broken figures, labels under 13px or controls under 44px ([QA.md](QA.md)). A PR that adds or changes a visual includes screenshots at 390 and 1280px, and Codex reviews the visual quality from them.
+
+A test fails if any card field sits outside the canonical Draft Hash, so no visual text can reach the site without both reviews.
 
 ### Combined content PRs (owner decision, 15 November 2026)
 

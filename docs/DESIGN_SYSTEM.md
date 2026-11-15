@@ -119,3 +119,10 @@ Each step is one small PR, with tests, Codex review and a local browser check (G
 6. Figures, numbers strips and the GPS interactive: content PRs, a few cards at a time.
 
 New Phase 2 cards pause until steps 2 and 3 ship.
+
+**Status (15 November 2026):**
+- Steps 1–5 have shipped.
+- The reading area was brought in line with the reference in issue #45. Steps 1–4 had restyled the cover and the cabinet but left the v7 card layout in place.
+- For step 6, the reusable components shipped in issue #47 (plate figures, numbers strip, card cover drawings) and the render check in issue #49.
+- Card visuals now go through the [visual assessment](REVIEW_PROTOCOL.md#visual-assessment), one register-approved card at a time, starting with `gps-relativity`.
+- The GPS drift slider (an interactive) comes later, in its own PR.
