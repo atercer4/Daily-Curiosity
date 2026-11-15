@@ -530,26 +530,30 @@ const DAILY_CURIOSITIES = [
     "id": "ming-banknote",
     "category": "History & Society",
     "title": "Coins pictured on paper money",
-    "question": "Why would paper money {picture strings of coins?}",
+    "question": "Why would paper money {picture a string of coins?}",
     "tease": "A Ming banknote shows the older kind of money it could stand for. The picture was part of how the paper made its claim.",
-    "hook": "A Ming banknote pictures strings of coins on its surface. Why would a new form of money show the older kind it could stand for?",
+    "hook": "A Ming banknote pictures a string of 1,000 coins on its surface. Why would paper money show the metal money it could stand for?",
     "core": [
-      "A Ming dynasty banknote in the British Museum represents a value in strings of copper-alloy cash coins. Its printed coin imagery connects the paper to a familiar monetary unit. The sheet is light, but the value it names comes from a world of metal money.",
+      "A Ming dynasty banknote in the British Museum gives its value as one string (guan) of 1,000 bronze cash coins. Its printed coin imagery connects the paper to a familiar monetary unit. The sheet is light, but the value it names comes from a world of metal money.",
       "This was not the beginning of paper money in China; earlier dynasties had already used it. The Ming note is a surviving example of how an issued document could express monetary value. Its printed words and images show an authority presenting a claim, rather than the paper itself containing an equivalent quantity of valuable metal."
     ],
     "deep": [
       "The picture of coins makes an abstract relationship visible. Someone looking at the note encounters a familiar form of money, even though the object in their hands is paper. The image helps explain the denomination without turning the sheet into the metal it depicts.",
-      "The British Museum’s account also describes the decline in value of Ming paper currency. A denomination printed on a note and what people will actually exchange for it need not remain the same. The surviving object records an official claim; it does not, by itself, prove how well that claim held up in daily transactions.",
+      "The British Museum’s description also describes the decline in value of Ming paper currency. A denomination printed on a note and what people will actually exchange for it need not remain the same. The surviving object records an official claim; it does not, by itself, prove how well that claim held up in daily transactions.",
       "Those two ways of reading the note belong together. One asks what its design says. The other asks how the currency worked in society. An object can be carefully made to express authority while its practical acceptance depends on circumstances beyond the printed border."
     ],
     "sources": [
       {
-        "label": "British Museum — Ming banknote, published by Smarthistory",
-        "url": "https://smarthistory.org/ming-banknote/"
+        "label": "Smarthistory — Ming banknote (British Museum)",
+        "url": "https://smarthistory.org/?p=56036"
       },
       {
-        "label": "British Museum — Ming banknote collection record",
-        "url": "https://www.britishmuseum.org/collection/object/C_1913-1011-30"
+        "label": "British Museum — Great Ming Circulating Treasure Note (Google Arts & Culture)",
+        "url": "https://artsandculture.google.com/asset/great-ming-circulating-treasure-note/iAFKr9bi4LqIRA"
+      },
+      {
+        "label": "Columbia University, Asia for Educators — Song dynasty paper money",
+        "url": "https://afe.easia.columbia.edu/songdynasty-module/econ-rev-money.html"
       }
     ],
     "recall": {

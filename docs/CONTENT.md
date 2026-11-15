@@ -181,8 +181,9 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `ming-banknote`; category: History & Society.
 - Subject: Monetary history.
 - Visual: Omitted: no invented reproduction of the historic note; original record is linked.
-- [British Museum — Ming banknote, published by Smarthistory](https://smarthistory.org/ming-banknote/)
-- [British Museum — Ming banknote collection record](https://www.britishmuseum.org/collection/object/C_1913-1011-30)
+- [Smarthistory — Ming banknote (British Museum)](https://smarthistory.org/?p=56036)
+- [British Museum — Great Ming Circulating Treasure Note (Google Arts & Culture)](https://artsandculture.google.com/asset/great-ming-circulating-treasure-note/iAFKr9bi4LqIRA)
+- [Columbia University, Asia for Educators — Song dynasty paper money](https://afe.easia.columbia.edu/songdynasty-module/econ-rev-money.html)
 
 ### 18. The library gift with an ongoing cost
 
