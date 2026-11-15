@@ -73,10 +73,11 @@ Before/after screenshots: [1280](design/qa/dc-45-1280.jpg), [390](design/qa/dc-4
 A render fails when any of these happens:
 - the page scrolls horizontally;
 - a page or console error occurs;
-- a figure is under 40px, extends past its reading column, or lacks a text alternative of at least 50 characters;
+- a figure's drawing (the element carrying the text alternative, not the figure around it) is hidden or under 40px, any part of it is hidden, it extends past its reading column, or it lacks a text alternative of at least 50 characters;
+- a card that declares a cover drawing or a numbers strip does not show it;
 - a plate label renders under 13px on screen or is cut off by the screen edge;
 - a button, summary or the cover link is under 44px tall.
 
 Screenshots of failing renders are uploaded as the `render-check-failures` artifact. To run it locally: `npm install --no-save playwright@1.63.0 && npx playwright install chromium && node tests/render-check.cjs`. Playwright is installed only in CI and adds nothing to the site.
 
-The suite was checked against deliberately broken styles: a too-small tile action, a 600px-wide diagram and 9px plate labels each failed the run.
+The suite was checked against deliberately broken styles: a too-small tile action, a 600px-wide diagram, 9px plate labels, hidden plates or diagram parts, and a hidden cover drawing each failed the run.
