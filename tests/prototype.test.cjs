@@ -591,6 +591,16 @@ test('GitHub Pages hosting: .nojekyll present and index.html loads every local a
   assert.doesNotMatch(read('SRC/styles.css'), /url\(["']?\//, 'root-absolute url() in styles.css');
 });
 
+test('page metadata: one meta description, from the core promise, under 160 characters (issue #54)', () => {
+  const html = read('index.html');
+  const head = html.slice(0, html.indexOf('</head>'));
+  const found = [...html.matchAll(/<meta name="description" content="([^"]*)">/g)];
+  assert.equal(found.length, 1, 'exactly one meta description');
+  assert.ok(head.includes(found[0][0]), 'the description is in the head');
+  assert.equal(found[0][1], 'One curious idea a day from science, engineering, the arts and history. Read the short answer, or explore as deeply as you want.');
+  assert.ok(found[0][1].length <= 160, 'fits a search snippet');
+});
+
 test('docs/ROLLBACK.md documents restore, revert-by-PR, incident notes and a corrective task, and is linked from README', () => {
   const doc = read('docs/ROLLBACK.md');
   assert.match(read('README.md'), /\]\(docs\/ROLLBACK\.md\)/);
