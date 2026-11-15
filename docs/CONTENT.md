@@ -106,7 +106,8 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - ID: `stainless-surface`; category: Engineering & Technology.
 - Subject: Materials.
 - Visual: Omitted: an unscaled film illustration could misrepresent the very thin protective layer.
-- [worldstainless — Corrosion properties and the passive layer](https://worldstainless.org/about-stainless/properties/corrosion-properties/)
+- [worldstainless — Corrosion resistance of stainless steels (training module PDF)](https://worldstainless.org/wp-content/uploads/2025/02/Module_05_Corrosion_Resistance_of_Stainless_Steels_en.pdf)
+- [Live Science — Why doesn’t stainless steel rust?](https://livescience.com/chemistry/why-doesn-t-stainless-steel-rust)
 
 ### 8. Moving heat instead of making it
 

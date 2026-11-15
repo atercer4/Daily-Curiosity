@@ -239,8 +239,12 @@ const DAILY_CURIOSITIES = [
     ],
     "sources": [
       {
-        "label": "worldstainless — Corrosion properties and the passive layer",
-        "url": "https://worldstainless.org/about-stainless/properties/corrosion-properties/"
+        "label": "worldstainless — Corrosion resistance of stainless steels (training module PDF)",
+        "url": "https://worldstainless.org/wp-content/uploads/2025/02/Module_05_Corrosion_Resistance_of_Stainless_Steels_en.pdf"
+      },
+      {
+        "label": "Live Science — Why doesn’t stainless steel rust?",
+        "url": "https://livescience.com/chemistry/why-doesn-t-stainless-steel-rust"
       }
     ],
     "recall": {
