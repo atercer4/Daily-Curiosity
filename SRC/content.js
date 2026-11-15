@@ -651,12 +651,12 @@ const DAILY_CURIOSITIES = [
     "tease": "Its wine or oil is long gone. The clay can still hold clues about a journey, and about the trade around it.",
     "hook": "A broken Roman jar can say something about a journey its contents no longer survive to tell. Ordinary packaging has become evidence of trade.",
     "core": [
-      "Roman transport amphorae carried goods such as wine and olive oil. Their shapes varied, and some bore stamps or painted inscriptions. Museums study these containers as evidence of production and movement, not only as complete objects worth displaying.",
+      "Roman transport amphorae carried goods such as wine and olive oil. Their shapes varied, and some bore stamps or painted inscriptions. Their markings make them evidence of production and movement, not only objects worth displaying.",
       "At the Roman villa of Loupian in southern France, workshops made amphorae for wine. The French Ministry of Culture describes painted labels that could record information such as the wine, capacity, or owner. A container could therefore carry information as well as a product. Once the contents were gone, the ceramic could still preserve clues about the commercial world around it."
     ],
     "deep": [
-      "An amphora’s shape alone does not tell every part of its story. The British Museum records a Roman wine transport jar with a stamp on its neck and identifies the vessel by type. Such details give researchers things to compare across finds.",
-      "The Loupian examples add another kind of evidence: painted words about a traded product. Shape, markings, and the place where an object was found answer different questions. A useful account draws on them together rather than assuming one broken jar supplies a complete shipping itinerary.",
+      "An amphora’s shape alone does not tell every part of its story. Amphorae often carried a maker’s stamp and painted notes naming shippers, origin, date or contents, though paint survives only in favourable conditions. Such details give researchers things to compare across finds.",
+      "Loupian adds another kind of evidence: about a hundred stamps reading “MAF”, with identical marks found at Ostia, the port of Rome. Shape, markings, and the place where an object was found answer different questions. A useful account draws on them together rather than assuming one broken jar supplies a complete shipping itinerary.",
       "This is a reason to pay attention to ordinary objects in a museum. A prestigious sculpture may tell us about artistic choices and patronage; a transport jar can point toward goods being packed and moved. Its value as evidence comes partly from a practical job that was finished long before anyone placed it in a collection."
     ],
     "sources": [
@@ -665,8 +665,8 @@ const DAILY_CURIOSITIES = [
         "url": "https://archeologie.culture.gouv.fr/villa/en/amphorae-wine-trade"
       },
       {
-        "label": "British Museum — Roman wine transport amphora",
-        "url": "https://www.britishmuseum.org/collection/object/G_1816-0610-344"
+        "label": "Roman Inscriptions of Britain — Amphorae: painted inscriptions",
+        "url": "https://romaninscriptionsofbritain.org/instrumentum/2492"
       }
     ],
     "recall": {

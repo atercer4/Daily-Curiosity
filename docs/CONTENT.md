@@ -212,7 +212,7 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 - Subject: Trade / archaeology.
 - Visual: Omitted: a generic amphora could imply one shape for all transport jars.
 - [French Ministry of Culture — Amphorae for the wine trade](https://archeologie.culture.gouv.fr/villa/en/amphorae-wine-trade)
-- [British Museum — Roman wine transport amphora](https://www.britishmuseum.org/collection/object/G_1816-0610-344)
+- [Roman Inscriptions of Britain — Amphorae: painted inscriptions](https://romaninscriptionsofbritain.org/instrumentum/2492)
 
 ### Phase 2 additions (issue #17, November 2026)
 
