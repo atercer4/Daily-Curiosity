@@ -718,16 +718,16 @@ const DAILY_CURIOSITIES = [
     "category": "Arts & Culture",
     "title": "Painting before the wall dries",
     "question": "Why did fresco painters {race the drying plaster?}",
-    "tease": "Some of the most lasting wall paintings were made against a deadline. The setting plaster that created the deadline is also what held the color.",
-    "hook": "Some of the most lasting wall paintings were made against a deadline. The painter had to finish each section before the plaster set, because the setting plaster is what locked in the color.",
+    "tease": "Some of the great wall paintings of the past were made against a deadline. The wet plaster that set the deadline is also what bonded the painting to the wall.",
+    "hook": "Some of the great wall paintings of the past were made against a deadline. Each section had to be painted while its plaster was still wet, a method that bonds the fresco to the wall.",
     "core": [
-      "In buon, or true, fresco, painters grind dry pigments in water and apply them to freshly laid lime plaster. The final, very smooth layer is called the intonaco. As it dries, the colors set with the plaster and become a permanent part of the wall rather than a coat of paint resting on top.",
-      "That creates a deadline. Only as much plaster as can be painted in one day is spread on the wall, and each day’s patch is called a giornata, Italian for “a day’s work.” A large fresco is therefore built piece by piece, one fresh area of plaster at a time."
+      "Fresco takes its name from the Italian word for fresh, because the plaster goes on the wall while still wet. In buon fresco, the paint is applied to wet intonaco, the final layer of very smooth plaster. The National Gallery in London says this method bonds the fresco to the wall.",
+      "That creates a deadline. Only as much plaster as can be painted in one day is spread on the wall, and each day’s work is called a giornata. A Florence museum guide to Benozzo Gozzoli’s frescoes gives the reason: the surface had to remain wet throughout the painting."
     ],
     "deep": [
-      "Why does wet plaster matter so much? Lime plaster sets by reacting with carbon dioxide in the air: calcium hydroxide becomes calcium carbonate. That reaction fixes the pigment particles in the plaster. The pigment grains end up held in a layer of calcium carbonate at the surface, so the color becomes part of the wall’s surface.",
-      "The method also shapes how a fresco is planned. Successive coats of plaster are troweled onto the wall, and the design, called the cartoon, is drawn on the next-to-last layer, the arriccio. The smooth intonaco then goes on in day-sized patches, so the whole design has to be divided into sections that can each be finished in a single day.",
-      "Painting on dry plaster, called a secco, works differently. The paint goes on after the plaster has dried, either over finished true fresco or onto dry intonaco, so it misses the setting wall that locks in the color. Britannica calls true fresco the most durable technique; as its plaster sets, the pigment is fixed in the wall itself."
+      "Beneath that final layer sit others. The next-to-last layer is called the arriccio, and the outline of the design is drawn on it. The Florence guide describes the painter working on the wet plaster with ground pigments mixed with water.",
+      "Drying brought a second problem. When the plaster dries, the lime it contains causes a chemical reaction called carbonation, which releases heat and can burn plant-based pigments. So not all pigments could be used on wet plaster.",
+      "Some work had to wait until the wall was dry. Painting on dry plaster is called a secco. Touching up was often needed after the plaster had dried, to perfect details, and blues, including extremely costly ultramarine as well as azurite, also had to be painted a secco. The National Gallery notes that secco paint goes on top of buon fresco that has dried, or on a dry intonaco."
     ],
     "sources": [
       {
@@ -735,21 +735,13 @@ const DAILY_CURIOSITIES = [
         "url": "https://www.nationalgallery.org.uk/paintings/glossary/fresco"
       },
       {
-        "label": "Encyclopaedia Britannica — Fresco painting",
-        "url": "https://www.britannica.com/art/fresco-painting"
-      },
-      {
-        "label": "Wikipedia — Fresco (technique and chemistry)",
-        "url": "https://en.wikipedia.org/wiki/Fresco"
-      },
-      {
-        "label": "Museu Nacional d’Art de Catalunya — Glossary: carbonation",
-        "url": "https://www.museunacional.cat/en/carbonation"
+        "label": "Istituto e Museo di Storia della Scienza, Florence — Benozzo Gozzoli: Fresco",
+        "url": "https://brunelleschi.imss.fi.it/benozzogozzoli/technics/Fresco.html"
       }
     ],
     "recall": {
       "prompt": "Why did a fresco painter plaster only one day’s area at a time?",
-      "reveal": "The pigment had to go onto wet lime plaster, which fixes the color as it sets. Only a day’s worth could be painted before it set."
+      "reveal": "The paint had to go onto wet plaster, a method that bonds the fresco to the wall. So only as much plaster as could be painted in one day was spread at a time."
     }
   },
   {

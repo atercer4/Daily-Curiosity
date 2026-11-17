@@ -133,7 +133,7 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 
 - ID: `true-fresco`
 - Prompt: Why did a fresco painter plaster only one day’s area at a time?
-- Response: The pigment had to go onto wet lime plaster, which fixes the color as it sets. Only a day’s worth could be painted before it set.
+- Response: The paint had to go onto wet plaster, a method that bonds the fresco to the wall. So only as much plaster as could be painted in one day was spread at a time.
 
 ## The smell waiting on the ground
 
