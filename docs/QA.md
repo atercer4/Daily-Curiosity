@@ -81,3 +81,8 @@ A render fails when any of these happens:
 Screenshots of failing renders are uploaded as the `render-check-failures` artifact. To run it locally: `npm install --no-save playwright@1.63.0 && npx playwright install chromium && node tests/render-check.cjs`. Playwright is installed only in CI and adds nothing to the site.
 
 The suite was checked against deliberately broken styles: a too-small tile action, a 600px-wide diagram, 9px plate labels, hidden plates or diagram parts, and a hidden cover drawing each failed the run.
+
+
+## Auto-merge smoke test
+
+This documentation-only note exists to verify the guarded last-mile workflow after PR #58. It makes no product, content, governance, dependency, or runtime change.
