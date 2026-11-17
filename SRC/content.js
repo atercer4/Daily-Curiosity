@@ -756,25 +756,21 @@ const DAILY_CURIOSITIES = [
     "id": "petrichor",
     "category": "Science & Nature",
     "title": "The smell waiting on the ground",
-    "question": "Where does the {smell of rain} really come from?",
-    "tease": "After a dry spell, the first light rain brings an earthy scent. Most of it is not in the water at all. It was waiting on the ground.",
-    "hook": "After a dry spell, the first light rain often brings a rich, earthy smell. Most of that smell is not in the falling water. It was already waiting on the ground.",
+    "question": "Where does the {earthy smell of rain} really come from?",
+    "tease": "After a dry spell, the first light rain brings an earthy scent. It comes from the ground, released as the drops land.",
+    "hook": "After a dry spell, the first light rain often brings a rich, earthy smell. It comes from the ground: falling drops strike soil and plants and release compounds that have collected there.",
     "core": [
-      "In 1964, Australian scientists gave the scent a name: petrichor, from Greek words for stone and for ichor, the fluid said to flow in the veins of the gods. It comes largely from two ingredients. During dry spells, oils and other compounds from decaying plant matter collect on rock and soil surfaces.",
-      "The second ingredient is geosmin, a compound made by bacteria that live in soil. People are remarkably sensitive to it: we can notice just a few parts per trillion in the air. Rain lifts these compounds off the ground and carries them to our noses."
+      "In 1964, Australian scientists gave this combination of scents a name: petrichor. Today it is understood to come largely from two ingredients: aromatic oils produced by plants, and a compound called geosmin. During dry spells, oils and other compounds from decaying plant matter collect on rock and soil surfaces.",
+      "Geosmin is made by bacteria that live in soil. People are remarkably sensitive to it: we can notice just a few parts per trillion in the air. Rain lifts these compounds off the ground and carries them to our noses."
     ],
     "deep": [
-      "How does a raindrop throw a smell into the air? In 2015, researchers at MIT used high-speed cameras to film drops landing on different surfaces. When a drop hits a porous surface such as soil, it traps tiny air bubbles where it lands.",
-      "Those bubbles rise through the drop and burst out of its top, much like bubbles in a glass of champagne. Each burst releases a fizz of aerosols: tiny particles that drift away on the air. The researchers think these particles carry the scent compounds with them. The team published the work in Nature Communications.",
-      "The details fit a familiar experience. Moderate or light rain on sandy or clay soils produced the most aerosols. Slower drops and more porous ground both produced more. That is one reason the scent is often strongest when a light shower falls on dry, sandy ground. The smell of rain is really the smell of the ground, likely launched into the air one bursting bubble at a time."
+      "How does a raindrop throw a smell into the air? In 2015, researchers at MIT used high-speed cameras to film drops landing on different surfaces. When a drop hits a porous surface such as soil, it traps tiny air bubbles.",
+      "Those bubbles rise and burst out of the drop, like bubbles in a glass of champagne. The bursts release a fizz of aerosols: tiny particles that drift away on the air. The researchers think these particles carry the scent compounds. The team published the work in Nature Communications.",
+      "Light and moderate rain released far more aerosols than heavy rain, and sandy or clay soils released lots of them. The most aerosols came when drops were neither too fast nor too slow, on a surface neither too wet nor too dry. EarthDate draws on this work to say the scent is strongest after light rain on sandy soils, though the study measured aerosols, not smell. That earthy smell is the smell of the ground; the researchers’ hypothesis is that bursting bubbles carry it into the air."
     ],
     "sources": [
       {
-        "label": "Smithsonian Magazine — High-speed video shows when the smell of rain begins",
-        "url": "https://www.smithsonianmag.com/smart-news/high-speed-video-shows-when-smell-rain-begins-180953958/"
-      },
-      {
-        "label": "EarthDate (Bureau of Economic Geology, UT Austin) — The scent of rain",
+        "label": "EarthDate (Switch Energy Alliance) — The Scent of Rain",
         "url": "https://www.earthdate.org/episodes/the-scent-of-rain"
       },
       {
@@ -784,7 +780,7 @@ const DAILY_CURIOSITIES = [
     ],
     "recall": {
       "prompt": "Where does the earthy smell of rain on dry ground come from?",
-      "reveal": "Plant oils and geosmin from soil bacteria build up on the ground. Raindrops trap tiny air bubbles that burst and carry those compounds into the air."
+      "reveal": "Plant oils collect on dry ground, and soil bacteria make geosmin as the ground gets damp. Raindrops trap tiny air bubbles that burst, likely carrying those compounds into the air."
     }
   },
   {

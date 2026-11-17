@@ -139,7 +139,7 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 
 - ID: `petrichor`
 - Prompt: Where does the earthy smell of rain on dry ground come from?
-- Response: Plant oils and geosmin from soil bacteria build up on the ground. Raindrops trap tiny air bubbles that burst and carry those compounds into the air.
+- Response: Plant oils collect on dry ground, and soil bacteria make geosmin as the ground gets damp. Raindrops trap tiny air bubbles that burst, likely carrying those compounds into the air.
 
 ## The receipts that burned Parliament
 
