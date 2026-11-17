@@ -123,7 +123,7 @@ Exactly one optional prompt and response per card. Responses synthesize the exis
 - Response: Its shape, markings, and find location provide different clues about production and movement. Researchers combine them rather than treating one jar as a complete itinerary.
 
 
-## Clocks set slow on purpose
+## Clocks designed to tick slow
 
 - ID: `gps-relativity`
 - Prompt: Why are GPS satellite clocks set to tick slightly slow before launch?
