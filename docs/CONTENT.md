@@ -82,7 +82,7 @@ A visual must explain something the prose cannot do as well (rule 1). Reuse a pl
 | 18 | History & Society | The library gift with an ongoing cost | Public institutions | Conditional gift; construction versus ongoing service |
 | 19 | History & Society | When receiving a letter came with a bill | Communication / postal reform | Counterintuitive former practice; follow payment |
 | 20 | History & Society | A shipping container made of clay | Trade / archaeology | Ordinary object as evidence; compare marks and context |
-| 21 | Engineering & Technology | Clocks set slow on purpose | Satellite navigation / relativity | Deliberate error; competing effects and a built-in fix |
+| 21 | Engineering & Technology | Clocks designed to tick slow | Satellite navigation / relativity | Deliberate error; competing effects and a built-in fix |
 | 22 | Arts & Culture | Painting before the wall dries | Painting technique / materials | Deadline set by the material; chemistry and visible traces |
 | 23 | Science & Nature | The smell waiting on the ground | Soil chemistry / fluid physics | Sensory observation; hidden ingredients and the launch mechanism |
 | 24 | History & Society | The receipts that burned Parliament | Public finance / institutions | Obsolete record system as cause; follow the disposal |
@@ -259,14 +259,15 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 
 Researched and written by the build agent (Claude); the Drive research inbox had no usable candidates. Each card awaits ChatGPT's independent fact-check before merge (STANDING_DIRECTION sections 8 and 14). IDs are appended to `DAILY_CARD_IDS`, Engineering then Arts, so no two consecutive cards share a category (including the wrap to `venus-clocks`). Category counts are now 5 / 6 / 6 / 5.
 
-### 21. Clocks set slow on purpose
+### 21. Clocks designed to tick slow
 
 - ID: `gps-relativity`; category: Engineering & Technology.
 - Subject: Satellite navigation / relativity. Mechanism and tradeoff: two relativistic effects pull in opposite directions, and the net is corrected in the clock design before launch.
 - Visual: Omitted: a diagram of two opposing rates would add little to three numbers stated in the text.
-- [Ohio State University (Richard Pogge) — Real-World Relativity: The GPS Navigation System](https://www.astronomy.ohio-state.edu/pogge.1/Ast162/Unit5/gps.html): altitude about 20,000 km, speed about 14,000 km/h, −7 µs/day (speed), +45 µs/day (gravity), net +38 µs/day, clocks designed to tick slower, about 10 km/day error if uncorrected.
+- [Richard W. Pogge — Real-World Relativity: The GPS Navigation System (Astronomy 162 course notes)](https://www.astronomy.ohio-state.edu/pogge.1/Ast162/Unit5/gps.html): altitude about 20,000 km, speed about 14,000 km/h, −7 µs/day (speed), +45 µs/day (gravity), net +38 µs/day, clocks designed to tick slower, about 10 km/day error if uncorrected; the engineers included these effects when they designed and deployed the system.
 - [Physics Today (Neil Ashby, 2002) — Relativity and the Global Positioning System](https://physicstoday.aip.org/features/relativity-and-the-global-positioning-system): "factory offset" before launch; more than 11 km of navigational error building up in one day, quickly making the system useless.
 - Read on 11 November 2026. Also consulted, not linked: Ashby, "Relativistic Effects in the Global Positioning System" (AAPT-hosted PDF), which gives the same fractional rates.
+- Register-approved v5 (Draft Hash `57f44d01b20863b511ea08068fe67e63e0cb16cf5cef093bec85a05c396e7575`; Claude and ChatGPT both PASS, 17 November 2026; v4 and v5 by owner exception to the 3-version rule), coded in issue #60. Retitled from "Clocks set slow on purpose" to Pogge's wording; the framing sentence about when the fix happens replaced with Pogge's statement that engineers built the effects in; Ashby's factory-offset sentence quoted directly; the Pogge source relabelled by what the page shows (author and course notes).
 
 ### 22. Painting before the wall dries
 

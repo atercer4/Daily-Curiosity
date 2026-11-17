@@ -42,6 +42,7 @@ The v7 baseline was imported from Dropbox on 10 November 2026, with the old `sna
 | #53 | #52 | Workflow: every card gets a visual assessment (format or none, with a reason), with Gemini naming the possible visual evidence. Every label, number, caption, alt text and geometric claim is fact-checked by both reviewers as part of the hashed draft. A "not to scale" rule applies, and PRs with visuals need screenshots and the render check. [REVIEW_PROTOCOL.md](REVIEW_PROTOCOL.md#visual-assessment). |
 | #55 | #54 | Page metadata: a meta description (the core promise and the four categories) so search results and link previews say what Daily Curiosity is. No external assets or tracking; Open Graph stays in Phase 4. |
 | #57 | #56 | Fact-check backlog: `exchequer-tallies` replaced with its dual-approved register draft (v3). Wikipedia-only details removed; sources narrowed to the History of Parliament and the Science Museum Group (source links 57 → 55). |
+| #61 | #60 | Fact-check backlog: `gps-relativity` replaced with its dual-approved register draft (v5): retitled "Clocks designed to tick slow", one framing sentence replaced with Pogge's wording, and the Pogge source relabelled. Source links unchanged (55). |
 
 Original card text has changed only through approved fixes: the recall wording fix in issue #5 and the 13 register-approved cards above.
 

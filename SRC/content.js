@@ -685,22 +685,22 @@ const DAILY_CURIOSITIES = [
   {
     "id": "gps-relativity",
     "category": "Engineering & Technology",
-    "title": "Clocks set slow on purpose",
+    "title": "Clocks designed to tick slow",
     "question": "Why would anyone launch a clock that’s {wrong on purpose?}",
-    "tease": "Before launch, the atomic clocks on GPS satellites are made to tick slightly slow. In orbit, that deliberate error disappears.",
-    "hook": "Before a GPS satellite is launched, its atomic clocks are made to tick slightly slower than clocks on the ground. In orbit, that deliberate error disappears.",
+    "tease": "Before launch, the atomic clocks on GPS satellites are made to tick slightly slow. In orbit, that deliberate error almost exactly cancels out.",
+    "hook": "Before a GPS satellite is launched, its atomic clocks are made to tick slightly slower than clocks on the ground. In orbit, that deliberate error almost exactly cancels out.",
     "core": [
       "GPS satellites orbit about 20,000 kilometers up, moving at roughly 14,000 kilometers per hour. Both facts affect their onboard atomic clocks. Because a satellite moves fast relative to the ground, special relativity predicts its clocks fall behind ground clocks by about 7 microseconds a day.",
       "Because the satellite is farther from Earth’s mass, general relativity predicts the opposite: its clocks run ahead by about 45 microseconds a day. Gravity wins, leaving a net gain of about 38 microseconds daily. So the clocks are designed to tick at a slightly lower frequency, which lets them keep pace with the ground once in orbit."
     ],
     "deep": [
-      "Thirty-eight millionths of a second sounds negligible. The difficulty is that a receiver works out distance from how long a signal took to arrive, and radio signals travel at the speed of light. A tiny timing error becomes a large error in distance.",
-      "The Ohio State astronomer Richard Pogge estimates that without the relativistic correction, errors in position would accumulate at about 10 kilometers each day. The physicist Neil Ashby, writing in Physics Today, puts the build-up at more than 11 kilometers in a day, quickly making the system useless for navigation.",
-      "The interesting engineering choice is when the fix happens. Ashby describes a “factory offset” applied before launch. The correction is not a repair made after the clocks drift; it is built into them from the start, because the designers expected the orbit itself to change how those clocks keep time."
+      "Thirty-eight millionths of a second sounds tiny. The difficulty is that a receiver works out distance from how long a signal took to arrive, and radio signals travel at the speed of light. A tiny timing error becomes a large error in distance.",
+      "Richard Pogge, in notes for his Astronomy 162 course, estimates that without the relativistic correction, errors in position would accumulate at about 10 kilometers each day. The physicist Neil Ashby, writing in Physics Today, puts the build-up at more than 11 kilometers in a day, quickly making the system useless.",
+      "Pogge notes that GPS engineers included these relativistic effects when they designed and deployed the system. Ashby describes a “factory offset”: nowadays the rate of every orbiting GPS clock is adjusted before launch. When the first GPS satellite was launched in 1977, the size of the effect was still uncertain, so it was measured in orbit, and it agreed with the relativistic prediction."
     ],
     "sources": [
       {
-        "label": "Ohio State University (Richard Pogge) — Real-World Relativity: The GPS Navigation System",
+        "label": "Richard W. Pogge — Real-World Relativity: The GPS Navigation System (Astronomy 162 course notes)",
         "url": "https://www.astronomy.ohio-state.edu/pogge.1/Ast162/Unit5/gps.html"
       },
       {
