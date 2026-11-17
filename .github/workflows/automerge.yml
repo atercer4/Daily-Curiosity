@@ -1,0 +1,95 @@
+name: Guarded auto-merge
+
+on:
+  pull_request:
+    types: [labeled, synchronize, reopened, ready_for_review]
+  pull_request_review:
+    types: [submitted]
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Evaluate merge gates
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_PR: ${{ github.event.pull_request.number }}
+          WORKFLOW_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+
+          if [ "$EVENT_NAME" = "workflow_run" ]; then
+            PR_NUMBER="$(gh api "repos/$REPO/commits/$WORKFLOW_HEAD_SHA/pulls" --jq 'map(select(.state == "open" and .base.ref == "main")) | .[0].number // empty')"
+          else
+            PR_NUMBER="$EVENT_PR"
+          fi
+
+          if [ -z "${PR_NUMBER:-}" ]; then
+            echo "No open main-targeting PR found."
+            exit 0
+          fi
+
+          PR_JSON="$(gh api "repos/$REPO/pulls/$PR_NUMBER")"
+          HEAD_SHA="$(jq -r '.head.sha' <<<"$PR_JSON")"
+          AUTHOR="$(jq -r '.user.login' <<<"$PR_JSON")"
+          HEAD_REPO="$(jq -r '.head.repo.full_name' <<<"$PR_JSON")"
+          BASE_REF="$(jq -r '.base.ref' <<<"$PR_JSON")"
+          DRAFT="$(jq -r '.draft' <<<"$PR_JSON")"
+
+          if [ "$BASE_REF" != "main" ] || [ "$DRAFT" = "true" ]; then
+            echo "PR is not an eligible ready PR."
+            exit 0
+          fi
+
+          if [ "$HEAD_REPO" != "$REPO" ]; then
+            echo "Fork PRs are never auto-merged."
+            exit 0
+          fi
+
+          LABELS="$(gh api "repos/$REPO/issues/$PR_NUMBER" --jq '[.labels[].name]')"
+
+          if ! jq -e 'index("ready-to-merge") != null' <<<"$LABELS" >/dev/null; then
+            echo "Missing ready-to-merge label."
+            exit 0
+          fi
+
+          if jq -e 'index("owner-decision") != null' <<<"$LABELS" >/dev/null; then
+            echo "owner-decision PRs require the owner."
+            exit 0
+          fi
+
+          if jq -e 'index("content") != null' <<<"$LABELS" >/dev/null; then
+            echo "Content PRs remain manual in auto-merge v1."
+            exit 0
+          fi
+
+          FILES="$(gh api --paginate "repos/$REPO/pulls/$PR_NUMBER/files" --jq '.[].filename')"
+          if grep -Eq '^(\.github/|docs/STANDING_DIRECTION\.md$|docs/REVIEW_PROTOCOL\.md$)' <<<"$FILES"; then
+            echo "Governance/automation changes require owner approval."
+            exit 0
+          fi
+
+          CHECKS="$(gh api -H 'Accept: application/vnd.github+json' "repos/$REPO/commits/$HEAD_SHA/check-runs")"
+          if ! jq -e '[.check_runs[] | select(.name == "tests" and .conclusion == "success")] | length > 0' <<<"$CHECKS" >/dev/null; then
+            echo "Required CI tests job has not passed on the current head."
+            exit 0
+          fi
+
+          REVIEWS="$(gh api "repos/$REPO/pulls/$PR_NUMBER/reviews")"
+          if ! jq -e --arg head "$HEAD_SHA" --arg author "$AUTHOR"             '[.[] | select(.state == "APPROVED" and .commit_id == $head and .user.login != $author)] | length > 0'             <<<"$REVIEWS" >/dev/null; then
+            echo "No independent APPROVED review on the current head commit."
+            exit 0
+          fi
+
+          echo "All auto-merge gates passed for PR #$PR_NUMBER at $HEAD_SHA."
+          gh api -X PUT "repos/$REPO/pulls/$PR_NUMBER/merge"             -f merge_method=squash             -f sha="$HEAD_SHA"
