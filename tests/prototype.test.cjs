@@ -14,7 +14,8 @@ class NodeStub {
   setAttribute(key, value) { this.attributes[key] = value; }
   getAttribute(key) { return this.attributes[key]; }
   addEventListener(type, callback) { this.events[type] = callback; }
-  focus() { this.focused = true; }
+  focus() { this.focused = true; NodeStub.active = this; }
+  contains(node) { return node === this || this.children.some(child => child instanceof NodeStub && child.contains(node)); }
 }
 // The original 20-card daily order. Phase 2 appends new cards after these; this prefix never changes.
 const ORIGINAL_DAILY_IDS = ['venus-clocks', 'suspension-bridge', 'woodcut-reversal', 'rosetta-scripts', 'coral-partners',
@@ -28,8 +29,10 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
   const math = Object.create(Math);
   math.random = () => random;
   const documentEvents = {};
+  NodeStub.active = null;
   const context = vm.createContext({ Math: math, document: {
     visibilityState: 'visible',
+    get activeElement() { return NodeStub.active; },
     addEventListener: (type, callback) => { documentEvents[type] = callback; },
     querySelector: selector => {
       if (selector === '#categories') return controls;
@@ -1181,4 +1184,33 @@ test('the refresh adds no timers, storage or requests', () => {
   const app = read('SRC/app.js');
   assert.doesNotMatch(app, /setInterval|setTimeout|localStorage|sessionStorage|indexedDB|fetch\(|XMLHttpRequest/);
   assert.equal((app.match(/addEventListener\('visibilitychange'/g) || []).length, 1);
+});
+
+// Codex finding on PR #67: a keyboard position inside Today survives the date refresh.
+test('focus inside Today is carried to the new card: a row summary to the same row, anything else to the article', () => {
+  const rows = f => f.today.children.filter(n => n.className === 'beat-row');
+  const f = fixture(0, { year: 2026, month: 10, day: 22 });
+  rows(f)[1].children[0].focus(); // "Look closer" summary
+  f.setVisibility('hidden');
+  f.setCalendar({ year: 2026, month: 10, day: 23 });
+  f.setVisibility('visible');
+  assert.equal(f.context.document.activeElement, rows(f)[1].children[0]);
+  assert.ok(f.today.contains(f.context.document.activeElement));
+  // A source link (not a row summary) falls back to the Today article, which has tabindex="-1".
+  find(f.today, n => n.tag === 'a')[0].focus();
+  f.setVisibility('hidden');
+  f.setCalendar({ year: 2026, month: 10, day: 24 });
+  f.setVisibility('visible');
+  assert.equal(f.context.document.activeElement, f.today);
+});
+
+test('focus outside Today is left alone by the date refresh', () => {
+  const f = fixture(0, { year: 2026, month: 10, day: 22 });
+  const chip = filterButton(f, 'History & Society');
+  chip.focus();
+  f.setVisibility('hidden');
+  f.setCalendar({ year: 2026, month: 10, day: 23 });
+  f.setVisibility('visible');
+  assert.equal(f.context.document.activeElement, chip);
+  assert.notEqual(f.today.focused, true);
 });

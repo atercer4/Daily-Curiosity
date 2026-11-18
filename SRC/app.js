@@ -331,10 +331,19 @@ function renderToday(date) {
   renderCard(todayArticle, index, 'today-entry-title', 2, false, true);
 }
 const sameDate = (a, b) => a.year === b.year && a.month === b.month && a.day === b.day;
+const todayRowSummaries = () => Array.from(todayArticle.children).filter(node => node.className === 'beat-row').map(row => row.children[0]);
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState !== 'visible') return;
   const date = readLocalCalendarDate();
-  if (!sameDate(date, todayDate)) renderToday(date);
+  if (sameDate(date, todayDate)) return;
+  // Re-rendering removes Today's old nodes, so a keyboard position inside Today is carried over: a reading-row
+  // summary to the same row of the new card, anything else (a link, the reveal control) to the Today article.
+  // Focus elsewhere on the page is left alone.
+  const active = document.activeElement;
+  const focusInToday = Boolean(active) && active !== todayArticle && todayArticle.contains(active);
+  const row = focusInToday ? todayRowSummaries().indexOf(active) : -1;
+  renderToday(date);
+  if (focusInToday) (row >= 0 ? todayRowSummaries()[row] : todayArticle).focus({ preventScroll: true });
 });
 renderToday(readLocalCalendarDate());
 renderCabinet();
