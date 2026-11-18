@@ -1,45 +1,54 @@
-# Daily Curiosity — Concept A v6
+# Daily Curiosity
 
-Optional Recall / Reflection implementation, November 1, 2026. Requirements source: attached approved **Daily Curiosity - Concept A v6 Optional Recall Reflection Brief - 2026-11-01.docx**. Existing static project modified in place; no installation, framework, backend, or deployment. Open index.html with JavaScript enabled.
+One curious idea a day. Explore only as deeply as you want.
 
-## Preservation
+Daily Curiosity is a small static web app (HTML, CSS and JavaScript, no framework, backend or build step). Each card starts from something observable or surprising and explains the process, mechanism, practice or evidence behind it, with sources. It is live at https://atercer4.github.io/Daily-Curiosity/, published by GitHub Pages from `main` (Netlify until 15 November 2026).
 
-Since November 2026 this project lives in git (github.com/atercer4/daily-curiosity) and is served by GitHub Pages from `main` at https://atercer4.github.io/Daily-Curiosity/ (Netlify until 15 November 2026). The old `snapshots/` folders were retired; git history preserves every version. `tests/baseline/card-content-sha256.json` pins the original fields of the original 20 cards and the daily-mapping test pins the code in `SRC/daily.js` (everything except the ID list), replacing the snapshot hash checks.
+## Run it
 
-Adding cards (Phase 2, issue #13): the code and tests work for any library size. New cards go at the end of `DAILY_CARD_IDS`, after the original 20, whose order is pinned. Tests require unique IDs and titles, balanced categories (no category more than 2 cards ahead of another), and no two consecutive same-category cards in the daily rotation, including the wrap back to the start. The daily rotation length equals the library size, so it changes each time cards are added; this is reversible by removing the appended IDs. Run tests with `node tests/prototype.test.cjs`. Change rules: [docs/REVIEW_PROTOCOL.md](docs/REVIEW_PROTOCOL.md). If a production deploy regresses, follow [docs/ROLLBACK.md](docs/ROLLBACK.md). What the Phase 1 baseline contains: [docs/RELEASE_NOTES.md](docs/RELEASE_NOTES.md). Visual work follows [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) (Design System 1.0, owner-approved 12 November 2026).
+Open `index.html` in a browser with JavaScript enabled, or serve the folder with any static file server. There is nothing to install.
 
-## Recall interaction
+## What a visitor sees
 
-Each of the 20 cards has one `recall` object with `prompt` and `reveal` strings in SRC/content.js. [All 20 prompts and responses](docs/RECALL.md) are documented. They retrieve the card’s central mechanism, distinction, tradeoff, or cultural insight without asking for incidental numbers. Responses summarize existing sourced content; no new factual material or source links were added.
+- **Today's curiosity.** A dark cover in the card's category theme leads with the card's question and tease (falling back to its title and hook), plus a cover drawing when the card has one. The card below it has three reading rows: The idea (the core, open on load), Look closer (the deep dive and sources) and Remember this? (an optional recall prompt with a "Reveal response" control). The card is chosen from the local date by `SRC/daily.js`, so the same date always shows the same card. A tab hidden and shown again on a new local date moves to that day's card (issue #66).
+- **The cabinet of curiosities.** A grid of tiles, one per card, with "All" and four category filter chips. "Look inside →" opens that card below the grid and moves focus to it. The dark "?" tile ("Take me somewhere unexpected") opens a random card from the whole library. Explore is independent of Today, and filtering changes only the grid.
+- **Visuals.** A few cards carry a figure drawn from data in their `visual` field: a line-drawn plate, a numbers strip of up to three figures, or a cover drawing. Every figure has a text alternative. The schema is in [docs/CONTENT.md](docs/CONTENT.md).
 
-A section headed “Remember this?” (Design System 1.0 label; formerly “Optional · Pause and recall”) appears after Sources inside Look closer (the Deep Dive). Its prompt is hidden by the closed Deep Dive. A native details/summary control labeled “Reveal response” lets the reader think first and open or close the answer. There are no inputs or evaluations. Navigation remains available.
+Counts shown on the page come from the library size, never from hard-coded numbers. The current library, sources and visuals are listed in [docs/CONTENT.md](docs/CONTENT.md) and summarized in [docs/RELEASE_NOTES.md](docs/RELEASE_NOTES.md).
 
-Each rendering creates fresh recall DOM nodes within that article. Today and Explore share only content data, not open state. Revealing one does not affect the other, even for the same card. Changing Explore cards creates a closed response for the new card and leaves Today untouched. Closing Deep Dive or Core also resets that surface’s response. Reload resets all disclosures. Recall introduces no auto-focus, live regions, timers, announcements, storage, or remote calls.
+Deliberately absent: accounts, saved state or browser storage, analytics or tracking, network requests made by the app, external assets (the two fonts are self-hosted under the OFL), scores, streaks and notifications. Recall is never recorded or evaluated. Adding any of these is an owner decision ([docs/STANDING_DIRECTION.md](docs/STANDING_DIRECTION.md) section 7).
 
-## Preserved behavior
+## Files
 
-Today remains date-determined. Since issue #24, Explore is “The cabinet of curiosities”: “All” and four category filter chips (native buttons with `aria-pressed`) filter a grid of tiles, one per card, each showing category, number, title, the hook’s first sentence and a native “Look inside →” button. Choosing a tile opens the full card below the grid with all three layers closed and moves focus to it. A dark “?” tile, “Take me somewhere unexpected”, is Surprise Me: it draws from the whole library whatever the filter. Filtering changes only the grid, never the open card or Today, and nothing is saved. SRC/daily.js is byte-identical to v5: local fields acquired once on load; pure cardIndexForDate uses UTC calendar arithmetic and positive modulo around the 2026-10-22 epoch. The fixed permutation remains unchanged, recorded in git history. Explore may match Today and excludes only its current card on subsequent random draws.
+- `index.html`: page structure, metadata and the inline site icon.
+- `SRC/content.js`: the cards (`DAILY_CURIOSITIES`) and the daily rotation order (`DAILY_CARD_IDS`).
+- `SRC/daily.js`: picks a card for a calendar date from a fixed permutation around the 2026-10-22 epoch.
+- `SRC/app.js`: renders the cover, Today's card, the cabinet and the visuals.
+- `SRC/styles.css` and `SRC/fonts/`: Design System 1.0 styles and self-hosted fonts.
+- `tests/`: the regression suite, the render check and the baseline pins.
 
-All original card fields, category assignments, Hook/Core/Deep text, 36 source links, and two explanatory visuals are preserved. Only recall data was added. [CONTENT.md](docs/CONTENT.md) remains the historical v4 content/source register. Heading outline (fixed in issue #3; the h1 moved to the cover in issue #23): Today’s card title is h2 under the h1 cover question (the card’s optional `question`, else its title); Explore’s category prompt and card title are h3 under the h2 “The cabinet of curiosities” (tile titles are not headings), and each card’s Core, Deep Dive and Sources/Recall headings follow one level below. Styles are keyed to classes, so the two surfaces look identical.
+## Tests
 
-## Files changed
+```
+node tests/prototype.test.cjs
+for f in SRC/*.js; do node --check "$f"; done
+node tests/render-check.cjs
+```
 
-- SRC/content.js: 20 data-driven prompt/response pairs; original fields preserved.
-- SRC/app.js: native optional recall disclosure and local reset handlers.
-- SRC/styles.css: recall section spacing and border.
-- index.html: header/footer labels (Design System 1.0 since issue #22: no version badge, library count filled in from the content).
-- tests/prototype.test.cjs: recall coverage, snapshot verification; existing scope guards retained. The common closed-disclosure assertion now expects three nested details, and the content-preservation test compares original fields after excluding recall.
-- README.md, docs/QA.md: current behavior and QA handoff.
-- Added docs/RECALL.md and the verified v5 snapshot with SHA256.json.
+The regression suite uses a DOM stub. It covers the daily mapping, the cabinet and filters, the reading rows and recall, the card schema and word limits, and the docs that must stay in sync with the content. `tests/baseline/` pins the original 20 cards' content hashes and `SRC/daily.js`. The render check opens every card on Today and in Explore at 320, 390 and 1280px in headless Chromium and fails on overflow, page errors, broken or unlabelled figures, or small touch targets; it needs Playwright (`npm install --no-save playwright@1.63.0`), which is installed in CI only. CI runs all three on every pull request. Real-browser checks that are still pending are listed in [docs/QA.md](docs/QA.md).
 
-## Test results
+## Changing it
 
-Active suite: 24/24 passed. Archived unchanged suites: v5 20/20, v4 14/14, v3 11/11, v2 7/7. App/content/daily JavaScript syntax checks passed. Coverage includes all recall data and nesting, native reveal structure, resets, same-card surface independence, absence of evaluation/input/status mechanics, unchanged daily code, calendar regression, full category/random behavior, source/visual preservation, and all snapshot hashes.
+- Every change goes through a pull request; nothing is pushed to `main`. Rules: [docs/REVIEW_PROTOCOL.md](docs/REVIEW_PROTOCOL.md). Direction and autonomy limits: [docs/STANDING_DIRECTION.md](docs/STANDING_DIRECTION.md).
+- Card text and visuals are fact-checked before they are coded: a card may be coded only when both independent reviewers have approved its exact draft in the Editorial Review Register (REVIEW_PROTOCOL, "Fact-check gate").
+- New cards go at the end of `DAILY_CARD_IDS`, after the original 20, whose order is pinned. Tests require unique IDs and titles, balanced categories (no category more than two cards ahead of another), no two consecutive same-category cards in the rotation, and no card field outside the hashed set. Recall prompts and responses are listed in [docs/RECALL.md](docs/RECALL.md).
+- Visual work follows [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) (Design System 1.0, owner-approved 12 November 2026).
+- If a production deploy regresses, follow [docs/ROLLBACK.md](docs/ROLLBACK.md).
 
-Tests use a DOM stub, so native visibility, keyboard operation, layout, accessibility, console/network/storage behavior need independent browser QA. No browser pass is claimed. See [QA.md](docs/QA.md).
+## Known limitations
 
-## Known limitations and scope
+- Timezone or system-clock changes can repeat or skip a daily card, and a tab that stays on screen past midnight keeps its card until it is hidden and shown again or reloaded.
+- The library repeats once every N days, where N is the number of cards.
+- Source links are external and can break.
 
-Recall is ephemeral and unevaluated; the app does not record whether readers think or reveal. Existing date limitations remain: timezone/system-clock changes may repeat or skip a daily card; a tab left open past midnight moves to the new day’s card when it is shown again (not while it stays on screen); the library repeats every N days, where N is the number of cards (20 today). Existing source-link issues remain documented in CONTENT.md.
-
-No scoring, grades, right/wrong states, streaks, XP, progress bars, saved completion, accounts/profiles, analytics, notifications, social features, spaced repetition, adaptive difficulty, user notes/journaling, monetization, backend/API dependency, or theme customization was added.
+History of what changed and when: [docs/RELEASE_NOTES.md](docs/RELEASE_NOTES.md) and the git log.

@@ -45,6 +45,7 @@ The v7 baseline was imported from Dropbox on 10 November 2026, with the old `sna
 | #61 | #60 | Fact-check backlog: `gps-relativity` replaced with its dual-approved register draft (v5): retitled "Clocks designed to tick slow", one framing sentence replaced with Pogge's wording, and the Pogge source relabelled. Source links unchanged (55). |
 | #63 | #62 | Fact-check backlog: `petrichor` replaced with its dual-approved register draft (v5) and `true-fresco` with v6 (one commit per card). petrichor drops the bot-checked Smithsonian source and labels the bubble mechanism a hypothesis (55 → 54); true-fresco drops Britannica, Wikipedia and the Catalonia museum page and adds the Florence IMSS technique page (54 → 52). |
 | #67 | #66 | Today follows the calendar: a tab left open past midnight shows the new day’s cover, masthead date and Today card when the reader returns to it (`visibilitychange`). Nothing changes while the page stays visible; Explore, the filter and focus are untouched; the date is kept in memory only, with no timers, storage or requests. |
+| #69 | #68 | README rewritten to describe the current product (it still described Concept A v6): what a visitor sees, how to run it and its three checks, the files, how changes are made and gated, and known limitations. It links every governing doc and hard-codes no library or test counts; a test keeps it that way. Documentation only. |
 
 Original card text has changed only through approved fixes: the recall wording fix in issue #5 and the 13 register-approved cards above.
 
@@ -71,4 +72,4 @@ If a production deploy regresses, follow [ROLLBACK.md](ROLLBACK.md): revert the 
 
 ## Next
 
-Phase 2: generalize the code and tests from exactly 20 cards to any number, then add sourced cards toward 40, each approved by two independent reviewers in the Editorial Review Register before it is coded.
+Phase 2: add sourced cards toward 40 (the code and tests already work for any number of cards, since issues #13 and #15), each approved by two independent reviewers in the Editorial Review Register before it is coded. Design System 1.0 step 6 continues alongside: card visuals go through the visual assessment one register-approved card at a time, starting with `gps-relativity`, and the GPS drift slider follows in its own PR ([DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) section 6).
