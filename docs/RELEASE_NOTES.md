@@ -44,12 +44,13 @@ The v7 baseline was imported from Dropbox on 10 November 2026, with the old `sna
 | #57 | #56 | Fact-check backlog: `exchequer-tallies` replaced with its dual-approved register draft (v3). Wikipedia-only details removed; sources narrowed to the History of Parliament and the Science Museum Group (source links 57 → 55). |
 | #61 | #60 | Fact-check backlog: `gps-relativity` replaced with its dual-approved register draft (v5): retitled "Clocks designed to tick slow", one framing sentence replaced with Pogge's wording, and the Pogge source relabelled. Source links unchanged (55). |
 | #63 | #62 | Fact-check backlog: `petrichor` replaced with its dual-approved register draft (v5) and `true-fresco` with v6 (one commit per card). petrichor drops the bot-checked Smithsonian source and labels the bubble mechanism a hypothesis (55 → 54); true-fresco drops Britannica, Wikipedia and the Catalonia museum page and adds the Florence IMSS technique page (54 → 52). |
+| #67 | #66 | Today follows the calendar: a tab left open past midnight shows the new day’s cover, masthead date and Today card when the reader returns to it (`visibilitychange`). Nothing changes while the page stays visible; Explore, the filter and focus are untouched; the date is kept in memory only, with no timers, storage or requests. |
 
 Original card text has changed only through approved fixes: the recall wording fix in issue #5 and the 13 register-approved cards above.
 
 ## Known limitations
 
-- The daily card is read once on load: an open tab needs a reload after midnight, and timezone or system-clock changes can repeat or skip a card.
+- The daily card follows the local date when the tab is shown again (issue #66), but not while the page stays on screen past midnight; timezone or system-clock changes can repeat or skip a card.
 - The library repeats every 24 days. This length grows as Phase 2 adds cards: since issue #13 the rotation length equals the library size, and new cards are appended after the original 20.
 - Recall is ephemeral and unevaluated by design; nothing is recorded.
 - Source links are external and can break; existing link issues are noted in CONTENT.md.

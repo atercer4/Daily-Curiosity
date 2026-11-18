@@ -23,7 +23,7 @@ F/M/N: source checks show no grading/progress, persistence or added services. In
 
 G–I: separate DOM nodes and same-card independence tested. Open Today’s response, change Explore through all five categories and Surprise Me, and confirm Today stays open. Reveal/close either response independently, including when both show the same card. Closing either Core or Deep Dive resets only that surface’s response. New Explore cards start closed.
 
-J/K: daily code unchanged and regression tests pass. Confirm same-date refresh stability and category cycling manually; random Explore may match Today, but does not immediately repeat itself. Existing clock/timezone/midnight limitations remain accepted.
+J/K: daily code unchanged and regression tests pass. Confirm same-date refresh stability and category cycling manually; random Explore may match Today, but does not immediately repeat itself. Existing clock/timezone limitations remain accepted. Midnight (issue #66): a tab hidden and shown again on a new local date moves Today, the cover and the masthead date to that date; a tab that stays visible keeps its card until it is hidden and shown again or reloaded.
 
 O/P: snapshot integrity tests and archived suites pass. Independently copy the full v5 snapshot elsewhere, open it and run its suite.
 
