@@ -601,6 +601,27 @@ test('page metadata: one meta description, from the core promise, under 160 char
   assert.ok(found[0][1].length <= 160, 'fits a search snippet');
 });
 
+test('site icon and theme colour: the ✳ mark as an inline SVG on night, no external asset (issue #64)', () => {
+  const html = read('index.html');
+  const head = html.slice(0, html.indexOf('</head>'));
+  const icons = [...html.matchAll(/<link rel="icon"[^>]*>/g)];
+  assert.equal(icons.length, 1, 'exactly one icon link');
+  assert.ok(head.includes(icons[0][0]), 'the icon is in the head');
+  const href = icons[0][0].match(/href="([^"]+)"/)[1];
+  assert.ok(href.startsWith('data:image/svg+xml,'), 'inline SVG data URI, not an image file');
+  assert.match(icons[0][0], /type="image\/svg\+xml"/);
+  const svg = decodeURIComponent(href.slice('data:image/svg+xml,'.length));
+  assert.doesNotMatch(svg.replace("xmlns='http://www.w3.org/2000/svg'", ''), /https?:|url\(|<image|href=/, 'no external reference in the icon');
+  const colours = [...svg.matchAll(/#[0-9A-Fa-f]{6}/g)].map(m => m[0].toUpperCase()).sort();
+  assert.deepEqual(colours, ['#16202E', '#E2B867'], 'only the night and cover-gold tokens');
+  const css = read('SRC/styles.css');
+  assert.match(css, /--night: #16202E/); assert.match(css, /--cover-gold: #E2B867/);
+  const themes = [...html.matchAll(/<meta name="theme-color" content="([^"]*)">/g)];
+  assert.equal(themes.length, 1, 'exactly one theme-color');
+  assert.ok(head.includes(themes[0][0]));
+  assert.equal(themes[0][1], '#16202E', 'matches the night masthead and cover');
+});
+
 test('docs/ROLLBACK.md documents restore, revert-by-PR, incident notes and a corrective task, and is linked from README', () => {
   const doc = read('docs/ROLLBACK.md');
   assert.match(read('README.md'), /\]\(docs\/ROLLBACK\.md\)/);
@@ -718,7 +739,9 @@ test('Design 1.0 makes no http(s) requests from CSS or HTML: only card source li
   const cssWithoutData = css.replace(/url\("data:[^"]*"\)/g, '');
   assert.doesNotMatch(cssWithoutData, /https?:|@import|\/\//);
   for (const match of css.matchAll(/url\("([^"]+)"\)/g)) assert.match(match[1], /^(data:|fonts\/)/);
-  assert.doesNotMatch(html, /https?:|\/\//);
+  // The inline SVG site icon (issue #64) is a data: URI too; only its namespace string is exempt.
+  const htmlWithoutData = html.replace(/href="data:image\/svg\+xml,[^"]*"/g, m => m.replace("xmlns='http://www.w3.org/2000/svg'", ''));
+  assert.doesNotMatch(htmlWithoutData, /https?:|\/\//);
   assert.doesNotMatch(read('SRC/app.js').replace("const SVG_NS = 'http://www.w3.org/2000/svg';", ''), /https?:\/\//);
   // Card sources are the only absolute URLs, and they are rendered as plain links.
   for (const entry of fixture().entries) for (const source of entry.sources) assert.equal(new URL(source.url).protocol, 'https:');
