@@ -21,8 +21,8 @@ Deliberately absent: accounts, saved state or browser storage, analytics or trac
 ## Files
 
 - `index.html`: page structure, metadata and the inline site icon.
-- `SRC/content.js`: the cards (`DAILY_CURIOSITIES`) and the daily rotation order (`DAILY_CARD_IDS`).
-- `SRC/daily.js`: picks a card for a calendar date from a fixed permutation around the 2026-10-22 epoch.
+- `SRC/content.js`: the cards (`DAILY_CURIOSITIES`).
+- `SRC/daily.js`: the daily rotation order (`DAILY_CARD_IDS`), and the date-to-card mapping around the 2026-10-22 epoch.
 - `SRC/app.js`: renders the cover, Today's card, the cabinet and the visuals.
 - `SRC/styles.css` and `SRC/fonts/`: Design System 1.0 styles and self-hosted fonts.
 - `tests/`: the regression suite, the render check and the baseline pins.
@@ -35,13 +35,13 @@ for f in SRC/*.js; do node --check "$f"; done
 node tests/render-check.cjs
 ```
 
-The regression suite uses a DOM stub. It covers the daily mapping, the cabinet and filters, the reading rows and recall, the card schema and word limits, and the docs that must stay in sync with the content. `tests/baseline/` pins the original 20 cards' content hashes and `SRC/daily.js`. The render check opens every card on Today and in Explore at 320, 390 and 1280px in headless Chromium and fails on overflow, page errors, broken or unlabelled figures, or small touch targets; it needs Playwright (`npm install --no-save playwright@1.63.0`), which is installed in CI only. CI runs all three on every pull request. Real-browser checks that are still pending are listed in [docs/QA.md](docs/QA.md).
+The regression suite uses a DOM stub. It covers the daily mapping, the cabinet and filters, the reading rows and recall, the card schema and word limits, and the docs that must stay in sync with the content. `tests/baseline/` pins the original 20 cards' content hashes and `SRC/daily.js`. The render check opens every card on Today and in Explore at 320, 390 and 1280px in headless Chromium and fails on overflow, page errors, broken or unlabelled figures, or small touch targets; it needs Playwright and its Chromium build (`npm install --no-save playwright@1.63.0 && npx playwright install chromium`), which are installed in CI only. CI runs all three on every pull request. Real-browser checks that are still pending are listed in [docs/QA.md](docs/QA.md).
 
 ## Changing it
 
 - Every change goes through a pull request; nothing is pushed to `main`. Rules: [docs/REVIEW_PROTOCOL.md](docs/REVIEW_PROTOCOL.md). Direction and autonomy limits: [docs/STANDING_DIRECTION.md](docs/STANDING_DIRECTION.md).
 - Card text and visuals are fact-checked before they are coded: a card may be coded only when both independent reviewers have approved its exact draft in the Editorial Review Register (REVIEW_PROTOCOL, "Fact-check gate").
-- New cards go at the end of `DAILY_CARD_IDS`, after the original 20, whose order is pinned. Tests require unique IDs and titles, balanced categories (no category more than two cards ahead of another), no two consecutive same-category cards in the rotation, and no card field outside the hashed set. Recall prompts and responses are listed in [docs/RECALL.md](docs/RECALL.md).
+- New cards go at the end of `DAILY_CARD_IDS` in `SRC/daily.js`, after the original 20, whose order is pinned. Tests require unique IDs and titles, balanced categories (no category more than two cards ahead of another), no two consecutive same-category cards in the rotation, and no card field outside the hashed set. Recall prompts and responses are listed in [docs/RECALL.md](docs/RECALL.md).
 - Visual work follows [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) (Design System 1.0, owner-approved 12 November 2026).
 - If a production deploy regresses, follow [docs/ROLLBACK.md](docs/ROLLBACK.md).
 
