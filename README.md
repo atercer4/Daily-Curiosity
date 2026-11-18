@@ -40,6 +40,6 @@ Tests use a DOM stub, so native visibility, keyboard operation, layout, accessib
 
 ## Known limitations and scope
 
-Recall is ephemeral and unevaluated; the app does not record whether readers think or reveal. Existing date limitations remain: timezone/system-clock changes may repeat or skip a daily card; an open tab needs reload after midnight; the library repeats every N days, where N is the number of cards (20 today). Existing source-link issues remain documented in CONTENT.md.
+Recall is ephemeral and unevaluated; the app does not record whether readers think or reveal. Existing date limitations remain: timezone/system-clock changes may repeat or skip a daily card; a tab left open past midnight moves to the new day’s card when it is shown again (not while it stays on screen); the library repeats every N days, where N is the number of cards (20 today). Existing source-link issues remain documented in CONTENT.md.
 
 No scoring, grades, right/wrong states, streaks, XP, progress bars, saved completion, accounts/profiles, analytics, notifications, social features, spaced repetition, adaptive difficulty, user notes/journaling, monetization, backend/API dependency, or theme customization was added.

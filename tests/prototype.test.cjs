@@ -27,7 +27,10 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
   let random = initialRandom;
   const math = Object.create(Math);
   math.random = () => random;
+  const documentEvents = {};
   const context = vm.createContext({ Math: math, document: {
+    visibilityState: 'visible',
+    addEventListener: (type, callback) => { documentEvents[type] = callback; },
     querySelector: selector => {
       if (selector === '#categories') return controls;
       if (selector === '#cabinet') return cabinet;
@@ -49,9 +52,13 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
   const daily = read('SRC/daily.js');
   const listEnd = daily.indexOf('\n]);');
   vm.runInContext(extra.length ? daily.slice(0, listEnd) + extra.map(e => ',\n  ' + JSON.stringify(e.id)).join('') + daily.slice(listEnd) : daily, context);
-  context.readLocalCalendarDate = () => date; // Inject calendar fields, not a mocked clock.
+  let calendar = date;
+  context.readLocalCalendarDate = () => calendar; // Inject calendar fields, not a mocked clock.
   vm.runInContext(read('SRC/app.js'), context);
-  return { controls, cabinet, cabinetCount, article, today, count, cover, context, entries, setRandom: value => { random = value; } };
+  // Simulates the tab being hidden and shown again on a (possibly) different local calendar date.
+  const setVisibility = state => { context.document.visibilityState = state; documentEvents.visibilitychange(); };
+  return { controls, cabinet, cabinetCount, article, today, count, cover, context, entries, documentEvents, setVisibility,
+    setRandom: value => { random = value; }, setCalendar: value => { calendar = value; } };
 }
 function descendants(node, tag) {
   return node.children.flatMap(child => [...(child.tag === tag ? [child] : []), ...descendants(child, tag)]);
@@ -1119,4 +1126,59 @@ test('the review gate covers every visual: cards use only canonical Draft Hash f
     for (const s of v.shapes) assert.ok(['circle', 'ellipse', 'line', 'rect', 'path', 'polyline'].includes(s.el), entry.id + ' shape ' + s.el);
     for (const l of v.labels || []) assert.ok(typeof l.text === 'string' && l.text.length <= 40, entry.id + ' short label');
   }
+});
+
+// Issue #66: Today follows the local calendar when a tab left open is shown again.
+test('a tab shown again on a new local date moves Today, the cover and the masthead date to that date', () => {
+  const f = fixture(0, { year: 2026, month: 10, day: 22 });
+  const todayTitle = () => find(f.today, n => n.className === 'card-title')[0].textContent;
+  const day1 = f.entries[f.context.cardIndexForDate(2026, 10, 22)];
+  const day2 = f.entries[f.context.cardIndexForDate(2026, 10, 23)];
+  assert.notEqual(day1.id, day2.id);
+  assert.equal(todayTitle(), day1.title);
+  const exploreTitle = title(f);
+  const exploreNode = f.article.children[1];
+  filterButton(f, 'Arts & Culture').events.click();
+  const tilesBefore = f.cabinet.children.slice();
+  f.setVisibility('hidden');
+  f.setCalendar({ year: 2026, month: 10, day: 23 });
+  f.setVisibility('visible');
+  assert.equal(todayTitle(), day2.title);
+  assert.equal(f.cover['#cover-category'].textContent, day2.category);
+  assert.equal(f.cover['#cover-number'].textContent, 'No. ' + String(f.context.cardIndexForDate(2026, 10, 23) + 1).padStart(3, '0'));
+  assert.equal(f.cover['#today-date'].attributes.datetime, '2026-10-23');
+  assert.equal(f.cover['#today-date'].textContent, 'Friday, 23 October');
+  // The Today card keeps its Today shape: The idea open, h2 title.
+  assert.equal(find(f.today, n => n.className === 'card-title')[0].tag, 'h2');
+  assert.equal(descendants(f.today, 'details')[0].open, true);
+  // Explore, the filter and focus are untouched.
+  assert.equal(title(f), exploreTitle);
+  assert.equal(f.article.children[1], exploreNode);
+  assert.deepEqual(f.cabinet.children, tilesBefore);
+  assert.equal(filterButton(f, 'Arts & Culture').attributes['aria-pressed'], 'true');
+  assert.notEqual(f.today.focused, true);
+  assert.notEqual(f.article.focused, true);
+});
+
+test('showing the tab again on the same date, or a hidden-state event, re-renders nothing', () => {
+  const f = fixture(0, { year: 2026, month: 11, day: 18 });
+  const todayNodes = f.today.children.slice();
+  const coverHeading = f.cover['#today-question'].children.slice();
+  f.setVisibility('hidden');
+  f.setVisibility('visible');
+  assert.deepEqual(f.today.children, todayNodes);
+  assert.deepEqual(f.cover['#today-question'].children, coverHeading);
+  // A date change noticed while the page is hidden waits until it is visible again.
+  f.setCalendar({ year: 2026, month: 11, day: 19 });
+  f.setVisibility('hidden');
+  assert.deepEqual(f.today.children, todayNodes);
+  f.setVisibility('visible');
+  assert.notDeepEqual(f.today.children, todayNodes);
+  assert.equal(f.cover['#today-date'].attributes.datetime, '2026-11-19');
+});
+
+test('the refresh adds no timers, storage or requests', () => {
+  const app = read('SRC/app.js');
+  assert.doesNotMatch(app, /setInterval|setTimeout|localStorage|sessionStorage|indexedDB|fetch\(|XMLHttpRequest/);
+  assert.equal((app.match(/addEventListener\('visibilitychange'/g) || []).length, 1);
 });

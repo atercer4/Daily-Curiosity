@@ -320,9 +320,22 @@ filters.forEach(filter => {
 });
 // Counts in copy come from the library size, never hard-coded (DESIGN_SYSTEM.md section 5).
 document.querySelectorAll('[data-library-count]').forEach(node => { node.textContent = String(DAILY_CURIOSITIES.length); });
-const localDate = readLocalCalendarDate();
-const todayIndex = cardIndexForDate(localDate.year, localDate.month, localDate.day);
-renderCover(todayIndex, localDate);
-renderCard(todayArticle, todayIndex, 'today-entry-title', 2, false, true);
+// Today follows the local calendar (issue #66). The date it was rendered for is kept in memory only; when a hidden
+// tab becomes visible on a different date, the cover, masthead date and Today card move to that date's curiosity.
+// Nothing changes while the page stays visible, and Explore, the filter and focus are left as they are.
+let todayDate = null;
+function renderToday(date) {
+  todayDate = date;
+  const index = cardIndexForDate(date.year, date.month, date.day);
+  renderCover(index, date);
+  renderCard(todayArticle, index, 'today-entry-title', 2, false, true);
+}
+const sameDate = (a, b) => a.year === b.year && a.month === b.month && a.day === b.day;
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState !== 'visible') return;
+  const date = readLocalCalendarDate();
+  if (!sameDate(date, todayDate)) renderToday(date);
+});
+renderToday(readLocalCalendarDate());
 renderCabinet();
 surprise(false);
