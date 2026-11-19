@@ -236,8 +236,12 @@ article > .numbers-strip { margin: -8px 0 24px; background: var(--parchment); bo
 
 /* First paint (issue #70): until app.js has drawn today's cover and card, the placeholder copy under the masthead
    stays unpainted, so the page doesn't jump when the real question, tease and card arrive. The cover band keeps its
-   background. app.js removes data-rendering after the first render; without JavaScript a <noscript> style shows it all. */
-[data-rendering] :is(.cover-inner, .today-numbers, .page, .explore-surface, footer) { visibility: hidden; }
+   background. app.js removes data-rendering after the first render; without JavaScript a <noscript> style shows it all.
+   Fail-open (Codex review on PR #71): if a script fails to load or throws before the first render, nothing removes the
+   attribute, so the hidden content shows itself after 3 s anyway. This needs no JavaScript and is not motion (a
+   zero-length visibility change), so it applies under prefers-reduced-motion too. */
+[data-rendering] :is(.cover-inner, .today-numbers, .page, .explore-surface, footer) { visibility: hidden; animation: first-paint-fail-open 0s 3s forwards; }
+@keyframes first-paint-fail-open { to { visibility: visible; } }
 
 /* Motion only for readers who have not asked to reduce it (DESIGN_SYSTEM.md rule 5). */
 @media (prefers-reduced-motion: no-preference) {

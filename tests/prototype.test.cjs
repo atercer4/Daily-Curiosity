@@ -899,7 +899,10 @@ test('Today cover styling: night base before a card is chosen, AA text on night,
   const motionStart = css.indexOf('@media (prefers-reduced-motion: no-preference) {');
   assert.ok(motionStart > 0);
   const motionEnd = css.indexOf('\n}\n', motionStart);
-  const outside = css.slice(0, motionStart) + css.slice(motionEnd);
+  // The one exemption is the first-paint fail-open (issue #70, Codex review on PR #71): a zero-length visibility change
+  // after 3 s, not motion, which must apply for every reader. Exactly that declaration and keyframe are exempt.
+  const failOpen = ['animation: first-paint-fail-open 0s 3s forwards;', '@keyframes first-paint-fail-open { to { visibility: visible; } }'];
+  const outside = failOpen.reduce((text, exempt) => text.replace(exempt, ''), css.slice(0, motionStart) + css.slice(motionEnd));
   assert.doesNotMatch(outside, /animation|@keyframes|transition|scroll-behavior/);
   assert.match(css.slice(motionStart, motionEnd), /scroll-behavior: smooth/);
   assert.match(css, /@media \(forced-colors: active\)[\s\S]*\.cover-cta/);
@@ -1237,11 +1240,16 @@ test('first paint: placeholder copy stays unpainted until the first render, then
   const html = read('index.html'), css = read('SRC/styles.css'), app = read('SRC/app.js');
   const hidden = '[data-rendering] :is(.cover-inner, .today-numbers, .page, .explore-surface, footer)';
   assert.match(html, /<html lang="en" data-rendering>/);
-  assert.ok(css.includes(hidden + ' { visibility: hidden; }'), 'only the content under the masthead is hidden; the cover band keeps its background');
+  const rule = hidden + ' { visibility: hidden; animation: first-paint-fail-open 0s 3s forwards; }';
+  assert.ok(css.includes(rule), 'only the content under the masthead is hidden; the cover band keeps its background');
+  // Fail-open without JavaScript (Codex review on PR #71): if a script fails to load or throws before the first render,
+  // the content shows itself after 3 s. Outside the reduced-motion block, so it applies for every reader.
+  assert.ok(css.includes('@keyframes first-paint-fail-open { to { visibility: visible; } }'));
+  assert.ok(css.indexOf(rule) < css.indexOf('@media (prefers-reduced-motion'), 'not inside a motion-only media block');
   // Without JavaScript nothing removes the attribute, so a <noscript> style in the head shows the page as before.
   assert.ok(html.includes('<noscript><style>' + hidden + ' { visibility: visible; }</style></noscript>'));
   for (const selector of ['.cover-inner', 'today-numbers', 'class="page"', 'explore-surface', '<footer']) assert.ok(html.includes(selector), selector);
-  assert.doesNotMatch(css.replace(/\/\*[\s\S]*?\*\//g, '').replace(hidden + ' { visibility: hidden; }', ''), /data-rendering/, 'one hiding rule only');
+  assert.doesNotMatch(css.replace(/\/\*[\s\S]*?\*\//g, '').replace(rule, ''), /data-rendering/, 'one hiding rule only');
   // The attribute is removed in a finally block, so a render that throws can never leave the page hidden.
   assert.match(app, /\} finally \{\n  document\.documentElement\.removeAttribute\('data-rendering'\);\n\}\n?$/);
   // One font is preloaded: Source Sans 3 600 sets the cover metadata line, which re-wraps on phones when it swaps in.

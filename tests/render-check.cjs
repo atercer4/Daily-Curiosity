@@ -130,9 +130,25 @@ function inspect({ index, fixture, minLabel, minTarget }) {
     }
     await page.close();
   }
+  // Fail-open (Codex review on PR #71): if content.js or app.js fails to load, the page under the masthead must not
+  // stay hidden. The CSS fallback shows it after 3 s, with and without reduced motion.
+  for (const blocked of ['content.js', 'app.js']) for (const reducedMotion of ['no-preference', 'reduce']) {
+    const page = await browser.newPage({ viewport: { width: 390, height: 900 }, reducedMotion });
+    await page.route('**/SRC/' + blocked, route => route.abort());
+    await page.goto(url, { waitUntil: 'load' });
+    const name = `fail-open with ${blocked} blocked, reduced motion ${reducedMotion}`;
+    try {
+      await page.waitForFunction(() => ['.cover-inner', '.page', '.explore-surface', 'footer']
+        .every(s => getComputedStyle(document.querySelector(s)).visibility === 'visible'), null, { timeout: 4500 });
+    } catch {
+      failures.push({ name, problems: ['content under the masthead is still hidden 4.5 s after load'] });
+    }
+    checked++;
+    await page.close();
+  }
   await browser.close();
   server.close();
   for (const { name, problems } of failures) console.log(`FAIL ${name}\n  - ${[...new Set(problems)].join('\n  - ')}`);
-  console.log(`render check: ${checked - failures.length}/${checked} card renders passed (${WIDTHS.join(', ')}px, Today and Explore, all disclosures open)`);
+  console.log(`render check: ${checked - failures.length}/${checked} renders passed (${WIDTHS.join(', ')}px, Today and Explore, all disclosures open; plus 4 first-paint fail-open checks)`);
   process.exit(failures.length ? 1 : 0);
 })().catch(error => { console.error(error); process.exit(1); });
