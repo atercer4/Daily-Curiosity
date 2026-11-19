@@ -321,7 +321,8 @@ test('the two original visuals still render; optional absence is safe and text a
     const figures = descendants(f.article, 'figure');
     assert.equal(figures.length, entry.visual ? 1 : 0);
     if (!entry.visual) return;
-    assert.ok(descendants(descendants(f.article, 'details')[1], 'figure').includes(figures[0]), 'the figure sits in Look closer');
+    const home = entry.visual.placement === 'idea' ? 0 : 1; // placement "idea" → The idea; default → Look closer
+    assert.ok(descendants(descendants(f.article, 'details')[home], 'figure').includes(figures[0]), 'the figure sits where its placement asks');
     if (entry.visual.type === 'plate') return; // plates are covered by the issue #47 tests below
     const [diagram, caption] = figures[0].children;
     assert.equal(diagram.attributes.role, 'img');
