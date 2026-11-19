@@ -694,9 +694,9 @@ const DAILY_CURIOSITIES = [
       "Because the satellite is farther from Earth’s mass, general relativity predicts the opposite: its clocks run ahead by about 45 microseconds a day. Gravity wins, leaving a net gain of about 38 microseconds daily. So the clocks are designed to tick at a slightly lower frequency, which lets them keep pace with the ground once in orbit."
     ],
     "deep": [
-      "Thirty-eight millionths of a second sounds tiny. The difficulty is that a receiver works out distance from how long a signal took to arrive, and radio signals travel at the speed of light. A tiny timing error becomes a large error in distance.",
+      "Thirty-eight millionths of a second sounds tiny. The difficulty is that a receiver works out its distance from each satellite as the speed of light multiplied by the time the signal took to arrive. A tiny timing error becomes a large error in distance.",
       "Richard Pogge, in notes for his Astronomy 162 course, estimates that without the relativistic correction, errors in position would accumulate at about 10 kilometers each day. The physicist Neil Ashby, writing in Physics Today, puts the build-up at more than 11 kilometers in a day, quickly making the system useless.",
-      "Pogge notes that GPS engineers included these relativistic effects when they designed and deployed the system. Ashby describes a “factory offset”: nowadays the rate of every orbiting GPS clock is adjusted before launch. When the first GPS satellite was launched in 1977, the size of the effect was still uncertain, so it was measured in orbit, and it agreed with the relativistic prediction."
+      "Pogge notes that GPS engineers included these relativistic effects when they designed and deployed the system. Ashby describes a “factory offset”: nowadays the rate of every orbiting GPS clock is adjusted before launch. When the first GPS satellite was launched in 1977, there was uncertainty about the effect’s size, and even its sign, so its clock was run in orbit for three weeks to measure its rate. The result agreed with the relativistic calculation to better than 1%."
     ],
     "sources": [
       {
@@ -708,6 +708,131 @@ const DAILY_CURIOSITIES = [
         "url": "https://physicstoday.aip.org/features/relativity-and-the-global-positioning-system"
       }
     ],
+    "visual": {
+      "type": "plate",
+      "viewBox": "0 0 420 310",
+      "placement": "idea",
+      "cover": true,
+      "alt": "Not-to-scale drawing: Earth, with a ground clock on its surface, and a GPS satellite carrying an atomic clock on a dashed orbit about 20,000 kilometers up, moving at about 14,000 kilometers per hour. The satellite’s speed makes its clock fall behind ground clocks; being farther from Earth’s mass makes it run ahead by more.",
+      "caption": "Not to scale. Speed and gravity pull the satellite’s clock in opposite directions; gravity’s effect is larger, so the clock is designed to tick slow.",
+      "shapes": [
+        {
+          "el": "circle",
+          "cx": 100,
+          "cy": 250,
+          "r": 50,
+          "tone": "ink"
+        },
+        {
+          "el": "path",
+          "d": "M100 60 A190 190 0 0 1 290 250",
+          "tone": "muted",
+          "dash": true
+        },
+        {
+          "el": "circle",
+          "cx": 135,
+          "cy": 215,
+          "r": 5,
+          "tone": "accent",
+          "fill": true
+        },
+        {
+          "el": "line",
+          "x1": 139,
+          "y1": 211,
+          "x2": 222,
+          "y2": 128,
+          "tone": "muted",
+          "dash": true
+        },
+        {
+          "el": "rect",
+          "x": 225,
+          "y": 107,
+          "width": 18,
+          "height": 18,
+          "tone": "accent"
+        },
+        {
+          "el": "rect",
+          "x": 205,
+          "y": 111,
+          "width": 16,
+          "height": 10,
+          "tone": "ink"
+        },
+        {
+          "el": "rect",
+          "x": 247,
+          "y": 111,
+          "width": 16,
+          "height": 10,
+          "tone": "ink"
+        },
+        {
+          "el": "line",
+          "x1": 248,
+          "y1": 136,
+          "x2": 282,
+          "y2": 170,
+          "tone": "accent"
+        },
+        {
+          "el": "polyline",
+          "points": "270,170 282,170 282,158",
+          "tone": "accent"
+        }
+      ],
+      "labels": [
+        {
+          "x": 100,
+          "y": 256,
+          "text": "Earth",
+          "anchor": "middle"
+        },
+        {
+          "x": 155,
+          "y": 242,
+          "text": "Ground clock"
+        },
+        {
+          "x": 268,
+          "y": 100,
+          "text": "Satellite clock"
+        },
+        {
+          "x": 172,
+          "y": 162,
+          "text": "≈ 20,000 km up",
+          "anchor": "end",
+          "note": true
+        },
+        {
+          "x": 298,
+          "y": 152,
+          "text": "≈ 14,000 km/h",
+          "note": true
+        }
+      ],
+      "numbers": [
+        {
+          "value": "−7",
+          "unit": "µs/day",
+          "label": "Speed: the satellite’s clock falls behind ground clocks."
+        },
+        {
+          "value": "+45",
+          "unit": "µs/day",
+          "label": "Gravity: farther from Earth’s mass, it runs ahead."
+        },
+        {
+          "value": "≈10",
+          "unit": "km/day",
+          "label": "Position error building up if left uncorrected."
+        }
+      ]
+    },
     "recall": {
       "prompt": "Why are GPS satellite clocks set to tick slightly slow before launch?",
       "reveal": "In orbit, weaker gravity makes them run ahead by more than their speed makes them fall behind. The offset cancels that net gain so they keep time with ground clocks."

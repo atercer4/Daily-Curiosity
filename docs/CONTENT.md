@@ -263,11 +263,12 @@ Researched and written by the build agent (Claude); the Drive research inbox had
 
 - ID: `gps-relativity`; category: Engineering & Technology.
 - Subject: Satellite navigation / relativity. Mechanism and tradeoff: two relativistic effects pull in opposite directions, and the net is corrected in the clock design before launch.
-- Visual: Omitted: a diagram of two opposing rates would add little to three numbers stated in the text.
+- Visual: Plate (scientific diagram), placed in The idea and redrawn on the Today cover: Earth with a ground clock, and a satellite clock on a dashed orbit labelled “≈ 20,000 km up” and “≈ 14,000 km/h”, captioned “Not to scale”; it shows height and speed, the two causes, in one image. Numbers strip: −7 µs/day (speed), +45 µs/day (gravity), ≈10 km/day (position error if uncorrected).
 - [Richard W. Pogge — Real-World Relativity: The GPS Navigation System (Astronomy 162 course notes)](https://www.astronomy.ohio-state.edu/pogge.1/Ast162/Unit5/gps.html): altitude about 20,000 km, speed about 14,000 km/h, −7 µs/day (speed), +45 µs/day (gravity), net +38 µs/day, clocks designed to tick slower, about 10 km/day error if uncorrected; the engineers included these effects when they designed and deployed the system.
-- [Physics Today (Neil Ashby) — Relativity and the Global Positioning System](https://physicstoday.aip.org/features/relativity-and-the-global-positioning-system): "factory offset" before launch; more than 11 km of navigational error building up in one day, quickly making the system useless.
+- [Physics Today (Neil Ashby) — Relativity and the Global Positioning System](https://physicstoday.aip.org/features/relativity-and-the-global-positioning-system): distance as c·Δt from the signal's travel time; "factory offset" before launch; more than 11 km of navigational error building up in one day, quickly making the system useless; the first GPS satellite launched in 1977 amid uncertainty about the effect's magnitude and even its sign, its clock operated for three weeks to measure its rate, agreeing with the relativistic calculation to better than 1%.
 - Read on 11 November 2026. Also consulted, not linked: Ashby, "Relativistic Effects in the Global Positioning System" (AAPT-hosted PDF), which gives the same fractional rates.
 - Register-approved v5 (Draft Hash `57f44d01b20863b511ea08068fe67e63e0cb16cf5cef093bec85a05c396e7575`; Claude and ChatGPT both PASS, 17 November 2026; v4 and v5 by owner exception to the 3-version rule), coded in issue #60. Retitled from "Clocks set slow on purpose" to Pogge's wording; the framing sentence about when the fix happens replaced with Pogge's statement that engineers built the effects in; Ashby's factory-offset sentence quoted directly; the Pogge source relabelled by what the page shows (author and course notes).
+- Register-approved v7 (Draft Hash `3e572452283d320e7a71e139f1976704d01d010d4f750bd12a223f4a570e59cc`; Claude and ChatGPT both PASS, 19 November 2026; v6 and v7 by owner exception to the 3-version rule), coded in issue #27 (Design System 1.0 step 6): adds the orbit plate, numbers strip and cover drawing; two Deep Dive sentences reworded to Ashby's wording (receiver distance as the speed of light times travel time; the 1977 three-week measurement agreeing to better than 1%). Sources and recall unchanged.
 
 ### 22. Painting before the wall dries
 
@@ -302,7 +303,7 @@ Researched and written by the build agent (Claude); the Drive research inbox had
 
 ## Visual scope
 
-Two retained local HTML/CSS explanatory visuals, both inside the optional Deep Dive: Venus duration bars (117, 225, 243 Earth days on one zero-based scale) and woodcut reversal (reversed block R, normal paper R). Both retain relationship-based text alternatives and captions. No new visual assets, stock images, AI images, decorative diagrams, or external image requests. The other 22 cards intentionally omit visuals for the reasons above.
+Two retained local HTML/CSS explanatory visuals, both inside the optional Deep Dive: Venus duration bars (117, 225, 243 Earth days on one zero-based scale) and woodcut reversal (reversed block R, normal paper R). Both retain relationship-based text alternatives and captions. Since issue #27, `gps-relativity` adds a third: a register-approved orbit plate in The idea, with a numbers strip and a cover drawing. No new visual assets, stock images, AI images, decorative diagrams, or external image requests. The other 21 cards intentionally omit visuals for the reasons above.
 
 ## Source-read limitations and independent checks
 
