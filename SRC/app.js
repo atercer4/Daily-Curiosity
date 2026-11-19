@@ -182,6 +182,7 @@ function renderCard(article, index, titleId, level, moveFocus = false, today = f
   core.details.open = today;
   article.append(core.details, deep.details, recall.details);
   if (moveFocus) article.focus();
+  return [core.details, deep.details, recall.details, response];
 }
 
 // Today's cover (DESIGN_SYSTEM.md section 2). Optional card fields: `question` (its key phrase may be
@@ -324,11 +325,12 @@ document.querySelectorAll('[data-library-count]').forEach(node => { node.textCon
 // tab becomes visible on a different date, the cover, masthead date and Today card move to that date's curiosity.
 // Nothing changes while the page stays visible, and Explore, the filter and focus are left as they are.
 let todayDate = null;
+let todayDisclosures = [];
 function renderToday(date) {
   todayDate = date;
   const index = cardIndexForDate(date.year, date.month, date.day);
   renderCover(index, date);
-  renderCard(todayArticle, index, 'today-entry-title', 2, false, true);
+  todayDisclosures = renderCard(todayArticle, index, 'today-entry-title', 2, false, true);
 }
 const sameDate = (a, b) => a.year === b.year && a.month === b.month && a.day === b.day;
 const todayRowSummaries = () => Array.from(todayArticle.children).filter(node => node.className === 'beat-row').map(row => row.children[0]);
@@ -344,6 +346,18 @@ document.addEventListener('visibilitychange', () => {
   const row = focusInToday ? todayRowSummaries().indexOf(active) : -1;
   renderToday(date);
   if (focusInToday) (row >= 0 ? todayRowSummaries()[row] : todayArticle).focus({ preventScroll: true });
+});
+// Printing (issue #75): a printed or saved-as-PDF page carries today's whole card, so every closed Today row opens
+// just for printing. Afterwards exactly those rows close again; rows the reader opened stay open. Explore is untouched.
+let openedForPrint = [];
+window.addEventListener('beforeprint', () => {
+  openedForPrint = todayDisclosures.filter(details => !details.open);
+  openedForPrint.forEach(details => { details.open = true; });
+});
+window.addEventListener('afterprint', () => {
+  // The Remember this? toggle closes its response when the row closes, so the response is closed first, then the rows.
+  openedForPrint.slice().reverse().forEach(details => { details.open = false; });
+  openedForPrint = [];
 });
 // The page under the masthead stays unpainted until this first render (issue #70); finally shows it even if a render throws.
 try {
