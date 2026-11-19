@@ -33,7 +33,8 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
   // The root element starts with data-rendering, as in index.html; app.js removes it after the first render (issue #70).
   const root = Object.assign(new NodeStub('html'), { removeAttribute(key) { delete this.attributes[key]; } });
   root.setAttribute('data-rendering', '');
-  const context = vm.createContext({ Math: math, document: {
+  const windowEvents = {};
+  const context = vm.createContext({ Math: math, window: { addEventListener: (type, callback) => { windowEvents[type] = callback; } }, document: {
     documentElement: root,
     visibilityState: 'visible',
     get activeElement() { return NodeStub.active; },
@@ -64,7 +65,7 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
   vm.runInContext(read('SRC/app.js'), context);
   // Simulates the tab being hidden and shown again on a (possibly) different local calendar date.
   const setVisibility = state => { context.document.visibilityState = state; documentEvents.visibilitychange(); };
-  return { controls, cabinet, cabinetCount, article, today, count, cover, root, context, entries, documentEvents, setVisibility,
+  return { controls, cabinet, cabinetCount, article, today, count, cover, root, context, entries, documentEvents, windowEvents, setVisibility,
     setRandom: value => { random = value; }, setCalendar: value => { calendar = value; } };
 }
 function descendants(node, tag) {
@@ -1261,4 +1262,51 @@ test('first paint: placeholder copy stays unpainted until the first render, then
   const f = fixture();
   assert.equal(f.root.getAttribute('data-rendering'), undefined);
   assert.ok(f.today.children.length > 0, 'Today was rendered before the page is shown');
+});
+
+// Printing (issue #75): Today's whole card prints; the reader's own open/closed state comes back afterwards.
+test('printing opens every Today row and its response, then restores exactly the reader\'s own state', () => {
+  const f = fixture();
+  const rows = f.today.children.filter(node => node.className === 'beat-row');
+  const response = find(f.today, n => n.className === 'recall-response')[0];
+  assert.equal(rows.length, 3);
+  assert.deepEqual(rows.map(r => r.open), [true, false, false]);
+  rows[1].open = true; // the reader opened Look closer
+  const explore = find(f.article, n => n.tag === 'details').map(d => d.open);
+  f.windowEvents.beforeprint();
+  assert.deepEqual([...rows.map(r => r.open), response.open], [true, true, true, true]);
+  assert.deepEqual(find(f.article, n => n.tag === 'details').map(d => d.open), explore, 'Explore is untouched');
+  f.windowEvents.afterprint();
+  assert.deepEqual([...rows.map(r => r.open), response.open], [true, true, false, false]);
+  f.windowEvents.afterprint(); // a second afterprint changes nothing
+  assert.deepEqual([...rows.map(r => r.open), response.open], [true, true, false, false]);
+});
+
+test('printing after the date refresh opens the new Today card, not the old one', () => {
+  const f = fixture();
+  f.setVisibility('hidden');
+  f.setCalendar({ year: 2026, month: 10, day: 23 });
+  f.setVisibility('visible');
+  f.windowEvents.beforeprint();
+  const rows = f.today.children.filter(node => node.className === 'beat-row');
+  assert.deepEqual(rows.map(r => r.open), [true, true, true]);
+  f.windowEvents.afterprint();
+  assert.deepEqual(rows.map(r => r.open), [true, false, false]);
+});
+
+test('print stylesheet: ink on white cover, on-screen controls and Explore hidden, source addresses shown; one listener each', () => {
+  const css = read('SRC/styles.css');
+  const start = css.indexOf('@media print {');
+  assert.ok(start > 0, 'a print stylesheet exists');
+  const print = css.slice(start);
+  assert.match(print, /\.masthead, \.cover, \.masthead\[data-category\], \.cover\[data-category\] \{ background: none; color: var\(--ink\);/);
+  for (const hidden of ['.cover-cta', '.cover-drawing-slot', '.skip-link', '.beat-state', '.recall-response > summary', '.explore-surface']) assert.ok(print.includes(hidden), hidden + ' is hidden in print');
+  assert.match(print, /\.sources a::after \{ content: " — " attr\(href\)/);
+  assert.match(print, /break-inside: avoid/);
+  assert.match(print, /\.cover-question, \.cover-tease \{ opacity: 1 !important; transform: none !important; \}/, 'cover text prints at full strength mid-rise');
+  assert.match(print, /\.cover, \.cover\[data-category\] \{ min-height: 0;/, 'the phone first-screen cover height does not leave a blank page');
+  const app = read('SRC/app.js');
+  assert.equal((app.match(/addEventListener\('beforeprint'/g) || []).length, 1);
+  assert.equal((app.match(/addEventListener\('afterprint'/g) || []).length, 1);
+  assert.doesNotMatch(app, /localStorage|sessionStorage|setTimeout|setInterval|fetch\(/);
 });

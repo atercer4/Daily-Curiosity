@@ -265,3 +265,23 @@ article > .numbers-strip { margin: -8px 0 24px; background: var(--parchment); bo
   .plate .filled, .plate-label { fill: CanvasText !important; }
   .plate-label { stroke: Canvas !important; }
 }
+
+/* Print and "Save as PDF" (issue #75). Browsers drop backgrounds when printing, so the dark masthead and cover print as
+   ink on white instead of near-white text on white paper. app.js opens Today's rows for printing; the cabinet, Explore
+   and on-screen-only controls are left out, and each source prints its address. */
+@media print {
+  body { background: none; }
+  .masthead, .cover, .masthead[data-category], .cover[data-category] { background: none; color: var(--ink); --cover-muted: var(--muted); --cover-gold: var(--ink); }
+  .masthead { padding-block: 0 12px; min-height: 0; border-bottom: 1px solid var(--rule); }
+  .cover, .cover[data-category] { min-height: 0; padding-block: 24px 8px; }
+  .cover-question { font-size: 2rem; }
+  .cover-tease { color: var(--ink); margin-bottom: 8px; }
+  /* A page printed while the cover text is still rising prints it at full strength (important beats the rise). */
+  .cover-question, .cover-tease { opacity: 1 !important; transform: none !important; }
+  .cover-cta, .cover-drawing-slot, .skip-link, .beat-state, .beat-note, .recall-response > summary, .explore-surface, footer { display: none; }
+  .today-numbers { background: none; }
+  .page { padding-top: 16px; }
+  .beat-row > summary { min-height: 0; }
+  .figure, .plate, .numbers-strip { break-inside: avoid; }
+  .sources a::after { content: " — " attr(href); overflow-wrap: anywhere; color: var(--muted); }
+}
