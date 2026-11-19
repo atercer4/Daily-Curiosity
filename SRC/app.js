@@ -345,6 +345,11 @@ document.addEventListener('visibilitychange', () => {
   renderToday(date);
   if (focusInToday) (row >= 0 ? todayRowSummaries()[row] : todayArticle).focus({ preventScroll: true });
 });
-renderToday(readLocalCalendarDate());
-renderCabinet();
-surprise(false);
+// The page under the masthead stays unpainted until this first render (issue #70); finally shows it even if a render throws.
+try {
+  renderToday(readLocalCalendarDate());
+  renderCabinet();
+  surprise(false);
+} finally {
+  document.documentElement.removeAttribute('data-rendering');
+}

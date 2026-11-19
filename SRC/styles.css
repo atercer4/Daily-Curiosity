@@ -234,6 +234,11 @@ article > .numbers-strip { margin: -8px 0 24px; background: var(--parchment); bo
   .tile-surprise-button { min-height: 120px; padding: 16px 14px; }
 }
 
+/* First paint (issue #70): until app.js has drawn today's cover and card, the placeholder copy under the masthead
+   stays unpainted, so the page doesn't jump when the real question, tease and card arrive. The cover band keeps its
+   background. app.js removes data-rendering after the first render; without JavaScript a <noscript> style shows it all. */
+[data-rendering] :is(.cover-inner, .today-numbers, .page, .explore-surface, footer) { visibility: hidden; }
+
 /* Motion only for readers who have not asked to reduce it (DESIGN_SYSTEM.md rule 5). */
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
