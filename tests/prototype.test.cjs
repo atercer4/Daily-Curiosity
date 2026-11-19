@@ -30,7 +30,11 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
   math.random = () => random;
   const documentEvents = {};
   NodeStub.active = null;
+  // The root element starts with data-rendering, as in index.html; app.js removes it after the first render (issue #70).
+  const root = Object.assign(new NodeStub('html'), { removeAttribute(key) { delete this.attributes[key]; } });
+  root.setAttribute('data-rendering', '');
   const context = vm.createContext({ Math: math, document: {
+    documentElement: root,
     visibilityState: 'visible',
     get activeElement() { return NodeStub.active; },
     addEventListener: (type, callback) => { documentEvents[type] = callback; },
@@ -60,7 +64,7 @@ function fixture(initialRandom = 0, date = { year: 2026, month: 10, day: 22 }, e
   vm.runInContext(read('SRC/app.js'), context);
   // Simulates the tab being hidden and shown again on a (possibly) different local calendar date.
   const setVisibility = state => { context.document.visibilityState = state; documentEvents.visibilitychange(); };
-  return { controls, cabinet, cabinetCount, article, today, count, cover, context, entries, documentEvents, setVisibility,
+  return { controls, cabinet, cabinetCount, article, today, count, cover, root, context, entries, documentEvents, setVisibility,
     setRandom: value => { random = value; }, setCalendar: value => { calendar = value; } };
 }
 function descendants(node, tag) {
@@ -895,7 +899,10 @@ test('Today cover styling: night base before a card is chosen, AA text on night,
   const motionStart = css.indexOf('@media (prefers-reduced-motion: no-preference) {');
   assert.ok(motionStart > 0);
   const motionEnd = css.indexOf('\n}\n', motionStart);
-  const outside = css.slice(0, motionStart) + css.slice(motionEnd);
+  // The one exemption is the first-paint fail-open (issue #70, Codex review on PR #71): a zero-length visibility change
+  // after 3 s, not motion, which must apply for every reader. Exactly that declaration and keyframe are exempt.
+  const failOpen = ['animation: first-paint-fail-open 0s 3s forwards;', '@keyframes first-paint-fail-open { to { visibility: visible; } }'];
+  const outside = failOpen.reduce((text, exempt) => text.replace(exempt, ''), css.slice(0, motionStart) + css.slice(motionEnd));
   assert.doesNotMatch(outside, /animation|@keyframes|transition|scroll-behavior/);
   assert.match(css.slice(motionStart, motionEnd), /scroll-behavior: smooth/);
   assert.match(css, /@media \(forced-colors: active\)[\s\S]*\.cover-cta/);
@@ -1227,4 +1234,31 @@ test('focus outside Today is left alone by the date refresh', () => {
   f.setVisibility('visible');
   assert.equal(f.context.document.activeElement, chip);
   assert.notEqual(f.today.focused, true);
+});
+
+test('first paint: placeholder copy stays unpainted until the first render, then data-rendering is removed (issue #70)', () => {
+  const html = read('index.html'), css = read('SRC/styles.css'), app = read('SRC/app.js');
+  const hidden = '[data-rendering] :is(.cover-inner, .today-numbers, .page, .explore-surface, footer)';
+  assert.match(html, /<html lang="en" data-rendering>/);
+  const rule = hidden + ' { visibility: hidden; animation: first-paint-fail-open 0s 3s forwards; }';
+  assert.ok(css.includes(rule), 'only the content under the masthead is hidden; the cover band keeps its background');
+  // Fail-open without JavaScript (Codex review on PR #71): if a script fails to load or throws before the first render,
+  // the content shows itself after 3 s. Outside the reduced-motion block, so it applies for every reader.
+  assert.ok(css.includes('@keyframes first-paint-fail-open { to { visibility: visible; } }'));
+  assert.ok(css.indexOf(rule) < css.indexOf('@media (prefers-reduced-motion'), 'not inside a motion-only media block');
+  // Without JavaScript nothing removes the attribute, so a <noscript> style in the head shows the page as before.
+  assert.ok(html.includes('<noscript><style>' + hidden + ' { visibility: visible; }</style></noscript>'));
+  for (const selector of ['.cover-inner', 'today-numbers', 'class="page"', 'explore-surface', '<footer']) assert.ok(html.includes(selector), selector);
+  assert.doesNotMatch(css.replace(/\/\*[\s\S]*?\*\//g, '').replace(rule, ''), /data-rendering/, 'one hiding rule only');
+  // The attribute is removed in a finally block, so a render that throws can never leave the page hidden.
+  assert.match(app, /\} finally \{\n  document\.documentElement\.removeAttribute\('data-rendering'\);\n\}\n?$/);
+  // One font is preloaded: Source Sans 3 600 sets the cover metadata line, which re-wraps on phones when it swaps in.
+  // It must be a self-hosted @font-face file and carry crossorigin, or the browser fetches it twice.
+  const preloads = [...html.matchAll(/<link rel="preload"[^>]*>/g)].map(m => m[0]);
+  assert.deepEqual(preloads, ['<link rel="preload" href="SRC/fonts/source-sans-3-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>']);
+  assert.ok(css.includes('url("fonts/source-sans-3-latin-600-normal.woff2")'), 'the preloaded file is the one the stylesheet uses');
+  assert.match(css, /\.cover-meta \{[^}]*font-weight: 600;/);
+  const f = fixture();
+  assert.equal(f.root.getAttribute('data-rendering'), undefined);
+  assert.ok(f.today.children.length > 0, 'Today was rendered before the page is shown');
 });
