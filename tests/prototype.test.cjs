@@ -670,6 +670,20 @@ test('docs/RELEASE_NOTES.md records the Phase 1 baseline, git-era changes, limit
   assert.match(doc, new RegExp(sourceCount + ' source links'));
 });
 
+test('README describes the current product: links every governing doc, lists the three checks, and hard-codes no counts that go stale (issue #68)', () => {
+  const readme = read('README.md');
+  for (const doc of ['REVIEW_PROTOCOL', 'STANDING_DIRECTION', 'DESIGN_SYSTEM', 'CONTENT', 'RECALL', 'QA', 'ROLLBACK', 'RELEASE_NOTES'])
+    assert.match(readme, new RegExp('\\]\\(docs\\/' + doc + '\\.md\\)'), doc);
+  for (const command of ['node tests/prototype.test.cjs', 'node --check', 'node tests/render-check.cjs']) assert.ok(readme.includes(command), command);
+  assert.match(readme, /https:\/\/atercer4\.github\.io\/Daily-Curiosity\//);
+  for (const label of ['The idea', 'Look closer', 'Remember this?', 'The cabinet of curiosities', 'Take me somewhere unexpected']) assert.ok(readme.includes(label), label);
+  // Library, source and test counts live in RELEASE_NOTES and CONTENT.md (kept in sync by tests), not here.
+  assert.doesNotMatch(readme, /\b\d+\/\d+ passed\b/, 'no hard-coded test tallies');
+  // "the original 20" is fixed history and allowed; any other count of cards, sources or visuals is not.
+  assert.doesNotMatch(readme, /(?<!original )\b\d+ (source links|sources|cards?|visuals|explanatory visuals)\b/, 'no hard-coded library counts');
+  assert.doesNotMatch(readme, /Concept A v6|Pause and recall|snapshots?\//, 'no stale v6 description');
+});
+
 test('the app and daily rotation generalize to N cards: two synthetic cards appended (test-only) are fully reachable', () => {
   const baseFixture = fixture(), base = Array.from(baseFixture.entries);
   const baseIds = Array.from(vm.runInContext('DAILY_CARD_IDS', baseFixture.context));
