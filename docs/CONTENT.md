@@ -168,10 +168,11 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 
 - ID: `bicycle-gears`; category: Engineering & Technology.
 - Subject: Machines / transportation.
-- Visual: Omitted: the example explains the ratio directly without adding a second quantitative graphic.
-- [Exploratorium — Science of Cycling: Drives & Gears](https://annex.exploratorium.edu/cycling/gears1.html)
+- Visual: Plate (diagram), in Look closer: two chain drives stacked, each a pedal chainring joined by a chain to a rear sprocket. Above, “Higher gear”: the chainring is drawn twice the sprocket's radius (“Twice the rear’s teeth”, “2 turns per pedal turn”). Below, “Lower gear: larger rear sprocket”: the same chainring with a larger sprocket (“Same chainring”, “Fewer turns per pedal turn”). Drawn in proportion; no numbers strip, no cover drawing. It shows both set-ups at once, which the prose asks readers to hold in mind.
+- [Exploratorium — Science of Cycling: History of Drives & Gears](https://annex.exploratorium.edu/cycling/gears1.html)
 - [Exploratorium — Science of Cycling: Pedaling & Cadence](https://annex.exploratorium.edu/cycling/gears3.html)
 - [Explain that Stuff — Gears](https://www.explainthatstuff.com/gears.html)
+- Register-approved v2 (Draft Hash `a4890ef08a2f40af85f5a1b23e1b5e0fd7e77d052112e26a6df6878549778e99`; Claude PASS 20 November 2026 and ChatGPT PASS 20 November 2026), coded in issue #79: adds the chain-drive plate; the tease drops “and the climb still takes effort”; the last core sentence now reads “but they cannot create energy” (Explain that Stuff); the first two Deep Dive sentences use Exploratorium's count-the-teeth wording; source 1 is relabelled to the page title. Recall unchanged.
 
 ### 11. The picture that prints backward
 
@@ -303,7 +304,7 @@ Researched and written by the build agent (Claude); the Drive research inbox had
 
 ## Visual scope
 
-Two retained local HTML/CSS explanatory visuals, both inside the optional Deep Dive: Venus duration bars (117, 225, 243 Earth days on one zero-based scale) and woodcut reversal (reversed block R, normal paper R). Both retain relationship-based text alternatives and captions. Since issue #27, `gps-relativity` adds a third: a register-approved orbit plate in The idea, with a numbers strip and a cover drawing. No new visual assets, stock images, AI images, decorative diagrams, or external image requests. The other 21 cards intentionally omit visuals for the reasons above.
+Two retained local HTML/CSS explanatory visuals, both inside the optional Deep Dive: Venus duration bars (117, 225, 243 Earth days on one zero-based scale) and woodcut reversal (reversed block R, normal paper R). Both retain relationship-based text alternatives and captions. Since issue #27, `gps-relativity` adds a third: a register-approved orbit plate in The idea, with a numbers strip and a cover drawing. Since issue #79, `bicycle-gears` adds a fourth: a register-approved chain-drive plate in Look closer. No new visual assets, stock images, AI images, decorative diagrams, or external image requests. The other 20 cards intentionally omit visuals for the reasons above.
 
 ## Source-read limitations and independent checks
 

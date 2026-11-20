@@ -319,20 +319,20 @@ const DAILY_CURIOSITIES = [
     "category": "Engineering & Technology",
     "title": "An easier climb costs more turns",
     "question": "Why does a lower gear make {the same hill} feel easier?",
-    "tease": "The hill has not changed, and the climb still takes effort. What changes is what each turn of the pedals asks of you.",
+    "tease": "The hill has not changed. What changes is what each turn of the pedals asks of you.",
     "hook": "Shifting down on a bicycle makes a hill feel easier, but the hill has not changed. The gears change what each pedal turn asks of you.",
     "core": [
       "A bicycle chain connects the front chainring to a rear sprocket. With a smaller front chainring or a larger rear sprocket, each pedal turn drives the rear wheel through fewer turns. This lower gear turns the same pedal push into more turning force (torque) at the rear wheel.",
-      "The tradeoff is distance. You need more pedal revolutions to cover the same ground. A higher gear reverses that exchange, carrying you farther per turn while demanding more pedal force under comparable conditions. Gears let the rider choose a useful balance between force and pedaling speed; they do not remove the effort of climbing."
+      "The tradeoff is distance. You need more pedal revolutions to cover the same ground. A higher gear reverses that exchange, carrying you farther per turn while demanding more pedal force under comparable conditions. Gears let the rider choose a useful balance between force and pedaling speed, but they cannot create energy."
     ],
     "deep": [
-      "Count the teeth engaged over one complete turn of the front chainring. That many links pass the rear sprocket. If the front has twice as many teeth as the rear, the rear sprocket turns twice for one pedal revolution. This example assumes the usual chain drive with the rear sprocket driving the wheel.",
+      "Count the teeth on the front chainring and on the rear sprocket. Each pedal turn moves the chain around all of the chainring’s teeth. If the front has twice as many teeth as the rear, the rear sprocket turns twice for one pedal revolution. This example assumes the usual chain drive with the rear sprocket driving the wheel.",
       "Now make the rear sprocket larger while keeping the front one unchanged. The same length of moving chain takes it through fewer turns. The wheel therefore travels less far per pedal revolution, which is the distance side of the low-gear tradeoff.",
       "Gears trade force for speed: more force comes with less speed, and the reverse. This is why a useful gear for a steep climb can feel frustrating on level ground: the rider may be turning the pedals quickly while advancing only a short distance. The mechanism has not changed; the demands of the journey have."
     ],
     "sources": [
       {
-        "label": "Exploratorium — Science of Cycling: Drives & Gears",
+        "label": "Exploratorium — Science of Cycling: History of Drives & Gears",
         "url": "https://annex.exploratorium.edu/cycling/gears1.html"
       },
       {
@@ -347,6 +347,188 @@ const DAILY_CURIOSITIES = [
     "recall": {
       "prompt": "What do you give up when a lower bicycle gear makes pedaling easier?",
       "reveal": "The wheel travels less far per pedal turn. Each pedal push needs less force, but you need more pedal revolutions to cover the same ground."
+    },
+    "visual": {
+      "type": "plate",
+      "viewBox": "0 0 400 440",
+      "alt": "Two chain drives, one above the other, each with the pedal chainring on the left joined by a chain to a rear sprocket on the right. In the higher gear above, the chainring has twice the rear sprocket’s teeth, so the rear sprocket turns twice for each pedal turn. In the lower gear below, the chainring is the same but the rear sprocket is larger, so it turns fewer times for each pedal turn and the wheel travels less far.",
+      "caption": "Same chain, same chainring. A larger rear sprocket turns fewer times for each pedal turn, so the wheel travels less far: a lower gear.",
+      "shapes": [
+        {
+          "el": "circle",
+          "cx": 105,
+          "cy": 110,
+          "r": 52,
+          "tone": "ink"
+        },
+        {
+          "el": "circle",
+          "cx": 290,
+          "cy": 110,
+          "r": 26,
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 112.3,
+          "y1": 58.5,
+          "x2": 293.7,
+          "y2": 84.3,
+          "tone": "muted"
+        },
+        {
+          "el": "line",
+          "x1": 112.3,
+          "y1": 161.5,
+          "x2": 293.7,
+          "y2": 135.7,
+          "tone": "muted"
+        },
+        {
+          "el": "circle",
+          "cx": 105,
+          "cy": 110,
+          "r": 4,
+          "tone": "ink",
+          "fill": true
+        },
+        {
+          "el": "circle",
+          "cx": 290,
+          "cy": 110,
+          "r": 4,
+          "tone": "accent",
+          "fill": true
+        },
+        {
+          "el": "line",
+          "x1": 105,
+          "y1": 110,
+          "x2": 81,
+          "y2": 144,
+          "tone": "ink"
+        },
+        {
+          "el": "rect",
+          "x": 69,
+          "y": 144,
+          "width": 24,
+          "height": 7,
+          "tone": "ink"
+        },
+        {
+          "el": "circle",
+          "cx": 105,
+          "cy": 345,
+          "r": 52,
+          "tone": "ink"
+        },
+        {
+          "el": "circle",
+          "cx": 290,
+          "cy": 345,
+          "r": 40,
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 108.4,
+          "y1": 293.1,
+          "x2": 292.6,
+          "y2": 305.1,
+          "tone": "muted"
+        },
+        {
+          "el": "line",
+          "x1": 108.4,
+          "y1": 396.9,
+          "x2": 292.6,
+          "y2": 384.9,
+          "tone": "muted"
+        },
+        {
+          "el": "circle",
+          "cx": 105,
+          "cy": 345,
+          "r": 4,
+          "tone": "ink",
+          "fill": true
+        },
+        {
+          "el": "circle",
+          "cx": 290,
+          "cy": 345,
+          "r": 4,
+          "tone": "accent",
+          "fill": true
+        },
+        {
+          "el": "line",
+          "x1": 105,
+          "y1": 345,
+          "x2": 81,
+          "y2": 379,
+          "tone": "ink"
+        },
+        {
+          "el": "rect",
+          "x": 69,
+          "y": 379,
+          "width": 24,
+          "height": 7,
+          "tone": "ink"
+        }
+      ],
+      "labels": [
+        {
+          "x": 10,
+          "y": 24,
+          "text": "Higher gear"
+        },
+        {
+          "x": 105,
+          "y": 186,
+          "text": "Chainring",
+          "anchor": "middle"
+        },
+        {
+          "x": 290,
+          "y": 186,
+          "text": "Rear sprocket",
+          "anchor": "middle"
+        },
+        {
+          "x": 10,
+          "y": 210,
+          "text": "Twice the rear’s teeth",
+          "note": true
+        },
+        {
+          "x": 395,
+          "y": 210,
+          "text": "2 turns per pedal turn",
+          "anchor": "end",
+          "note": true
+        },
+        {
+          "x": 10,
+          "y": 258,
+          "text": "Lower gear: larger rear sprocket"
+        },
+        {
+          "x": 10,
+          "y": 427,
+          "text": "Same chainring",
+          "note": true
+        },
+        {
+          "x": 395,
+          "y": 427,
+          "text": "Fewer turns per pedal turn",
+          "anchor": "end",
+          "note": true
+        }
+      ]
     }
   },
   {
