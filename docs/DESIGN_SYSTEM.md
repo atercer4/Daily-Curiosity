@@ -37,8 +37,9 @@ Build these as one cover component with four themes, not four separate designs.
    - all three are native disclosures that start closed (Today may open The idea by default).
 4. **The cabinet of curiosities** (Explore):
    - a grid of tiles, each with an icon, category, title, the hook's first sentence and "Look inside →";
-   - category filter chips ("All" plus the four categories);
-   - a dark **"?" tile**: "Take me somewhere unexpected" (Surprise Me);
+   - Explore opens on **Featured** (issue #82, owner decision 20 November 2026): one preview per category, its first card in library order, with a heavier accent rule and an outlined "Explore <category> →"; the rest of a category appears only after the reader chooses it;
+   - chips ("Featured" plus the four categories) switch the view; "Featured" returns to the four previews;
+   - a dark **"?" tile**: "Take me somewhere unexpected" (Surprise Me), the separate fifth option (a full-width band under the four previews);
    - opening a tile shows the full card below the grid;
    - Today stays independent of Explore.
 
