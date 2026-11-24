@@ -77,18 +77,22 @@ function find(node, predicate) {
 const title = f => find(f.article, n => n.className === 'card-title')[0].textContent;
 const headingLevels = article => find(article, n => /^h[1-6]$/.test(n.tag)).map(n => [Number(n.tag[1]), n.textContent]);
 const words = text => text.trim().split(/\s+/u).length;
-// The cabinet (issue #24; Direction F order restored in issue #45): controls are the filter chips (All + categories);
-// the last grid item is the "?" tile.
+// The cabinet (issue #24; Direction F order restored in issue #45; featured view in issue #82): controls are the
+// chips ("Featured" + categories); the last grid item is the "?" tile.
 const surpriseButton = f => f.cabinet.children[f.cabinet.children.length - 1].children[0];
 const tiles = f => f.cabinet.children.slice(0, -1);
 const tileFor = (f, id) => tiles(f).find(t => find(t, n => n.className === 'tile-title')[0].id === 'tile-title-' + id);
 const tileButton = (f, id) => find(tileFor(f, id), n => n.tag === 'button')[0];
 const filterButton = (f, name) => f.controls.children.find(n => n.filter === name);
-// A chip's accessible name: the full category (aria-label) or its visible text ("All").
+// The landing view's per-category "Explore <category> →" button, the last button of a featured tile.
+const exploreButton = item => find(item, n => n.className === 'tile-explore')[0];
+// The featured card of each category: its first card in library order.
+const featuredIds = f => categories.map(c => Array.from(f.entries).find(e => e.category === c).id);
+// A chip's accessible name: the full category (aria-label) or its visible text ("Featured").
 const chipName = n => n.attributes['aria-label'] || n.textContent;
-// Opens a card the way a reader does: through its tile, choosing "All" first if a filter hides it.
+// Opens a card the way a reader does: through its tile, choosing its category first if the grid doesn't show it.
 function selectEntry(f, index) {
-  if (!tileFor(f, f.entries[index].id)) filterButton(f, 'All').events.click();
+  if (!tileFor(f, f.entries[index].id)) filterButton(f, f.entries[index].category).events.click();
   tileButton(f, f.entries[index].id).events.click();
 }
 // Opens a card through the "?" tile by steering Math.random to its slot.
@@ -132,9 +136,9 @@ test('at least twenty sourced cards with unique IDs and titles, balanced categor
   });
 });
 
-test('five native filter chips expose one selected state; the "?" tile closes the grid; initial hook without a gate', () => {
+test('five native chips expose one selected state; the "?" tile closes the grid; initial hook without a gate', () => {
   const f = fixture();
-  assert.deepEqual(f.controls.children.map(chipName), ['All', ...categories]);
+  assert.deepEqual(f.controls.children.map(chipName), ['Featured', ...categories]);
   // Chips show a short name (part of the accessible name) and a decorative category dot.
   f.controls.children.slice(1).forEach((chip, i) => {
     const [dot, label] = chip.children;
@@ -160,9 +164,10 @@ test('five native filter chips expose one selected state; the "?" tile closes th
 
 test('every tile shows category, number, title, the hook\'s first sentence and a native "Look inside" button', () => {
   const f = fixture();
-  assert.equal(tiles(f).length, f.entries.length, 'one tile per card under "All"');
+  const all = categories.flatMap(c => { filterButton(f, c).events.click(); return tiles(f); });
+  assert.equal(all.length, f.entries.length, 'one tile per card across the four categories');
   f.entries.forEach((entry, i) => {
-    const item = tiles(f)[i];
+    const item = all.find(t => t.children[2].textContent === entry.title);
     assert.equal(item.tag, 'li');
     assert.equal(item.attributes['data-category'], { 'Science & Nature': 'science', 'Engineering & Technology': 'engineering', 'Arts & Culture': 'arts', 'History & Society': 'history' }[entry.category]);
     const [head, meta, name, hook, button] = item.children;
@@ -179,24 +184,27 @@ test('every tile shows category, number, title, the hook\'s first sentence and a
     assert.equal(button.children[1].attributes['aria-hidden'], 'true');
     assert.equal(button.attributes['aria-labelledby'], button.id + ' ' + name.id, 'accessible name is "Look inside <title>"');
   });
-  const ids = tiles(f).flatMap(t => find(t, n => n.id).map(n => n.id));
+  const ids = all.flatMap(t => find(t, n => n.id).map(n => n.id));
   assert.equal(new Set(ids).size, ids.length, 'tile ids are unique');
+  filterButton(f, 'Featured').events.click();
+  const featuredDomIds = tiles(f).flatMap(t => find(t, n => n.id).map(n => n.id));
+  assert.equal(new Set(featuredDomIds).size, featuredDomIds.length, 'featured tile ids are unique');
   assert.equal(f.context.firstSentence('One. Two.'), 'One.');
   assert.equal(f.context.firstSentence('He said “Go.” Then left.'), 'He said “Go.”');
   assert.equal(f.context.firstSentence('No full stop'), 'No full stop');
 });
 
-test('every card is reachable from the grid and from each filter; opening a tile moves focus and starts closed', () => {
+test('every card is reachable through its category; opening a tile moves focus and starts closed', () => {
   const f = fixture();
-  ['All', ...categories].forEach(filter => {
+  ['Featured', ...categories].forEach(filter => {
     const chip = filterButton(f, filter);
     chip.events.click();
     assert.equal(chip.attributes['aria-pressed'], 'true');
     assert.equal(f.controls.children.filter(n => n.attributes['aria-pressed'] === 'true').length, 1);
-    const expected = f.entries.filter(e => filter === 'All' || e.category === filter);
+    const expected = filter === 'Featured' ? featuredIds(f).map(id => f.entries.find(e => e.id === id)) : f.entries.filter(e => e.category === filter);
     assert.deepEqual(tiles(f).map(t => t.children[2].textContent), Array.from(expected, e => e.title), filter);
-    assert.equal(surpriseButton(f).children[1].textContent, 'Take me somewhere unexpected', 'the "?" tile stays under every filter');
-    assert.equal(f.cabinetCount.textContent, filter === 'All' ? `${f.entries.length} curiosities` : `${expected.length} of ${f.entries.length} curiosities · ${filter}`);
+    assert.equal(surpriseButton(f).children[1].textContent, 'Take me somewhere unexpected', 'the "?" tile stays in every view');
+    assert.equal(f.cabinetCount.textContent, filter === 'Featured' ? `One from each category · ${f.entries.length} curiosities in all` : `${expected.length} of ${f.entries.length} curiosities · ${filter}`);
     expected.forEach(entry => {
       descendants(f.article, 'details').forEach(n => { n.open = true; });
       f.article.focused = undefined;
@@ -204,7 +212,7 @@ test('every card is reachable from the grid and from each filter; opening a tile
       assert.equal(title(f), entry.title);
       assertClosed(f.article);
       assert.equal(f.article.focused, true, 'focus moves to the opened card');
-      assert.equal(chip.attributes['aria-pressed'], 'true', 'opening a tile keeps the filter');
+      assert.equal(chip.attributes['aria-pressed'], 'true', 'opening a tile keeps the view');
     });
   });
 });
@@ -214,6 +222,58 @@ test('counts come from the library size and filters split it exactly', () => {
   const sizes = categories.map(c => { filterButton(f, c).events.click(); return tiles(f).length; });
   assert.equal(sizes.reduce((a, b) => a + b, 0), f.entries.length);
   assert.doesNotMatch(read('SRC/app.js'), /\b(five|twenty|Twenty|Five)\b/);
+});
+
+// Issue #82: Explore opens on four featured previews, one per category, plus the "?" tile.
+test('Explore opens on exactly four featured previews, one per category, each with "Explore <category>"', () => {
+  const f = fixture();
+  assert.equal(f.cabinet.attributes['data-view'], 'featured');
+  assert.equal(tiles(f).length, 4, 'exactly four previews, not the full library');
+  assert.ok(tiles(f).length < f.entries.length);
+  assert.deepEqual(tiles(f).map(t => t.attributes['data-category']), ['science', 'engineering', 'arts', 'history']);
+  assert.deepEqual(tiles(f).map(t => find(t, n => n.className === 'tile-title')[0].id), featuredIds(f).map(id => 'tile-title-' + id));
+  tiles(f).forEach((item, i) => {
+    assert.equal(item.className, 'tile tile-featured');
+    const button = exploreButton(item);
+    const short = ['Science', 'Engineering', 'Arts', 'History'][i];
+    assert.equal(button.tag, 'button'); assert.equal(button.type, 'button');
+    assert.equal(button.children[0].textContent, 'Explore ' + short);
+    assert.equal(button.children[1].attributes['aria-hidden'], 'true');
+    const size = f.entries.filter(e => e.category === categories[i]).length;
+    assert.equal(button.attributes['aria-label'], `Explore ${categories[i]}: all ${size} curiosities`);
+    assert.ok(button.attributes['aria-label'].startsWith(button.children[0].textContent), 'visible text starts the accessible name');
+  });
+  assert.equal(surpriseButton(f).children[1].textContent, 'Take me somewhere unexpected', 'Surprise Me is a separate fifth option');
+  // Category views have no "Explore" buttons and plain tiles.
+  categories.forEach(c => {
+    filterButton(f, c).events.click();
+    assert.equal(f.cabinet.attributes['data-view'], 'category');
+    assert.ok(tiles(f).every(t => t.className === 'tile' && !exploreButton(t)));
+  });
+});
+
+test('"Explore <category>" shows that category, moves focus to its chip, and "Featured" returns to the four previews', () => {
+  categories.forEach((category, i) => {
+    const f = fixture(0.5);
+    const open = title(f), today = [...f.today.children], todayTitle = find(f.today, n => n.className === 'card-title')[0].textContent;
+    NodeStub.active = null;
+    exploreButton(tiles(f)[i]).events.click();
+    const chip = filterButton(f, category);
+    assert.equal(chip.attributes['aria-pressed'], 'true');
+    assert.equal(NodeStub.active, chip, 'keyboard focus moves to the selected chip, not lost with the replaced tile');
+    assert.deepEqual(tiles(f).map(t => t.children[2].textContent), Array.from(f.entries.filter(e => e.category === category), e => e.title));
+    assert.equal(title(f), open, 'choosing a category does not replace the open card');
+    assert.deepEqual(f.today.children, today, 'Today is untouched');
+    assert.equal(find(f.today, n => n.className === 'card-title')[0].textContent, todayTitle);
+    // Every card in the category opens from here.
+    f.entries.filter(e => e.category === category).forEach(e => { tileButton(f, e.id).events.click(); assert.equal(title(f), e.title); });
+    // Return to the landing view.
+    filterButton(f, 'Featured').events.click();
+    assert.equal(filterButton(f, 'Featured').attributes['aria-pressed'], 'true');
+    assert.equal(tiles(f).length, 4);
+    assert.ok(tiles(f).every(t => exploreButton(t)));
+    assert.deepEqual(f.today.children, today, 'Today is untouched after returning');
+  });
 });
 
 test('initial Surprise Me covers every card bin, including their boundaries', () => {
@@ -226,7 +286,7 @@ test('initial Surprise Me covers every card bin, including their boundaries', ()
     for (const random of [lowest(i), (i + 1) / n - Number.EPSILON]) {
       const f = fixture(random);
       assert.equal(title(f), f.entries[i].title);
-      assert.equal(f.controls.children[0].attributes['aria-pressed'], 'true', '"All" is selected on load');
+      assert.equal(f.controls.children[0].attributes['aria-pressed'], 'true', '"Featured" is selected on load');
     }
   }
 });
@@ -300,14 +360,14 @@ test('the three reading rows open independently; closing Remember this? also clo
   assert.equal(deep.open, true);
 });
 
-test('a new page instance forgets the filter and starts on "All" with a random card', () => {
+test('a new page instance forgets the view and starts on "Featured" with a random card', () => {
   const first = fixture();
   first.controls.children[3].events.click();
   assert.equal(first.controls.children[3].attributes['aria-pressed'], 'true');
   const n = first.entries.length;
   const reloaded = fixture((n - 0.5) / n);
   assert.equal(reloaded.controls.children[0].attributes['aria-pressed'], 'true');
-  assert.equal(tiles(reloaded).length, n);
+  assert.equal(tiles(reloaded).length, categories.length);
   assert.equal(title(reloaded), reloaded.entries[n - 1].title);
   assertClosed(reloaded.article);
 });
@@ -341,8 +401,9 @@ test('the two original visuals still render; optional absence is safe and text a
 
 test('cabinet subtitle and chip group label; each reading row shows a label and an italic note (Direction F)', () => {
   const html = read('index.html');
-  assert.match(html, /<span data-library-count>All<\/span> small mysteries, each with a sourced answer\. Open whichever one tugs at you\./);
-  assert.match(html, /id="categories" class="categories" role="group" aria-label="Filter the cabinet by category"/);
+  assert.match(html, /<span data-library-count>All<\/span> small mysteries, each with a sourced answer\. Start with one from each category, or choose a category to see them all\./);
+  assert.match(html, /id="categories" class="categories" role="group" aria-label="Choose what the cabinet shows"/);
+  assert.match(html, /id="cabinet-count" class="cabinet-count" aria-live="polite"/);
   assert.ok(html.indexOf('id="explore-title"') < html.indexOf('id="categories"'));
   assert.doesNotMatch(html, /class="premise"|What are you curious about today\?|01 \/ Hook/);
   const { article } = fixture();
@@ -734,7 +795,7 @@ test('the app and daily rotation generalize to N cards: two synthetic cards appe
     const seen = tiles(g).map(t => { find(t, n => n.tag === 'button')[0].events.click(); return title(g); });
     assert.deepEqual(seen, Array.from(expected), category);
   });
-  assert.equal(fixture(0, undefined, extra).cabinetCount.textContent, n + ' curiosities');
+  assert.equal(fixture(0, undefined, extra).cabinetCount.textContent, `One from each category · ${n} curiosities in all`);
   categories.forEach(c => assert.equal(f.entries.filter(e => e.category === c).length, baseCount(c) + extra.filter(e => e.category === c).length, c));
   // Appended cards render the same outline as the originals.
   selectEntry(f, n - 1);
@@ -986,7 +1047,9 @@ test('tile icons: one original inline-SVG line icon per category, decorative (ar
     assert.match(svg, /xmlns='http:\/\/www\.w3\.org\/2000\/svg'/);
   }
   const f = fixture();
-  tiles(f).forEach((item, i) => {
+  const all = categories.flatMap(c => { filterButton(f, c).events.click(); return tiles(f); });
+  all.forEach(item => {
+    const i = f.entries.findIndex(e => 'tile-title-' + e.id === item.children[2].id);
     const icon = item.children[0].children[0];
     assert.equal(icon.tag, 'span');
     assert.equal(icon.className, 'tile-icon');
@@ -994,6 +1057,7 @@ test('tile icons: one original inline-SVG line icon per category, decorative (ar
     assert.equal(icon.textContent, undefined, 'no text inside the icon');
     assert.equal(item.attributes['data-category'], themeKeys[f.entries[i].category]);
   });
+  assert.equal(all.length, f.entries.length);
   assert.equal(find(surpriseButton(f), n => n.className === 'tile-icon').length, 0, 'the "?" tile keeps its own mark');
 });
 

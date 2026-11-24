@@ -5,11 +5,13 @@ const cabinet = document.querySelector('#cabinet');
 const cabinetCount = document.querySelector('#cabinet-count');
 const article = document.querySelector('#curiosity');
 const todayArticle = document.querySelector('#today-curiosity');
-// The cabinet of curiosities (DESIGN_SYSTEM.md section 2.4): "All" plus the four categories filter the grid.
-const filters = ['All', ...CATEGORIES];
+// The cabinet of curiosities (DESIGN_SYSTEM.md section 2.4, issue #82): Explore opens on "Featured", one preview
+// per category; choosing a category shows all of its cards. "Featured" returns to the four previews.
+const FEATURED = 'Featured';
+const filters = [FEATURED, ...CATEGORIES];
 // Category accent keys for CSS (data-category); the structure is identical for every category.
 const categoryKeys = { 'Science & Nature': 'science', 'Engineering & Technology': 'engineering', 'Arts & Culture': 'arts', 'History & Society': 'history' };
-let selectedFilter = 'All';
+let selectedFilter = FEATURED;
 let currentIndex = -1;
 
 function element(tag, text, className) {
@@ -260,7 +262,13 @@ surpriseButton.append(mark, element('span', 'Take me somewhere unexpected', 'til
 surpriseButton.addEventListener('click', () => surprise());
 surpriseTile.append(surpriseButton);
 
-function tile(index) {
+// Chips and featured tiles show a short name; accessible names keep the full category.
+const shortNames = { 'Science & Nature': 'Science', 'Engineering & Technology': 'Engineering', 'Arts & Culture': 'Arts', 'History & Society': 'History' };
+// The featured card of each category is its first card in library order, so the landing view is stable.
+const featuredIndexes = () => CATEGORIES.map(category => DAILY_CURIOSITIES.findIndex(entry => entry.category === category)).filter(i => i !== -1);
+
+// featured: the landing-view tile also offers "Explore <category> →", which opens that category's cards.
+function tile(index, featured = false) {
   const entry = DAILY_CURIOSITIES[index];
   const item = element('li', null, 'tile');
   item.setAttribute('data-category', categoryKeys[entry.category]);
@@ -281,33 +289,50 @@ function tile(index) {
   const head = element('div', null, 'tile-head');
   head.append(icon, element('span', cardNumber(index), 'tile-number'));
   item.append(head, element('p', entry.category, 'tile-meta'), name, element('p', firstSentence(entry.hook), 'tile-hook'), open);
+  if (featured) {
+    item.className = 'tile tile-featured';
+    const explore = element('button', null, 'tile-explore');
+    explore.type = 'button';
+    explore.id = 'tile-explore-' + categoryKeys[entry.category];
+    const more = element('span', ' →');
+    more.setAttribute('aria-hidden', 'true');
+    explore.append(element('span', 'Explore ' + shortNames[entry.category]), more);
+    // The visible text starts the accessible name; the full category and its size complete it.
+    const size = DAILY_CURIOSITIES.filter(e => e.category === entry.category).length;
+    explore.setAttribute('aria-label', `Explore ${entry.category}: all ${size} curiosities`);
+    explore.addEventListener('click', () => selectFilter(entry.category, true));
+    item.append(explore);
+  }
   return item;
 }
 
 function renderCabinet() {
-  const shown = DAILY_CURIOSITIES.map((entry, i) => selectedFilter === 'All' || entry.category === selectedFilter ? i : -1).filter(i => i !== -1);
+  const featured = selectedFilter === FEATURED;
+  const shown = featured ? featuredIndexes() : DAILY_CURIOSITIES.map((entry, i) => entry.category === selectedFilter ? i : -1).filter(i => i !== -1);
   cabinet.replaceChildren();
-  cabinet.append(...shown.map(tile), surpriseTile);
+  cabinet.append(...shown.map(index => tile(index, featured)), surpriseTile);
+  cabinet.setAttribute('data-view', featured ? 'featured' : 'category');
   const total = DAILY_CURIOSITIES.length;
   surpriseCount.textContent = `One of ${total} ideas, chosen at random.`;
-  cabinetCount.textContent = selectedFilter === 'All' ? `${total} curiosities` : `${shown.length} of ${total} curiosities · ${selectedFilter}`;
-  [...categoryNavigation.children].forEach((button, i) => {
+  cabinetCount.textContent = featured ? `One from each category · ${total} curiosities in all` : `${shown.length} of ${total} curiosities · ${selectedFilter}`;
+  [...categoryNavigation.children].forEach(button => {
     button.setAttribute('aria-pressed', String(button.filter === selectedFilter));
   });
 }
 
-// Filtering changes only the grid; the open Explore card and Today stay as they are.
-function selectFilter(filter) {
+// Choosing a view changes only the grid; the open Explore card and Today stay as they are. A featured tile's
+// "Explore" button is replaced by the new grid, so keyboard focus moves to the chip that is now selected.
+function selectFilter(filter, moveFocus = false) {
   selectedFilter = filter;
   renderCabinet();
+  if (moveFocus) [...categoryNavigation.children].find(button => button.filter === filter).focus();
 }
 
 // Chips show a short name and the category's dot; the accessible name keeps the full category.
-const shortNames = { 'Science & Nature': 'Science', 'Engineering & Technology': 'Engineering', 'Arts & Culture': 'Arts', 'History & Society': 'History' };
 filters.forEach(filter => {
   const button = element('button', null, 'chip');
   button.type = 'button';
-  if (filter === 'All') button.textContent = 'All';
+  if (filter === FEATURED) button.textContent = FEATURED;
   else {
     const dot = element('span', null, 'chip-dot');
     dot.setAttribute('aria-hidden', 'true');

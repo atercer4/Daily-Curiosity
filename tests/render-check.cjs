@@ -128,6 +128,42 @@ function inspect({ index, fixture, minLabel, minTarget }) {
         await page.screenshot({ path: join(OUT, `${(label || id).replace(/\W+/g, '-')}-${width}.png`), fullPage: true });
       }
     }
+    // Explore views (issue #82): the four-preview landing view and each category view, with every tile drawn,
+    // no overflow and full-size targets. The landing view shows exactly one tile per category plus the "?" tile.
+    const views = await page.evaluate(() => [FEATURED, ...CATEGORIES]);
+    for (const view of views) {
+      const problems = await page.evaluate(({ view, minTarget }) => {
+        selectFilter(view);
+        return new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(() => {
+          const problems = [];
+          const vw = document.documentElement.clientWidth;
+          if (document.documentElement.scrollWidth > vw + 1) problems.push(`horizontal overflow: page is ${document.documentElement.scrollWidth}px wide at ${vw}px`);
+          const tiles = [...document.querySelectorAll('#cabinet > .tile:not(.tile-surprise)')];
+          const expected = view === FEATURED ? CATEGORIES.length : DAILY_CURIOSITIES.filter(e => e.category === view).length;
+          if (tiles.length !== expected) problems.push(`expected ${expected} tiles, found ${tiles.length}`);
+          if (view === FEATURED && document.querySelectorAll('#cabinet .tile-explore').length !== CATEGORIES.length) problems.push('expected one "Explore" button per category');
+          if (!document.querySelector('#cabinet > .tile-surprise')) problems.push('the "?" tile is missing');
+          for (const tile of document.querySelectorAll('#cabinet > .tile')) {
+            const r = tile.getBoundingClientRect();
+            if (r.width < 100 || r.height < 80 || r.right > vw + 1) problems.push(`tile is not drawn in the page: ${Math.round(r.width)}×${Math.round(r.height)}`);
+          }
+          for (const control of document.querySelectorAll('#categories button, #cabinet button')) {
+            const b = control.getBoundingClientRect();
+            if (b.width && b.height < minTarget) problems.push(`small target (${Math.round(b.height)}px): ${control.textContent.trim().slice(0, 40)}`);
+            if (b.right > vw + 1) problems.push(`control cut off by the screen edge: ${control.textContent.trim().slice(0, 40)}`);
+          }
+          resolve(problems);
+        })));
+      }, { view, minTarget: MIN_TARGET_PX });
+      problems.push(...errors.splice(0).map(e => 'page error: ' + e));
+      checked++;
+      const name = `Explore view "${view}" @ ${width}px`;
+      if (problems.length) {
+        failures.push({ name, problems });
+        mkdirSync(OUT, { recursive: true });
+        await page.screenshot({ path: join(OUT, `explore-${view.replace(/\W+/g, '-')}-${width}.png`), fullPage: true });
+      }
+    }
     await page.close();
   }
   // Fail-open (Codex review on PR #71): if content.js or app.js fails to load, the page under the masthead must not
@@ -149,6 +185,6 @@ function inspect({ index, fixture, minLabel, minTarget }) {
   await browser.close();
   server.close();
   for (const { name, problems } of failures) console.log(`FAIL ${name}\n  - ${[...new Set(problems)].join('\n  - ')}`);
-  console.log(`render check: ${checked - failures.length}/${checked} renders passed (${WIDTHS.join(', ')}px, Today and Explore, all disclosures open; plus 4 first-paint fail-open checks)`);
+  console.log(`render check: ${checked - failures.length}/${checked} renders passed (${WIDTHS.join(', ')}px, Today and Explore, all disclosures open; the five Explore views; plus 4 first-paint fail-open checks)`);
   process.exit(failures.length ? 1 : 0);
 })().catch(error => { console.error(error); process.exit(1); });

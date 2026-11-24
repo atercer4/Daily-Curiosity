@@ -54,6 +54,15 @@ Ephemeral recall state, no response input/evaluation, fixed 20-day content cycle
 - Headless Chromium at 320, 390 and 1280 px ([320](design/qa/dc-24-320.jpg), [390](design/qa/dc-24-390.jpg), [1280](design/qa/dc-24-1280.jpg)): no horizontal overflow, every chip and tile button at least 44px tall, no console errors. Pressing Enter on a "Look inside" button opened that card and focused it. Each tile button's accessible name is "Look inside <title>" via `aria-labelledby`.
 - [ ] Pending in real browsers: screen-reader pass of the tile list and filter chips, 200%/400% zoom, Windows High Contrast (tiles keep a CanvasText border; the selected chip keeps Highlight).
 
+## Issue #82: one featured card per category (24 November 2026)
+
+This supersedes the "All" grid of issue #24. Explore opens on "Featured": four previews, one per category (its first card in library order), plus the "?" tile as a full-width fifth option. Each preview's "Explore <category> →" button (accessible name "Explore <category>: all <n> curiosities") shows that category's cards and moves focus to the selected chip, because the pressed button is replaced. The "Featured" chip returns to the four previews. The cabinet count is a polite live region.
+- Automated: exactly four previews on load, in category order; every card is reachable through its category; "Explore" and "Featured" round-trip without touching Today or the open Explore card; the "?" draw still covers the whole library and never repeats the open card.
+- Render check: the five Explore views at 320, 390 and 1280px (no overflow, every tile drawn, every chip and tile button at least 44px, four "Explore" buttons on the landing view).
+- Headless Chromium keyboard pass at 320, 390 and 1280px: Enter on "Explore Arts" focused the Arts chip (pressed); Shift+Tab reached "Featured"; Enter restored the four previews.
+- Screenshots: [320](design/qa/dc-82-320.jpg), [390](design/qa/dc-82-390.jpg), [390, Arts](design/qa/dc-82-390-category.jpg), [1280](design/qa/dc-82-1280.jpg).
+- [ ] Pending in real browsers: screen-reader pass of the featured view and the chip focus move.
+
 ## Issue #45: Direction F reading rows (15 November 2026)
 
 This supersedes C–E/L and G–I above. The idea, Look closer and Remember this? are now three sibling native disclosures, and the recall prompt and its reveal live in Remember this?. Closing Remember this? closes only its own response; the rows no longer reset each other. Today opens The idea on load and Explore cards start closed. Heading outline: Today h2 title → h3 rows (Sources h4); Explore h3 title → h4 rows (Sources h5). The row headings are visually hidden because each summary shows the same label.
