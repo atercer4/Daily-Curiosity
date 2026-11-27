@@ -261,7 +261,7 @@ const DAILY_CURIOSITIES = [
     "hook": "A machine can warm a room by taking heat from colder outdoor air. “Cold” does not mean there is no heat left to move.",
     "core": [
       "An electric heat pump uses electricity to transfer heat from one place to another. In heating mode, an air-source system takes heat from outside and releases it indoors. A circulating refrigerant absorbs and releases heat as the equipment changes its pressure and temperature.",
-      "This takes work: heat does not simply flow from colder outdoors into a warmer room on its own. The electrical input runs the process. Because the machine moves heat as well as using electricity, the heat delivered indoors can exceed the electrical energy supplied. The amount depends on the equipment and operating conditions."
+      "This takes work: heat does not simply flow from colder outdoors into a warmer room on its own. The electrical input runs the process. Because the machine moves heat as well as using electricity, the heat delivered indoors can exceed the electrical energy supplied. The amount depends greatly on operating conditions, especially the outdoor and indoor temperatures."
     ],
     "deep": [
       "Think about the two ends of the job rather than just the warm air leaving the indoor unit. One side absorbs heat; the other releases it. The compressor and the rest of the refrigerant circuit make that transfer possible even when the desired direction opposes the natural flow from hot to cold.",
@@ -281,6 +281,215 @@ const DAILY_CURIOSITIES = [
     "recall": {
       "prompt": "How can a heat pump deliver more heat than the electrical energy it uses?",
       "reveal": "It transfers heat from elsewhere as well as using electricity to run the process. Counting the outside heat source explains the energy delivered indoors."
+    },
+    "visual": {
+      "type": "plate",
+      "viewBox": "0 0 400 320",
+      "alt": "Simplified, not-to-scale schematic of an air-source heat pump in heating mode. A closed refrigerant loop joins an outdoor coil on the left, where heat from the cold outside air flows in, to an indoor coil on the right, where heat flows out into the room. Along the top of the loop the refrigerant leaves the outdoor coil and passes through the compressor, which uses electricity to raise the refrigerant's temperature, on its way to the indoor coil. Along the bottom it returns through the expansion device to the outdoor coil.",
+      "caption": "Heating mode, simplified and not to scale. The refrigerant picks up heat from the outside air and gives it up indoors; the compressor uses electricity to raise its temperature.",
+      "shapes": [
+        {
+          "el": "rect",
+          "x": 60,
+          "y": 120,
+          "width": 50,
+          "height": 80,
+          "tone": "ink"
+        },
+        {
+          "el": "rect",
+          "x": 290,
+          "y": 120,
+          "width": 50,
+          "height": 80,
+          "tone": "ink"
+        },
+        {
+          "el": "polyline",
+          "points": "85,120 85,70 180,70",
+          "tone": "muted"
+        },
+        {
+          "el": "polyline",
+          "points": "220,70 315,70 315,120",
+          "tone": "muted"
+        },
+        {
+          "el": "circle",
+          "cx": 200,
+          "cy": 70,
+          "r": 20,
+          "tone": "accent"
+        },
+        {
+          "el": "polyline",
+          "points": "315,200 315,250 210,250",
+          "tone": "muted"
+        },
+        {
+          "el": "polyline",
+          "points": "190,250 85,250 85,200",
+          "tone": "muted"
+        },
+        {
+          "el": "rect",
+          "x": 190,
+          "y": 241,
+          "width": 20,
+          "height": 18,
+          "tone": "ink"
+        },
+        {
+          "el": "polyline",
+          "points": "132,63 140,70 132,77",
+          "tone": "muted"
+        },
+        {
+          "el": "polyline",
+          "points": "262,63 270,70 262,77",
+          "tone": "muted"
+        },
+        {
+          "el": "polyline",
+          "points": "268,243 260,250 268,257",
+          "tone": "muted"
+        },
+        {
+          "el": "polyline",
+          "points": "138,243 130,250 138,257",
+          "tone": "muted"
+        },
+        {
+          "el": "line",
+          "x1": 10,
+          "y1": 145,
+          "x2": 52,
+          "y2": 145,
+          "tone": "accent"
+        },
+        {
+          "el": "polyline",
+          "points": "44,138 52,145 44,152",
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 10,
+          "y1": 175,
+          "x2": 52,
+          "y2": 175,
+          "tone": "accent"
+        },
+        {
+          "el": "polyline",
+          "points": "44,168 52,175 44,182",
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 348,
+          "y1": 145,
+          "x2": 390,
+          "y2": 145,
+          "tone": "accent"
+        },
+        {
+          "el": "polyline",
+          "points": "382,138 390,145 382,152",
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 348,
+          "y1": 175,
+          "x2": 390,
+          "y2": 175,
+          "tone": "accent"
+        },
+        {
+          "el": "polyline",
+          "points": "382,168 390,175 382,182",
+          "tone": "accent"
+        }
+      ],
+      "labels": [
+        {
+          "x": 10,
+          "y": 24,
+          "text": "Outside air"
+        },
+        {
+          "x": 10,
+          "y": 46,
+          "text": "cold, but still holds heat",
+          "note": true
+        },
+        {
+          "x": 390,
+          "y": 24,
+          "text": "Room",
+          "anchor": "end"
+        },
+        {
+          "x": 390,
+          "y": 46,
+          "text": "receives the heat",
+          "anchor": "end",
+          "note": true
+        },
+        {
+          "x": 200,
+          "y": 112,
+          "text": "Compressor",
+          "anchor": "middle"
+        },
+        {
+          "x": 200,
+          "y": 134,
+          "text": "uses electricity",
+          "anchor": "middle",
+          "note": true
+        },
+        {
+          "x": 200,
+          "y": 172,
+          "text": "refrigerant loop",
+          "anchor": "middle",
+          "note": true
+        },
+        {
+          "x": 200,
+          "y": 228,
+          "text": "Expansion device",
+          "anchor": "middle"
+        },
+        {
+          "x": 85,
+          "y": 282,
+          "text": "Outdoor coil",
+          "anchor": "middle"
+        },
+        {
+          "x": 85,
+          "y": 304,
+          "text": "absorbs heat",
+          "anchor": "middle",
+          "note": true
+        },
+        {
+          "x": 315,
+          "y": 282,
+          "text": "Indoor coil",
+          "anchor": "middle"
+        },
+        {
+          "x": 315,
+          "y": 304,
+          "text": "releases heat",
+          "anchor": "middle",
+          "note": true
+        }
+      ]
     }
   },
   {

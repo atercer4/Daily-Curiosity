@@ -152,9 +152,10 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 
 - ID: `heat-pump`; category: Engineering & Technology.
 - Subject: Energy / thermodynamics.
-- Visual: Omitted: the two-sided transfer is explained in prose; no ornamental equipment drawing.
+- Visual: Plate (diagram), in Look closer: a closed refrigerant loop in heating mode. On the left the outdoor coil (“Outdoor coil”, “absorbs heat”) takes heat from the outside air (“Outside air”, “cold, but still holds heat”); along the top the refrigerant passes through the compressor (“Compressor”, “uses electricity”) to the indoor coil on the right (“Indoor coil”, “releases heat”), which warms the room (“Room”, “receives the heat”); along the bottom it returns through the “Expansion device”. Simplified and not to scale; no numbers strip, no cover drawing. It shows where heat enters, what the electricity runs and where heat leaves in one image, which the prose describes in sequence.
 - [Natural Resources Canada — Heating and cooling with a heat pump](https://natural-resources.canada.ca/energy-efficiency/energy-star/heating-cooling-heat-pump)
 - [ENERGY STAR — How does a heat pump work?](https://www.energystar.gov/node/11903)
+- Register-approved v6 (Draft Hash `83dc7f702455baf2b36270d0481a9085a910a5aca861c63ecf4005dcc79c3900`; Claude PASS 25 November 2026 and ChatGPT PASS 26 November 2026), coded in issue #83: adds the refrigerant-loop plate; the last core sentence now reads “The amount depends greatly on operating conditions, especially the outdoor and indoor temperatures” (Natural Resources Canada). Sources and recall unchanged.
 
 ### 9. Why a damaged code can still scan
 
@@ -304,7 +305,7 @@ Researched and written by the build agent (Claude); the Drive research inbox had
 
 ## Visual scope
 
-Two retained local HTML/CSS explanatory visuals, both inside the optional Deep Dive: Venus duration bars (117, 225, 243 Earth days on one zero-based scale) and woodcut reversal (reversed block R, normal paper R). Both retain relationship-based text alternatives and captions. Since issue #27, `gps-relativity` adds a third: a register-approved orbit plate in The idea, with a numbers strip and a cover drawing. Since issue #79, `bicycle-gears` adds a fourth: a register-approved chain-drive plate in Look closer. No new visual assets, stock images, AI images, decorative diagrams, or external image requests. The other 20 cards intentionally omit visuals for the reasons above.
+Two retained local HTML/CSS explanatory visuals, both inside the optional Deep Dive: Venus duration bars (117, 225, 243 Earth days on one zero-based scale) and woodcut reversal (reversed block R, normal paper R). Both retain relationship-based text alternatives and captions. Since issue #27, `gps-relativity` adds a third: a register-approved orbit plate in The idea, with a numbers strip and a cover drawing. Since issue #79, `bicycle-gears` adds a fourth: a register-approved chain-drive plate in Look closer. Since issue #83, `heat-pump` adds a fifth: a register-approved refrigerant-loop plate in Look closer (not to scale). No new visual assets, stock images, AI images, decorative diagrams, or external image requests. The other 19 cards intentionally omit visuals for the reasons above.
 
 ## Source-read limitations and independent checks
 
