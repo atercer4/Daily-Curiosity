@@ -194,17 +194,17 @@ const DAILY_CURIOSITIES = [
     "id": "suspension-bridge",
     "category": "Engineering & Technology",
     "title": "How can a road hang from cables?",
-    "question": "How can something {flexible} hold up something so heavy?",
+    "question": "How can a road full of traffic {hang from cables}?",
     "tease": "The Golden Gate Bridge’s road hangs from cables. The trick is that each part of the bridge does a different job.",
-    "hook": "The Golden Gate Bridge carries traffic on a road that hangs from cables. How does something flexible help hold up something so heavy?",
+    "hook": "The Golden Gate Bridge carries traffic on a road that hangs from cables. Where does all that weight go, and which parts pull or push?",
     "core": [
-      "A suspension bridge gives weight a route to the ground. Vertical steel ropes hold up the road deck and connect it to the large curved cables above. Those main cables pass over towers and are held at their ends by massive anchorages.",
-      "The ropes and cables are pulled tight: engineers call that tension. The towers are squeezed downward, which is called compression. At the Golden Gate, the anchorages resist the cables’ pull and are embedded in bedrock. Flexible cables and rigid towers do different jobs. The bridge works because those jobs connect, not because every part resists force in the same way."
+      "A suspension bridge gives weight a route to the ground. Vertical suspender ropes hold up the road deck and connect it to the large curved cables above. Those main cables pass over towers and are held at their ends by massive anchorages.",
+      "The main cables are pulled tight: engineers call that tension. The towers are squeezed downward, which is called compression. Cables that pull and towers that push do different jobs. The bridge works because those jobs connect, not because every part resists force in the same way."
     ],
     "deep": [
-      "Follow the weight of a car parked on the bridge. It presses on the road deck. The vertical ropes pull upward on the deck and downward on the main cables. The main cables pass that load to the towers and the anchorages. The foundations connect the structure to the ground.",
-      "A rope offers a useful everyday comparison. Pull its ends apart and it can carry tension. Push the ends together and it goes slack rather than acting like a firm column. A tower plays a different role: it supports a downward push. The bridge combines these different strengths in one structure.",
-      "This is a simplified account of the Golden Gate’s support system, not a recipe for designing a bridge. Engineers also have to deal with moving traffic and changing conditions. Still, tracing the connected pushes and pulls explains why the sweeping cables are working parts, rather than decoration."
+      "Follow the weight of a car parked on the bridge. It presses on the road deck. The deck hands that load to the vertical ropes, which pull the weight up to the curving main cables. The cables place it on the tops of the two towers, and the towers carry it down to the ground.",
+      "The cables’ pulling force has to be held somewhere too. At the Golden Gate, massive concrete anchorages at both ends of the bridge resist that tension, and they are embedded in bedrock. The forces carried down through the towers are resisted by concrete foundations that also extend into bedrock.",
+      "This is a simplified account of the Golden Gate’s support system, not a recipe for designing a bridge. The deck’s own trusses are not strong enough to span all the way across the Golden Gate. Tracing the connected pushes and pulls explains why the sweeping cables are working parts, rather than decoration."
     ],
     "sources": [
       {
@@ -212,13 +212,213 @@ const DAILY_CURIOSITIES = [
         "url": "https://www.goldengate.org/exhibits/how-the-bridge-spans-the-golden-gate/"
       },
       {
-        "label": "Golden Gate Bridge District — Bridge towers",
-        "url": "https://goldengate.org/exhibits/bridge-towers"
+        "label": "PBS Building Big — Suspension Bridge: Forces",
+        "url": "https://www.pbs.org/wgbh/buildingbig/bridge/susp_forces.html"
       }
     ],
     "recall": {
       "prompt": "How do the cables and towers share the job of supporting a suspension bridge?",
       "reveal": "Cables carry tension, while towers carry compression. Together with anchorages and foundations, they give the load a connected route to the ground."
+    },
+    "visual": {
+      "type": "plate",
+      "viewBox": "0 0 400 290",
+      "alt": "Simplified, not-to-scale side view of a suspension bridge, with the road deck shown only between the towers. The deck hangs from vertical suspender ropes attached to the curving main cable above. The cable passes over the tops of both towers and runs down to a concrete anchorage on the ground at each end. One label marks the main cable as carrying tension, the pull; another, with lines to both tower tops, marks the towers as carrying compression, the push down to the ground.",
+      "caption": "Simplified, not to scale; deck shown for the main span only. The deck hangs from ropes and the ropes from the main cables; the cables bear down on the towers and pull on the anchorages.",
+      "shapes": [
+        {
+          "el": "line",
+          "x1": 0,
+          "y1": 250,
+          "x2": 400,
+          "y2": 250,
+          "tone": "muted"
+        },
+        {
+          "el": "rect",
+          "x": 5,
+          "y": 228,
+          "width": 30,
+          "height": 22,
+          "tone": "ink",
+          "fill": true
+        },
+        {
+          "el": "rect",
+          "x": 365,
+          "y": 228,
+          "width": 30,
+          "height": 22,
+          "tone": "ink",
+          "fill": true
+        },
+        {
+          "el": "rect",
+          "x": 85,
+          "y": 60,
+          "width": 10,
+          "height": 190,
+          "tone": "ink"
+        },
+        {
+          "el": "rect",
+          "x": 305,
+          "y": 60,
+          "width": 10,
+          "height": 190,
+          "tone": "ink"
+        },
+        {
+          "el": "rect",
+          "x": 95,
+          "y": 196,
+          "width": 210,
+          "height": 6,
+          "tone": "ink"
+        },
+        {
+          "el": "path",
+          "d": "M20 230 Q50 140 90 62 Q200 298 310 62 Q350 140 380 230",
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 120,
+          "y1": 117.6,
+          "x2": 120,
+          "y2": 196,
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 140,
+          "y1": 144.9,
+          "x2": 140,
+          "y2": 196,
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 160,
+          "y1": 164.4,
+          "x2": 160,
+          "y2": 196,
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 180,
+          "y1": 176.1,
+          "x2": 180,
+          "y2": 196,
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 200,
+          "y1": 180,
+          "x2": 200,
+          "y2": 196,
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 220,
+          "y1": 176.1,
+          "x2": 220,
+          "y2": 196,
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 240,
+          "y1": 164.4,
+          "x2": 240,
+          "y2": 196,
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 260,
+          "y1": 144.9,
+          "x2": 260,
+          "y2": 196,
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 280,
+          "y1": 117.6,
+          "x2": 280,
+          "y2": 196,
+          "tone": "accent"
+        },
+        {
+          "el": "line",
+          "x1": 44,
+          "y1": 38,
+          "x2": 60,
+          "y2": 124,
+          "tone": "muted",
+          "dash": true
+        },
+        {
+          "el": "line",
+          "x1": 300,
+          "y1": 36,
+          "x2": 309,
+          "y2": 57,
+          "tone": "muted",
+          "dash": true
+        },
+        {
+          "el": "line",
+          "x1": 262,
+          "y1": 36,
+          "x2": 96,
+          "y2": 57,
+          "tone": "muted",
+          "dash": true
+        }
+      ],
+      "labels": [
+        {
+          "x": 10,
+          "y": 30,
+          "text": "Main cable: tension"
+        },
+        {
+          "x": 200,
+          "y": 222,
+          "text": "Road deck",
+          "anchor": "middle",
+          "note": true
+        },
+        {
+          "x": 200,
+          "y": 110,
+          "text": "Suspender ropes",
+          "anchor": "middle",
+          "note": true
+        },
+        {
+          "x": 5,
+          "y": 276,
+          "text": "Anchorage"
+        },
+        {
+          "x": 395,
+          "y": 276,
+          "text": "Anchorage",
+          "anchor": "end"
+        },
+        {
+          "x": 395,
+          "y": 30,
+          "text": "Towers: compression",
+          "anchor": "end"
+        }
+      ]
     }
   },
   {

@@ -136,9 +136,10 @@ The links below are exactly those displayed in each card’s Deep Dive & Sources
 
 - ID: `suspension-bridge`; category: Engineering & Technology.
 - Subject: Structural engineering.
-- Visual: Omitted: prose traces forces; a decorative bridge silhouette would not improve the load explanation.
+- Visual: Plate (diagram), in Look closer: a side view tracing the load path. The road deck (“Road deck”, drawn in the main span only) hangs from vertical suspender ropes (“Suspender ropes”), which hang from the curved main cable (“Main cable: tension”); the cable passes over two towers (“Towers: compression”, with leaders to both) and is held at each end by an anchorage (“Anchorage”). Simplified and not to scale; no numbers strip, no cover drawing. It shows the whole route from deck to ground and which parts pull or push in one image, which the prose traces step by step.
 - [Golden Gate Bridge District — How the bridge spans the Golden Gate](https://www.goldengate.org/exhibits/how-the-bridge-spans-the-golden-gate/)
-- [Golden Gate Bridge District — Bridge towers](https://goldengate.org/exhibits/bridge-towers)
+- [PBS Building Big — Suspension Bridge: Forces](https://www.pbs.org/wgbh/buildingbig/bridge/susp_forces.html)
+- Register-approved v5 (Draft Hash `f980ee7b4eb72bce9c6ddb9a70b6e19ceff91f61b35a68599b704ad8657bd7cd`; Claude PASS 25 November 2026 and ChatGPT PASS 26 November 2026), coded in issue #84: adds the load-path plate; the cover question and hook now ask where the weight goes and which parts pull or push; the core names the suspender ropes, puts only the main cables in tension and moves the Golden Gate anchorage sentence to the Deep Dive; the Deep Dive follows the car's weight through deck, ropes, cables and towers, adds the anchorages and foundations in bedrock, and replaces the rope comparison; source 2 (Golden Gate “Bridge towers”) is replaced by PBS Building Big. Tease and recall unchanged.
 
 ### 7. Steel protected by its own surface
 
@@ -305,7 +306,7 @@ Researched and written by the build agent (Claude); the Drive research inbox had
 
 ## Visual scope
 
-Two retained local HTML/CSS explanatory visuals, both inside the optional Deep Dive: Venus duration bars (117, 225, 243 Earth days on one zero-based scale) and woodcut reversal (reversed block R, normal paper R). Both retain relationship-based text alternatives and captions. Since issue #27, `gps-relativity` adds a third: a register-approved orbit plate in The idea, with a numbers strip and a cover drawing. Since issue #79, `bicycle-gears` adds a fourth: a register-approved chain-drive plate in Look closer. Since issue #83, `heat-pump` adds a fifth: a register-approved refrigerant-loop plate in Look closer (not to scale). No new visual assets, stock images, AI images, decorative diagrams, or external image requests. The other 19 cards intentionally omit visuals for the reasons above.
+Two retained local HTML/CSS explanatory visuals, both inside the optional Deep Dive: Venus duration bars (117, 225, 243 Earth days on one zero-based scale) and woodcut reversal (reversed block R, normal paper R). Both retain relationship-based text alternatives and captions. Since issue #27, `gps-relativity` adds a third: a register-approved orbit plate in The idea, with a numbers strip and a cover drawing. Since issue #79, `bicycle-gears` adds a fourth: a register-approved chain-drive plate in Look closer. Since issue #83, `heat-pump` adds a fifth: a register-approved refrigerant-loop plate in Look closer (not to scale). Since issue #84, `suspension-bridge` adds a sixth: a register-approved load-path plate in Look closer (not to scale). No new visual assets, stock images, AI images, decorative diagrams, or external image requests. The other 18 cards intentionally omit visuals for the reasons above.
 
 ## Source-read limitations and independent checks
 
